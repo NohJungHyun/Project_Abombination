@@ -37,7 +37,8 @@ public class Stat
     }
 
     public int ShowResultStat()
-    { //혹시 모를 값 표현 함수
+    {   // 혹시 모를 값 표현 함수
+        // 라고 누군가는 그렇게 생각을 했겠지...
         return resultStat;
     }
 
