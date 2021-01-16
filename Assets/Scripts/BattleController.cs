@@ -13,8 +13,8 @@ public class BattleController : MonoBehaviour
 
     // 외부 참조
     public BattleUIManager battleUIManager;
-    // public CharacterBattleAction characterBattleAction;
     public BombManager bombManager;
+    // public CharacterBattleAction characterBattleAction;
 
     // ***** 전투 내 RayCast 처리 *****
     Ray ray;
@@ -56,7 +56,7 @@ public class BattleController : MonoBehaviour
             hit.point = Vector3.zero;
 
             battleturn++;
-            
+
             doZoom = true;
 
             nowPlayCharacter = characterList[index];
@@ -70,13 +70,13 @@ public class BattleController : MonoBehaviour
                 index = 0;
                 battleRound++;
             }
-
             if (nowPlayCharacter && doZoom)
             {
                 battleUIManager.ActivateActionUI();
             }
         }
         
+
     }
 
     void FixedUpdate()
@@ -155,11 +155,6 @@ public class BattleController : MonoBehaviour
     {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Physics.Raycast(ray, out hit, Mathf.Infinity);
-    }
-
-    public void DoOrder()
-    {
-        doZoom = !doZoom;
     }
 
 }

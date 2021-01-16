@@ -10,6 +10,8 @@ public class CharacterBattleAction : MonoBehaviour
     // 여기서 처리한 결과를 return 해주는 것으로 결과값을 방출하자.
 
     public BattleController battleController;
+    public BattleUIManager battleUIManager;
+    // public BombManager bombManager;
 
     Temp_Character temp_Character;
 
@@ -23,14 +25,34 @@ public class CharacterBattleAction : MonoBehaviour
 
     public void Update()
     {
-        MoveOrder();
+        if(battleController.nowPlayCharacter && battleController.nowPlayCharacter != temp_Character){
+            temp_Character = battleController.nowPlayCharacter;
+        }
+
+        if (movePhase)
+        {
+            setUpPhase = false;
+            Moving();
+        }
+        else if(setUpPhase)
+        {
+            movePhase = false;
+            battleController.bombManager.GetHitPoint(battleController.hit.point);
+        }
     }
 
     public void MoveOrder()
     {
+        battleController.doZoom = false;
+        movePhase = true;
+    }
+
+    public void Moving()
+    {
         if (Input.GetMouseButtonDown(1))
         {
-            if(alreadyMove && battleController.nowPlayCharacter != temp_Character){
+            if (alreadyMove && battleController.nowPlayCharacter != temp_Character)
+            {
                 alreadyMove = false;
                 alreadymoveDist = 0;
                 moveDist = 0;
@@ -44,7 +66,6 @@ public class CharacterBattleAction : MonoBehaviour
             if (moveDist != 0 && !alreadyMove)
             {
                 alreadymoveDist += moveDist;
-                
             }
         }
         else
@@ -99,12 +120,12 @@ public class CharacterBattleAction : MonoBehaviour
 
     public void CreateBomb()
     {
+        setUpPhase = true;
+        battleUIManager.GetBombPanel();
+
         if (temp_Character.canSetBombs.Count > 0)
         {
-            for (int b = 0; b < temp_Character.canSetBombs.Count; b++)
-            {
-
-            }
+            battleUIManager.SetBombListinUI(temp_Character);
         }
     }
 
@@ -114,7 +135,7 @@ public class CharacterBattleAction : MonoBehaviour
 
     }
 
-    // 폭탄물 설치
+    // 폭발물 설치
     public void DoExplosionSetUp()
     {
 
