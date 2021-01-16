@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StartSetPos{Hand, Point, Random}
+public enum StartSetPos{Hand, Point, Random, Character}
 
 [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
 public class Bomb : ScriptableObject
