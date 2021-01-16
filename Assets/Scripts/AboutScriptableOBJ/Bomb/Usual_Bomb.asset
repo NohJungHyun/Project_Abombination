@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 685835d5e5d0c3045abec572aae12fa9, type: 3}
+  m_Name: Usual_Bomb
+  m_EditorClassIdentifier: 
+  bombName: Usual Bomb
+  bombDescription: "\uC5B4\uB514\uC5D0\uC11C\uB098 \uBCFC \uC218 \uC788\uB294 \uD3ED\uD0C4.
+    \uD3ED\uBC1C\uD558\uB294 \uAC83\uC774 \uC81C \uC5ED\uD560\uC774\uB77C\uC9C0\uB9CC,
+    \uC544\uC8FC \uC791\uC740 \uC18C\uB9DD\uC744 \uC9C0\uB2C8\uACE0 \uC788\uB294
+    \uCE5C\uAD6C\uC785\uB2C8\uB2E4. \uBC14\uB85C \uB354 \uD070 \uC18C\uB9AC\uB85C
+    \uD3ED\uBC1C\uD558\uB294 \uAC70\uC8E0!"
+  bombImage: {fileID: 21300000, guid: b6a7bd5502974324a871ca14e4dd8865, type: 3}
+  bombObject: {fileID: 168644, guid: 76938fc3a3cf3584cad29f234e5227ac, type: 3}
+  bombDamage: 0
+  bombRadius: 0
+  bombCanStack: 0
+  bombMaxStack: 0
+  bombDispelNum: 
+  bombAugmentNum: 
+  bombSetupNum: 
+  bombCountDown: 0
+  startSetPos: 0
+  bombMinCountDown: 0
+  bombMaxCountDown: 0
