@@ -50,9 +50,9 @@ public class BombManager : MonoBehaviour
         }
     }
 
-    public GameObject CreateBombtoButtonClick(Bomb _b)
+    public GameObject CreateBombtoButtonClick(Bomb _b, Vector3 _v)
     {
-        GameObject bombObj = Instantiate(_b.bombObject) as GameObject;
+        GameObject bombObj = Instantiate(_b.bombObject, _v, Quaternion.identity) as GameObject;
         //ReturnBombPosition(bombObj, _t);
 
         return bombObj;
@@ -61,7 +61,7 @@ public class BombManager : MonoBehaviour
     public void SetBombwithPoint(Vector3 _v, Bomb _b)
     { // 폭탄 설치 시 Point를 통해 폭탄을 설치할 위치를 지정.
 
-        GameObject b = CreateBombtoButtonClick(_b);
+        GameObject b = CreateBombtoButtonClick(_b, _v);
         bool setEnd = false;
         if (b != null && !setEnd)
         {
@@ -75,7 +75,7 @@ public class BombManager : MonoBehaviour
 
     public void SetBombinHand(Bomb _b, Temp_Character _t){
         _t.haveBombs.Add(_b);
-        CreateBombtoButtonClick(_b).transform.SetParent(_t.transform);
+        CreateBombtoButtonClick(_b, _t.transform.position).transform.SetParent(_t.transform);
     }
 
     public void GetHitPoint(Vector3 _h){

@@ -21,7 +21,7 @@ public class BattleUIManager : MonoBehaviour
     public GameObject CreateBombCanvas;
 
     public List<Button> bombButtons = new List<Button>(20);
-    public List<Bomb> bombs = new List<Bomb>();
+    // public List<Bomb> bombs = new List<Bomb>();
 
     // Start is called before the first frame update
     void Start()
@@ -48,22 +48,22 @@ public class BattleUIManager : MonoBehaviour
         if (_t)
         {
             temp_Character = _t;
-            Debug.Log(CreateBombCanvas.GetComponentsInChildren<Button>().Length);
-
+            
             if (temp_Character.canSetBombs.Count > 0)
             {
-                if (temp_Character.canSetBombs.Count <= CreateBombCanvas.GetComponentsInChildren<Button>().Length)
+                if (temp_Character.canSetBombs.Count < CreateBombCanvas.GetComponentsInChildren<Button>().Length)
                 {
                     // for (int u = 0; u < CreateBombCanvas.GetComponentsInChildren<Button>().Length - 1; u++)
                     for (int u = 0; u < temp_Character.canSetBombs.Count; u++)
                     {
                         int uiIndex = u;
                         Debug.Log(uiIndex);
+
                         bombButtons.Add(CreateBombCanvas.GetComponentsInChildren<Button>()[uiIndex]);
                         // 버튼 이미지
                         bombButtons[uiIndex].image.sprite = _t.canSetBombs[uiIndex].bombImage;
                         // 버튼 클릭 이미지 추가.
-                        bombButtons[uiIndex].onClick.AddListener(() => bombManager.CreateBombtoButtonClick(temp_Character.canSetBombs[uiIndex]));
+                        bombButtons[uiIndex].onClick.AddListener(() => bombManager.SetBombinHand(temp_Character.canSetBombs[uiIndex], temp_Character));
                     }
                 }
             }

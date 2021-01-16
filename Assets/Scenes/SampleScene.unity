@@ -655,7 +655,9 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetBombs: []
+  canSetBombs:
+  - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
   haveBombs: []
 --- !u!54 &191213653
 Rigidbody:
@@ -902,7 +904,6 @@ MonoBehaviour:
   characterActCanvas: {fileID: 990932045}
   CreateBombCanvas: {fileID: 302971717}
   bombButtons: []
-  bombs: []
 --- !u!1 &302971717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2735,9 +2736,6 @@ MonoBehaviour:
   canSetBombs:
   - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   haveBombs: []
 --- !u!54 &883299833
 Rigidbody:
@@ -3274,7 +3272,9 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetBombs: []
+  canSetBombs:
+  - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
   haveBombs: []
 --- !u!54 &1085432757
 Rigidbody:
@@ -4120,7 +4120,9 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetBombs: []
+  canSetBombs:
+  - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
   haveBombs: []
 --- !u!54 &1406110115
 Rigidbody:
