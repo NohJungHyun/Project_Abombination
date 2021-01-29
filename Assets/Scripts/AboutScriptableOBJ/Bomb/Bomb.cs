@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StartSetPos{Hand, Point, Random, Character}
+public enum StartSetPos { Hand, Point, Random, Character }
 
 [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
 public class Bomb : ScriptableObject
@@ -15,6 +15,7 @@ public class Bomb : ScriptableObject
 
     public Sprite bombImage;
     public GameObject bombObject;
+    public SetBombPositions setBomb;
 
     public int bombDamage;
     public int bombRadius;
@@ -38,18 +39,6 @@ public class Bomb : ScriptableObject
 
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     //폭.8!
     public void Boom()
     {
@@ -61,6 +50,12 @@ public class Bomb : ScriptableObject
             }
             explosionList.Clear();
         }
+    }
+
+    // 폭탄 해제 함수
+    public void Diffuse()
+    {
+
     }
 
 }
