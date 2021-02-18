@@ -9,11 +9,14 @@ public class CharacterBattleAction : MonoBehaviour
     // 캐릭터들이 지닌 고유의 활동들도 포함시킬 지는 미정
     // 여기서 처리한 결과를 return 해주는 것으로 결과값을 방출하자.
 
-    public BattleController battleController;
     public BattleUIManager battleUIManager;
+    public BattleController battleController;
+    
     // public BombManager bombManager;
 
     Temp_Character temp_Character;
+
+    public LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
 
     public Vector3 from; // 캐릭터가 이동하기 전에, 자신의 위치를 담은 변수. 
     public float moveDist;
@@ -25,8 +28,11 @@ public class CharacterBattleAction : MonoBehaviour
 
     public void Update()
     {
-        if(battleController.nowPlayCharacter && battleController.nowPlayCharacter != temp_Character){
+        if (battleController.nowPlayCharacter != temp_Character) //battleController.nowPlayCharacter && 
+        {
             temp_Character = battleController.nowPlayCharacter;
+            // battleUIManager.temp_Character = this.temp_Character;
+            CheckWhereBombs();
         }
 
         if (movePhase)
@@ -34,10 +40,10 @@ public class CharacterBattleAction : MonoBehaviour
             setUpPhase = false;
             Moving();
         }
-        else if(setUpPhase)
+        else if (setUpPhase)
         {
             movePhase = false;
-            battleController.bombManager.GetHitPoint(battleController.hit.point);
+            // battleController.bombManager.GetHitPoint(battleController.hit.point);
         }
     }
 
@@ -118,33 +124,63 @@ public class CharacterBattleAction : MonoBehaviour
         return dist;
     }
 
+    // public void CreateBomb()
+    // {
+    //     setUpPhase = true;
+    //     battleUIManager.GetBombPanel();
+
+    //     if (temp_Character.canSetBombs.Count > 0)
+    //     {
+    //         if(battleUIManager.
+    //         battleUIManager.SetBombListinUI(temp_Character);
+    //     }
+    // }
+
+    public List<GameObject> CheckWhereBombs()
+    {
+        
+        List<GameObject> detectedBombs = new List<GameObject>();
+        foreach (Collider col in Physics.OverlapSphere(temp_Character.transform.position, temp_Character.info.characterDetectRange, detectMask))
+        {
+            detectedBombs.Add(col.gameObject);
+            // Debug.Log("G");
+        }
+
+        return detectedBombs;
+    }
+
     public void CreateBomb()
     {
         setUpPhase = true;
-        battleUIManager.GetBombPanel();
-
-        if (temp_Character.canSetBombs.Count > 0)
-        {
-            battleUIManager.SetBombListinUI(temp_Character);
-        }
-    }
-
-    // 폭탄 던지기
-    public void ThrowBomb()
-    {
-
+        battleController.battleUIManager.GetBombPanel(temp_Character, battleController, true);
     }
 
     // 폭발물 설치
-    public void DoExplosionSetUp()
+    public void DoExplosionSetUp(Explosion _e)
     {
 
     }
 
     // 폭발물 해제
-    public void DoExplosionDefuse()
+    public void DoExplosionDiffuse(Explosion _e)
     {
 
     }
+
+    public void DiffuseBomb(GameObject _obj)
+    {
+        _obj.SetActive(false);
+    }
+
+    public void EditBomb()
+    {
+        // CheckWhereBombs();
+        foreach (GameObject o in CheckWhereBombs())
+        {
+            Debug.Log(o.name);
+        }
+    }
+
+    
 
 }

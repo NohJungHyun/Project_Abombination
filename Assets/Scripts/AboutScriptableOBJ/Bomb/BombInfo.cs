@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StartSetPos { Hand, Point, Random, Character }
-
-// [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
-public class Bomb : MonoBehaviour
+public abstract class BombInfo : ScriptableObject
 {
-    //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
+        //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
     public string bombName;
 
     [TextArea]
@@ -16,6 +13,8 @@ public class Bomb : MonoBehaviour
     public Sprite bombImage;
     public GameObject bombObject;
     public SetBombPositions setBomb;
+    
+    public LayerMask mask;
 
     public int bombDamage;
     public int bombRadius;
@@ -34,24 +33,19 @@ public class Bomb : MonoBehaviour
 
     public List<Explosion> explosionList = new List<Explosion>(30);
 
-    public Bomb()
-    { //생성자
+    // public BombInfo()
+    // { //생성자
 
-    }
+    // }
 
-    //폭.8!
-    public void Boom()
+    // 폭.8!
+    public abstract void Boom(GameObject _bombObj);
+    
+    // 폭탄 해제 함수
+    // _number: 적용되는 대상 수.
+    public virtual void Diffuse(GameObject _bombObj, float _radius, int _number)
     {
-        if (bombCountDown <= 0)
-        {
-            foreach (Explosion exp in explosionList)
-            {
-                exp.ExplosionActivate(this.gameObject);
-            }
-            explosionList.Clear();
-        }
+       Collider[] cols = Physics.OverlapSphere(_bombObj.transform.position, _radius, mask);
+       
     }
-
-
-
 }

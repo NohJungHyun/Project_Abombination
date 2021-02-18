@@ -18,8 +18,6 @@ public class BombInfoUI : BaseUIStorage
     public void GetInfofromBomb(Bomb _bomb)
     {
         bomb = _bomb;
-
-        
     }
 
     public override void ShowUI()

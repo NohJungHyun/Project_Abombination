@@ -26,5 +26,6 @@ MonoBehaviour:
   characterCharisma: 3
   characterLuck: 3
   characterInitiative: 3
+  characterDetectRange: 5
   currentHP: 0
   maxHP: 0

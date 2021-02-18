@@ -6,9 +6,9 @@ using UnityEngine;
 // [CreateAssetMenu(fileName = "New Explosion", menuName = "ScriptableObjects/ExplosionMaking", order = 3)]
 
 // AccessAgree?: 보다 상위 행동을 진행하기 위해 
-public enum ExplosionType{Attack, Defend, Buff, Debuff, Heal, AccessAgree}
+public enum ExplosionType { Attack, Defend, Buff, Debuff, Heal, AccessAgree }
 
-public class Explosion: ScriptableObject
+public class Explosion : ScriptableObject
 {
     // 폭탄에 담길 폭발물을 의미하는 클래스.
 
@@ -33,10 +33,17 @@ public class Explosion: ScriptableObject
     public int exploMinCountDown;
     public int exploMaxCountDown;
 
+    public int ExplosionRadius;
+
     //폭.8물 가동!!!
-    public virtual void ExplosionActivate()
+    public virtual void ExplosionActivate(GameObject obj)
     {
         Debug.Log("폭발하고 말았다!");
+    }
+
+    public virtual void ExplosionDiffuse(GameObject obj)
+    {
+        Debug.Log("폭발하지 못했다...");
     }
 
     // public Explosion(bool _canStack, int _maxStack, int _countdown, int _minCountdown, int _maxCountdown)

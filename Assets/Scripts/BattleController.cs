@@ -8,33 +8,35 @@ public class BattleController : MonoBehaviour
     // 전투 행동 순서, 사망여부 처리, 턴의 경과 등을 담당
     // 캐릭터 다수한테 전투관련 스크립트를 부착하는 것보다, 하나의 스크립트에서 처리하게 끔하여 최적화 추구.
 
-    // ***** 전투 내 캐릭터 처리 *****
-    //public CharacterBattleAction cba; // 전투 내에 진행되는 캐릭터 행동을 모아놓은 스크립트.
-
     // 외부 참조
     public BattleUIManager battleUIManager;
+    // public CharacterBattleAction characterBattleAction; 
     public BombManager bombManager;
-    // public CharacterBattleAction characterBattleAction;
+
 
     // ***** 전투 내 RayCast 처리 *****
     Ray ray;
     public RaycastHit hit;
 
     public Temp_Character nowPlayCharacter; // 현재 턴에 행동가능한 캐릭터를 의미.
+    [SerializeField]
+    public Queue<GameObject> bombs = new Queue<GameObject>();
     public List<Temp_Character> characterList = new List<Temp_Character>(); // 전투에 참여하는 캐릭터들을 담는 리스트.
 
-    public List<Stat> statList = new List<Stat>(20); // 각 캐릭터의 이니시에이티브 수치를 넣어 결산하는 용도로 사용되는 리스트.
+    public Camera mCamera;
 
     public int battleRound = 0; // 배틀 경과 라운드
-    public int battleturn = 0; // 배틀 경과 턴
+    public int battleTurn = 0; // 배틀 경과 턴
 
     int index = 0; // 현재 선택된 캐릭터를 측정하기 위해 사용되는 카운터.
 
     public bool doZoom;
-    public bool characterTurn;
 
-    //public delegate void DoYourTurn(); //턴이 시작될 때, 진행할 캐릭터의 
-    //public DoYourTurn turnStart;
+    // public Vector3 setupPos;
+    // public bool setupGo = false; // 폭탄이 마우스와 같이 돌아다니는가(설치 준비 중인가?)
+    // public bool hasTempBomb = false; // 현재 임시적으로 폭탄을 마우스 끝에 담고 있는가?
+
+    // public GameObject bObject;
 
     // ***** 전투 내 Camera 이동, 회전 처리 *****
     Vector3 initialCameraPos = new Vector3(); // 카메라의 원래 위치를 위해 작성
@@ -47,6 +49,8 @@ public class BattleController : MonoBehaviour
         RolltoInitiative(); // 모든 캐릭터들의 initiative를 계산한 후, characterList에 담는다.(전투 준비)
 
         initialCameraPos = Camera.main.transform.position;
+        mCamera = Camera.main;
+
     }
 
     private void Update()
@@ -55,7 +59,7 @@ public class BattleController : MonoBehaviour
         {
             hit.point = Vector3.zero;
 
-            battleturn++;
+            battleTurn++;
 
             doZoom = true;
 
@@ -70,13 +74,31 @@ public class BattleController : MonoBehaviour
                 index = 0;
                 battleRound++;
             }
+
             if (nowPlayCharacter && doZoom)
             {
                 battleUIManager.ActivateActionUI();
             }
-        }
-        
 
+        }
+        // bombManager.GetHitPoint(hit.point);
+
+        SearchwithRayCast();
+        // bombManager.setupPos = hit.point;
+        // ForRayCast.DoRayCast();
+        // Debug.DrawRay(mCamera.transform.position, hit.point, Color.red, 100);
+
+        if (hit.collider != null)
+        {
+            battleUIManager.uitoShowBomb.GetInfofromRaycast(hit);
+        }
+
+        if (bombManager.setupGo)
+        {
+            //bombManager.ReadytoSetup(hit.point);
+            doZoom = false;
+            bombManager.ReadytoSetup(hit.point);
+        }
     }
 
     void FixedUpdate()
@@ -153,8 +175,7 @@ public class BattleController : MonoBehaviour
     // 캐릭터의 이동 좌표, 폭탄 전달 대상, 스킬 시전 대상 결정 등을 하나로 처리하기 위해 raycast 기능을 여기에 작성.
     public void SearchwithRayCast()
     {
-        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Physics.Raycast(ray, out hit, Mathf.Infinity);
+        ray = mCamera.ScreenPointToRay(Input.mousePosition);
+        Physics.Raycast(ray, out hit, 100);
     }
-
 }
