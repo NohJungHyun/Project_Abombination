@@ -9,6 +9,7 @@ public class BattleUIManager : MonoBehaviour
     // 폭탄의 상태 관리, 설치 등을 통제하고자 제작.
     // public BombManager bombManager;
     public UItoShowBombInfo uitoShowBomb;
+    public UItoShowExplosionInfo uItoShowExplosion;
     public CharacterBattleAction characterBattleAction;
     // public BattleController battleController;
 
@@ -53,7 +54,7 @@ public class BattleUIManager : MonoBehaviour
 
     }
 
-    public void GetBombPanel(Temp_Character _Character, BattleController _battle, bool _setOn)
+    public void GetBombPanel(List<Bomb> _bombs, BattleController _battle, bool _setOn)
     {
 
         if (createBombUI.activeInHierarchy)
@@ -65,37 +66,29 @@ public class BattleUIManager : MonoBehaviour
             characterActUI.SetActive(!_setOn);
             createBombUI.SetActive(_setOn);
 
-            SetBombListinUI(_Character, _battle);
+            SetBombListinUI(_bombs, _battle);
         }
 
     }
 
     // 현재 캐릭터가 지닌 폭탄 목록을 UI에 출력 및 버튼 이벤트 추가.
-    public void SetBombListinUI(Temp_Character _t, BattleController _battle)
+    public void SetBombListinUI(List<Bomb> _bombs, BattleController _battle)
     {
-        if (_t)
+        if (_bombs.Count < createBombUI.GetComponentsInChildren<Button>().Length)
         {
-            if (_t.canSetBombs.Count > 0)
+            // for (int u = 0; u < createBombUI.GetComponentsInChildren<Button>().Length - 1; u++)
+            for (int u = 0; u < _bombs.Count; u++)
             {
-                if (_t.canSetBombs.Count < createBombUI.GetComponentsInChildren<Button>().Length)
-                {
-                    // for (int u = 0; u < createBombUI.GetComponentsInChildren<Button>().Length - 1; u++)
-                    for (int u = 0; u < _t.canSetBombs.Count; u++)
-                    {
-                        int uiIndex = u;
-                        Debug.Log(uiIndex);
+                int uiIndex = u;
+                Debug.Log(uiIndex);
 
-                        bombButtons.Add(createBombUI.GetComponentsInChildren<Button>()[uiIndex]);
-                        // 버튼 이미지
-                        bombButtons[uiIndex].image.sprite = _t.canSetBombs[uiIndex].bombImage;
-                        // 버튼 클릭 이미지 추가.
-                        // bombButtons[uiIndex].onClick.AddListener(() => battleController.CreateBombtoButtonClick(_t.canSetBombs[uiIndex],
-                        //         _t.canSetBombs[uiIndex].setBomb.isNeedSetup));
-                        bombButtons[uiIndex].onClick.AddListener(() => _battle.bombManager.CreateBombtoButtonClick(_t.canSetBombs[uiIndex],
-                                _t.canSetBombs[uiIndex].setBomb.isNeedSetup));
-                        
-                    }
-                }
+                bombButtons.Add(createBombUI.GetComponentsInChildren<Button>()[uiIndex]);
+                // 버튼 이미지
+                bombButtons[uiIndex].image.sprite = _bombs[uiIndex].bombImage;
+                // 버튼 클릭 이미지 추가.
+                bombButtons[uiIndex].onClick.AddListener(() => _battle.bombManager.CreateBombtoButtonClick(_battle.nowPlayCharacter,
+                        _bombs[uiIndex].setBomb.isNeedSetup));
+
             }
         }
     }

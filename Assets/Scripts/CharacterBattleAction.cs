@@ -11,10 +11,10 @@ public class CharacterBattleAction : MonoBehaviour
 
     public BattleUIManager battleUIManager;
     public BattleController battleController;
-    
+
     // public BombManager bombManager;
 
-    Temp_Character temp_Character;
+    public Temp_Character temp_Character;
 
     public LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
 
@@ -124,63 +124,60 @@ public class CharacterBattleAction : MonoBehaviour
         return dist;
     }
 
-    // public void CreateBomb()
-    // {
-    //     setUpPhase = true;
-    //     battleUIManager.GetBombPanel();
-
-    //     if (temp_Character.canSetBombs.Count > 0)
-    //     {
-    //         if(battleUIManager.
-    //         battleUIManager.SetBombListinUI(temp_Character);
-    //     }
-    // }
-
-    public List<GameObject> CheckWhereBombs()
+    public void CreateBomb()
     {
-        
-        List<GameObject> detectedBombs = new List<GameObject>();
+        setUpPhase = true;
+        battleController.battleUIManager.GetBombPanel(temp_Character.canSetBombs, battleController, true);
+    }
+    
+    public List<Temp_Character> CheckWhereBombs()
+    {
+
+        List<Temp_Character> detectedBombs = new List<Temp_Character>();
         foreach (Collider col in Physics.OverlapSphere(temp_Character.transform.position, temp_Character.info.characterDetectRange, detectMask))
         {
-            detectedBombs.Add(col.gameObject);
-            // Debug.Log("G");
         }
 
         return detectedBombs;
     }
 
-    public void CreateBomb()
-    {
-        setUpPhase = true;
-        battleController.battleUIManager.GetBombPanel(temp_Character, battleController, true);
-    }
-
     // 폭발물 설치
     public void DoExplosionSetUp(Explosion _e)
     {
-
+        // _e.ExplosionActivate(temp_Character.gameObject);
+        Debug.Log("폭발물 설치");
     }
 
     // 폭발물 해제
     public void DoExplosionDiffuse(Explosion _e)
     {
+        if (temp_Character)
+        {
+            _e.ExplosionDiffuse(temp_Character);
+        }
+        else
+        {
+            Debug.Log("지금은 캐릭터의 턴이 아니라 할 수 없습니다.");
+        }
 
     }
 
-    public void DiffuseBomb(GameObject _obj)
+    public void DiffuseBomb(Temp_Character _Character)
     {
-        _obj.SetActive(false);
+        _Character.gameObject.SetActive(false);
     }
 
     public void EditBomb()
     {
-        // CheckWhereBombs();
-        foreach (GameObject o in CheckWhereBombs())
-        {
-            Debug.Log(o.name);
-        }
+        // battleController.battleUIManager.GetBombPanel(CheckWhereBombs()., battleController, true)
+
+        // // CheckWhereBombs();
+        // foreach (GameObject o in CheckWhereBombs())
+        // {
+        //     Debug.Log(o.name);
+        // }
     }
 
-    
+
 
 }

@@ -13,7 +13,6 @@ public class BattleController : MonoBehaviour
     // public CharacterBattleAction characterBattleAction; 
     public BombManager bombManager;
 
-
     // ***** 전투 내 RayCast 처리 *****
     Ray ray;
     public RaycastHit hit;
@@ -88,7 +87,7 @@ public class BattleController : MonoBehaviour
         // ForRayCast.DoRayCast();
         // Debug.DrawRay(mCamera.transform.position, hit.point, Color.red, 100);
 
-        if (hit.collider != null)
+        if (hit.collider != null && battleUIManager.uitoShowBomb.showBombContidition.activeInHierarchy == false)
         {
             battleUIManager.uitoShowBomb.GetInfofromRaycast(hit);
         }

@@ -19,6 +19,7 @@ MonoBehaviour:
     \uB3D9\uC2DC\uC5D0 \uC774\uAC78 \uC6D0\uD588\uB358 \uC0AC\uB78C\uC774 \uBD8D\uD0DC\uC6CC\uC84C\uC9C0\uB9CC\uC694."
   bombImage: {fileID: 21300000, guid: 9a9d42cf85a94a745a2248cb65ed19a1, type: 3}
   bombObject: {fileID: 123682, guid: 2624760c2371db742833f9b7b7f9f8ae, type: 3}
+  setBomb: {fileID: 11400000, guid: 7dc5c4b877856ff4d85342951f549b66, type: 2}
   bombDamage: 0
   bombRadius: 0
   bombCanStack: 0
@@ -30,3 +31,4 @@ MonoBehaviour:
   startSetPos: 1
   bombMinCountDown: 0
   bombMaxCountDown: 0
+  explosionList: []

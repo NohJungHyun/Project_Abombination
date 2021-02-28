@@ -36,12 +36,12 @@ public class Explosion : ScriptableObject
     public int ExplosionRadius;
 
     //폭.8물 가동!!!
-    public virtual void ExplosionActivate(GameObject obj)
+    public virtual void ExplosionActivate(Temp_Character _Character)
     {
         Debug.Log("폭발하고 말았다!");
     }
 
-    public virtual void ExplosionDiffuse(GameObject obj)
+    public virtual void ExplosionDiffuse(Temp_Character _Character)
     {
         Debug.Log("폭발하지 못했다...");
     }

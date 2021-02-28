@@ -5,7 +5,7 @@ using UnityEngine;
 public enum StartSetPos { Hand, Point, Random, Character }
 
 // [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
-public class Bomb : MonoBehaviour
+public class Bomb : ScriptableObject
 {
     //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
     public string bombName;
@@ -40,13 +40,13 @@ public class Bomb : MonoBehaviour
     }
 
     //폭.8!
-    public void Boom()
+    public void Boom(Temp_Character _Character)
     {
         if (bombCountDown <= 0)
         {
             foreach (Explosion exp in explosionList)
             {
-                exp.ExplosionActivate(this.gameObject);
+                exp.ExplosionActivate(_Character);
             }
             explosionList.Clear();
         }

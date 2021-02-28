@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,11 +28,12 @@ public class BombManager : MonoBehaviour
 
     }
 
-    public void CreateBombtoButtonClick(Bomb _b, bool _needSetupChance)
+    public void CreateBombtoButtonClick(Temp_Character _tempCharacter, bool _needSetupChance)
     {
         // bObject = Instantiate(_b.gameObject, setupPos, Quaternion.identity);
-        bObject = _b.gameObject;
-
+        //bObject = _tempCharacter.gameObject;
+        bObject = _tempCharacter.gameObject;
+        
         if (_needSetupChance && !setupGo)
         {
             setupGo = true;
