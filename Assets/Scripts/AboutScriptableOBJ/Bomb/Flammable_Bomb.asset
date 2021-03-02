@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685835d5e5d0c3045abec572aae12fa9, type: 3}
   m_Name: Flammable_Bomb
   m_EditorClassIdentifier: 
+  bombID: 5000
   bombName: Flammable Bomb
   bombDescription: "\uB0B4\uAC00 \uBD88\uD0DC\uC6B0\uACE0 \uC2F6\uC5C8\uB358 \uAC74
     \uC774 \uC138\uC0C1\uC774\uB77C\uACE0 \uD558\uB294 \uBD84\uB4E4\uC744 \uC704\uD574,
@@ -31,4 +32,6 @@ MonoBehaviour:
   startSetPos: 1
   bombMinCountDown: 0
   bombMaxCountDown: 0
-  explosionList: []
+  explosionList:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}

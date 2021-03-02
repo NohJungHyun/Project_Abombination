@@ -35,8 +35,12 @@ public class UItoShowExplosionInfo : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExhibitExploCondition()
+    {
+
+    }
+
+    public void ExhibitExploButtons()
     {
         if (uitoShowBomb.showBombContidition.activeInHierarchy)
         {
@@ -56,10 +60,5 @@ public class UItoShowExplosionInfo : MonoBehaviour
         }
         else
             showExplosionCondition.SetActive(false);
-    }
-
-    public void ExhibitexploCondition()
-    {
-
     }
 }

@@ -28,6 +28,10 @@ public class Temp_Character : MonoBehaviour
     void Awake()
     {
         info = ScriptableObject.Instantiate(characterInfo);
+        foreach (Bomb b in haveBombs)
+        {
+
+        }
     }
 
 }

@@ -90,6 +90,7 @@ public class BattleController : MonoBehaviour
         if (hit.collider != null && battleUIManager.uitoShowBomb.showBombContidition.activeInHierarchy == false)
         {
             battleUIManager.uitoShowBomb.GetInfofromRaycast(hit);
+            battleUIManager.uItoShowExplosion.ExhibitExploButtons();
         }
 
         if (bombManager.setupGo)

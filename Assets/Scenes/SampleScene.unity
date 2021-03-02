@@ -793,7 +793,8 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetExplosions: []
+  canSetExplosions:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
   canSetBombs:
   - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
@@ -4267,7 +4268,8 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetExplosions: []
+  canSetExplosions:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
   canSetBombs:
   - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
@@ -4843,7 +4845,8 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetExplosions: []
+  canSetExplosions:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
   canSetBombs:
   - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
@@ -4988,6 +4991,7 @@ MonoBehaviour:
   - {fileID: 1792220020}
   - {fileID: 1779717730}
   isUIOn: 0
+  indexBomb: 0
 --- !u!1 &1133900720
 GameObject:
   m_ObjectHideFlags: 0
@@ -5362,6 +5366,7 @@ MonoBehaviour:
   - {fileID: 1792220020}
   - {fileID: 1779717730}
   isUIOn: 0
+  indexBomb: 0
 --- !u!1 &1234980714
 GameObject:
   m_ObjectHideFlags: 0
@@ -5926,7 +5931,8 @@ MonoBehaviour:
   canMove: 1
   canActwithBomb: 1
   canUseSkill: 1
-  canSetExplosions: []
+  canSetExplosions:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
   canSetBombs:
   - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}

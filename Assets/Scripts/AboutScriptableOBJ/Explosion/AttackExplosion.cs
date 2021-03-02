@@ -20,7 +20,7 @@ public class AttackExplosion: Explosion
         // base.ExplosionActivate();
     }
 
-    public override void ExplosionDiffuse(Temp_Character _Character)
+    public override void ExplosionDiffuse()
     {
         //obj.SetActive(false);
         Debug.Log("폭발 실패");

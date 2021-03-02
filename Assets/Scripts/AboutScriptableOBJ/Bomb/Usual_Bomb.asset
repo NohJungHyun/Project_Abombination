@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685835d5e5d0c3045abec572aae12fa9, type: 3}
   m_Name: Usual_Bomb
   m_EditorClassIdentifier: 
+  bombID: 5001
   bombName: Usual Bomb
   bombDescription: "\uC5B4\uB514\uC5D0\uC11C\uB098 \uBCFC \uC218 \uC788\uB294 \uD3ED\uD0C4.
     \uD3ED\uBC1C\uD558\uB294 \uAC83\uC774 \uC81C \uC5ED\uD560\uC774\uB77C\uC9C0\uB9CC,
@@ -32,4 +33,5 @@ MonoBehaviour:
   startSetPos: 0
   bombMinCountDown: 0
   bombMaxCountDown: 0
-  explosionList: []
+  explosionList:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}

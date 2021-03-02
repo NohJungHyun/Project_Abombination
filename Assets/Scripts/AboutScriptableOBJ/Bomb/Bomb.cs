@@ -8,6 +8,8 @@ public enum StartSetPos { Hand, Point, Random, Character }
 public class Bomb : ScriptableObject
 {
     //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
+
+    public int bombID;
     public string bombName;
 
     [TextArea]
@@ -50,6 +52,11 @@ public class Bomb : ScriptableObject
             }
             explosionList.Clear();
         }
+    }
+
+    public void Diffuse()
+    {
+        Debug.Log("폭탄이 해체되었다!");
     }
 
 

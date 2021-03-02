@@ -70,30 +70,21 @@ public class CharacterBattleAction : MonoBehaviour
             from = battleController.nowPlayCharacter.transform.position;
 
             if (moveDist != 0 && !alreadyMove)
-            {
                 alreadymoveDist += moveDist;
-            }
         }
         else
         {
             if (temp_Character && temp_Character.canMove)
             {
-                if (!alreadyMove)
-                {
-                    if (from != temp_Character.transform.position && alreadymoveDist + moveDist >= CalculateWalkDist(temp_Character.info.characterMovement))
-                    {
-                        alreadyMove = true;
-                    }
-                    else
-                    {
-                        alreadyMove = false;
-                    }
+                if (alreadyMove) return;
 
-                    if (battleController.hit.point != Vector3.zero)
-                    {
-                        WalkInFloor(temp_Character, battleController.hit.point);
-                    }
-                }
+                if (from != temp_Character.transform.position && alreadymoveDist + moveDist >= CalculateWalkDist(temp_Character.info.characterMovement))
+                    alreadyMove = true;
+                else
+                    alreadyMove = false;
+
+                if (battleController.hit.point != Vector3.zero)
+                    WalkInFloor(temp_Character, battleController.hit.point);
             }
         }
     }
@@ -105,16 +96,6 @@ public class CharacterBattleAction : MonoBehaviour
         moveDist = Vector3.Distance(_Character.transform.position, from);
 
         _Character.transform.position = Vector3.MoveTowards(_Character.transform.position, new Vector3(_des.x, _Character.transform.position.y, _des.z), 1f * Time.deltaTime);
-
-        // if (moveDist + alreadymoveDist <= CalculateWalkDist(_Character.info.characterMovement)) // + alreadymoveDist
-        // {
-        //     //moveDist -= Vector3.Distance(_Character.transform.position, _Character.transform.position);
-        //     //moveDist = Vector3.Distance(_Character.transform.position, from);
-        //   }
-        // else
-        // {
-        //     alreadyMove = true;
-        // }
     }
 
     // 캐릭터가 한 턴에 기본적으로 이동할 수 있는 거리 측정
@@ -129,15 +110,22 @@ public class CharacterBattleAction : MonoBehaviour
         setUpPhase = true;
         battleController.battleUIManager.GetBombPanel(temp_Character.canSetBombs, battleController, true);
     }
-    
+
+    public void DiffuseBomb(List<Bomb> _bombs, Bomb _bomb)
+    {
+        Debug.Log("_Bomb의 ID:" + _bomb.bombID);
+        Debug.Log("_Bombs의 개수:" + _bombs.Count);
+        _bomb.Diffuse();
+        _bombs.Remove(_bomb);
+    }
+
     public List<Temp_Character> CheckWhereBombs()
     {
-
         List<Temp_Character> detectedBombs = new List<Temp_Character>();
         foreach (Collider col in Physics.OverlapSphere(temp_Character.transform.position, temp_Character.info.characterDetectRange, detectMask))
         {
-        }
 
+        }
         return detectedBombs;
     }
 
@@ -153,18 +141,13 @@ public class CharacterBattleAction : MonoBehaviour
     {
         if (temp_Character)
         {
-            _e.ExplosionDiffuse(temp_Character);
+            _e.ExplosionDiffuse();
         }
         else
         {
             Debug.Log("지금은 캐릭터의 턴이 아니라 할 수 없습니다.");
         }
 
-    }
-
-    public void DiffuseBomb(Temp_Character _Character)
-    {
-        _Character.gameObject.SetActive(false);
     }
 
     public void EditBomb()
@@ -177,7 +160,4 @@ public class CharacterBattleAction : MonoBehaviour
         //     Debug.Log(o.name);
         // }
     }
-
-
-
 }

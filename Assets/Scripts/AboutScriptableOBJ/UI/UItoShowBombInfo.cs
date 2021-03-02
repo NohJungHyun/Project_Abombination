@@ -15,12 +15,8 @@ public class UItoShowBombInfo : MonoBehaviour
     public Button[] explosionsinBomb = new Button[10];
 
     public bool isUIOn = false;
-
-    public void Start()
-    {
-        // characterBattleAction = GameObject.FindObjectOfType<CharacterBattleAction>();
-    }
-
+    public int indexBomb = 0;
+    
     // raycast로 부터 정보를 받기
     public void GetInfofromRaycast(RaycastHit _h)
     {
@@ -32,7 +28,7 @@ public class UItoShowBombInfo : MonoBehaviour
 
                 showBombContidition.SetActive(true);
                 ClearEvents();
-                ExhibitBombCondition(t);
+                ExhibitBombCondition(t.haveBombs);
                 ExhibitExplosionsCondition(t);
             }
             else
@@ -41,16 +37,16 @@ public class UItoShowBombInfo : MonoBehaviour
     }
 
     // 현재 선택한 폭탄의 상태를 확인하기 위해 만든 함수.
-    public void ExhibitBombCondition(Temp_Character _t)
+    public void ExhibitBombCondition(List<Bomb> _bombs)
     {
         // DiffuseBomb(_b);
-        if (_t.haveBombs.Count> 0 && _t.haveBombs[0])
+        if (_bombs.Count> 0 && _bombs[0])
         {
-            bombName.text = _t.haveBombs[0].bombName;
-            bombCount.text = _t.haveBombs[0].bombCountDown.ToString();
-            bombImage.sprite = _t.haveBombs[0].bombImage;
-            Debug.Log("푸티스");
-            bombDiffuseButton.onClick.AddListener(() => characterBattleAction.DiffuseBomb(_t));
+            bombName.text = _bombs[0].bombName;
+            bombCount.text = _bombs[0].bombCountDown.ToString();
+            bombImage.sprite = _bombs[0].bombImage;
+
+            bombDiffuseButton.onClick.AddListener(() => characterBattleAction.DiffuseBomb(_bombs, _bombs[0]));
         }
     }
 
@@ -61,18 +57,20 @@ public class UItoShowBombInfo : MonoBehaviour
 
     public void ExhibitExplosionsCondition(Temp_Character _t)
     {
-        for (int b = 0; b < _t.haveBombs.Count; b++)
+        for (int b = 0; b < _t.haveBombs.Count; b++) // 이거는 폭탄의 개수 파악
         {
-            for (int e = 0; e < _t.haveBombs[b].explosionList.Count; e++)
+            for (int e = 0; e < _t.haveBombs[b].explosionList.Count; e++) // 이거는 폭탄 내 폭발물 개수 파악
             {
+                int bombCheckIndex = b;
                 int explosionCheck = e;
-                explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[b].explosionList[explosionCheck].exploImage;
-                explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[b].explosionList[explosionCheck].exploCountDown.ToString();
-                Debug.Log(_t.name);
+
+                explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[bombCheckIndex].explosionList[explosionCheck].exploImage;
+                explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[bombCheckIndex].explosionList[explosionCheck].exploCountDown.ToString();
+
+                Debug.Log(bombCheckIndex);
+
                 if (characterBattleAction)
-                {
-                    explosionsinBomb[explosionCheck].onClick.AddListener(() => characterBattleAction.DoExplosionDiffuse(_t.haveBombs[b].explosionList[explosionCheck]));
-                }
+                    explosionsinBomb[explosionCheck].onClick.AddListener(() => characterBattleAction.DoExplosionDiffuse(_t.haveBombs[bombCheckIndex].explosionList[explosionCheck]));
             }
         }
 

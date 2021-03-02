@@ -40,8 +40,9 @@ public class Explosion : ScriptableObject
     {
         Debug.Log("폭발하고 말았다!");
     }
+    // public virtual void ExplosionDiffuse(Temp_Character _Character)
 
-    public virtual void ExplosionDiffuse(Temp_Character _Character)
+    public virtual void ExplosionDiffuse()
     {
         Debug.Log("폭발하지 못했다...");
     }
