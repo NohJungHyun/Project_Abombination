@@ -1319,7 +1319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 281765028}
   m_Layer: 0
-  m_Name: UISetting
+  m_Name: UISettingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
