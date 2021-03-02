@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StartSetPos{Hand, Point, Random}
+public enum StartSetPos { Hand, Point, Random, Character }
 
-[CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
+// [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
 public class Bomb : ScriptableObject
 {
     //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
+
+    public int bombID;
     public string bombName;
 
     [TextArea]
@@ -15,6 +17,7 @@ public class Bomb : ScriptableObject
 
     public Sprite bombImage;
     public GameObject bombObject;
+    public SetBombPositions setBomb;
 
     public int bombDamage;
     public int bombRadius;
@@ -38,29 +41,24 @@ public class Bomb : ScriptableObject
 
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     //폭.8!
-    public void Boom()
+    public void Boom(Temp_Character _Character)
     {
         if (bombCountDown <= 0)
         {
             foreach (Explosion exp in explosionList)
             {
-                exp.ExplosionActivate();
+                exp.ExplosionActivate(_Character);
             }
             explosionList.Clear();
         }
     }
+
+    public void Diffuse()
+    {
+        Debug.Log("폭탄이 해체되었다!");
+    }
+
+
 
 }

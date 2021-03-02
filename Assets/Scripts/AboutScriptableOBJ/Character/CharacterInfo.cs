@@ -32,6 +32,8 @@ public class CharacterInfo : ScriptableObject
     public int characterLuck;
     public int characterInitiative;
 
+    public int characterDetectRange;
+
     public int currentHP;
     public int maxHP;
     #endregion

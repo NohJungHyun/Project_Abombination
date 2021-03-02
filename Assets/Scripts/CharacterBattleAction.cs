@@ -9,11 +9,14 @@ public class CharacterBattleAction : MonoBehaviour
     // 캐릭터들이 지닌 고유의 활동들도 포함시킬 지는 미정
     // 여기서 처리한 결과를 return 해주는 것으로 결과값을 방출하자.
 
-    public BattleController battleController;
     public BattleUIManager battleUIManager;
+    public BattleController battleController;
+
     // public BombManager bombManager;
 
-    Temp_Character temp_Character;
+    public Temp_Character temp_Character;
+
+    public LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
 
     public Vector3 from; // 캐릭터가 이동하기 전에, 자신의 위치를 담은 변수. 
     public float moveDist;
@@ -25,8 +28,11 @@ public class CharacterBattleAction : MonoBehaviour
 
     public void Update()
     {
-        if(battleController.nowPlayCharacter && battleController.nowPlayCharacter != temp_Character){
+        if (battleController.nowPlayCharacter != temp_Character) //battleController.nowPlayCharacter && 
+        {
             temp_Character = battleController.nowPlayCharacter;
+            // battleUIManager.temp_Character = this.temp_Character;
+            CheckWhereBombs();
         }
 
         if (movePhase)
@@ -34,10 +40,10 @@ public class CharacterBattleAction : MonoBehaviour
             setUpPhase = false;
             Moving();
         }
-        else if(setUpPhase)
+        else if (setUpPhase)
         {
             movePhase = false;
-            battleController.bombManager.GetHitPoint(battleController.hit.point);
+            // battleController.bombManager.GetHitPoint(battleController.hit.point);
         }
     }
 
@@ -64,30 +70,21 @@ public class CharacterBattleAction : MonoBehaviour
             from = battleController.nowPlayCharacter.transform.position;
 
             if (moveDist != 0 && !alreadyMove)
-            {
                 alreadymoveDist += moveDist;
-            }
         }
         else
         {
             if (temp_Character && temp_Character.canMove)
             {
-                if (!alreadyMove)
-                {
-                    if (from != temp_Character.transform.position && alreadymoveDist + moveDist >= CalculateWalkDist(temp_Character.info.characterMovement))
-                    {
-                        alreadyMove = true;
-                    }
-                    else
-                    {
-                        alreadyMove = false;
-                    }
+                if (alreadyMove) return;
 
-                    if (battleController.hit.point != Vector3.zero)
-                    {
-                        WalkInFloor(temp_Character, battleController.hit.point);
-                    }
-                }
+                if (from != temp_Character.transform.position && alreadymoveDist + moveDist >= CalculateWalkDist(temp_Character.info.characterMovement))
+                    alreadyMove = true;
+                else
+                    alreadyMove = false;
+
+                if (battleController.hit.point != Vector3.zero)
+                    WalkInFloor(temp_Character, battleController.hit.point);
             }
         }
     }
@@ -99,16 +96,6 @@ public class CharacterBattleAction : MonoBehaviour
         moveDist = Vector3.Distance(_Character.transform.position, from);
 
         _Character.transform.position = Vector3.MoveTowards(_Character.transform.position, new Vector3(_des.x, _Character.transform.position.y, _des.z), 1f * Time.deltaTime);
-
-        // if (moveDist + alreadymoveDist <= CalculateWalkDist(_Character.info.characterMovement)) // + alreadymoveDist
-        // {
-        //     //moveDist -= Vector3.Distance(_Character.transform.position, _Character.transform.position);
-        //     //moveDist = Vector3.Distance(_Character.transform.position, from);
-        //   }
-        // else
-        // {
-        //     alreadyMove = true;
-        // }
     }
 
     // 캐릭터가 한 턴에 기본적으로 이동할 수 있는 거리 측정
@@ -121,29 +108,56 @@ public class CharacterBattleAction : MonoBehaviour
     public void CreateBomb()
     {
         setUpPhase = true;
-        battleUIManager.GetBombPanel();
-
-        if (temp_Character.canSetBombs.Count > 0)
-        {
-            battleUIManager.SetBombListinUI(temp_Character);
-        }
+        battleController.battleUIManager.GetBombPanel(temp_Character.canSetBombs, battleController, true);
     }
 
-    // 폭탄 던지기
-    public void ThrowBomb()
+    public void DiffuseBomb(List<Bomb> _bombs, Bomb _bomb)
     {
+        Debug.Log("_Bomb의 ID:" + _bomb.bombID);
+        Debug.Log("_Bombs의 개수:" + _bombs.Count);
+        _bomb.Diffuse();
+        _bombs.Remove(_bomb);
+    }
 
+    public List<Temp_Character> CheckWhereBombs()
+    {
+        List<Temp_Character> detectedBombs = new List<Temp_Character>();
+        foreach (Collider col in Physics.OverlapSphere(temp_Character.transform.position, temp_Character.info.characterDetectRange, detectMask))
+        {
+
+        }
+        return detectedBombs;
     }
 
     // 폭발물 설치
-    public void DoExplosionSetUp()
+    public void DoExplosionSetUp(Explosion _e)
     {
-
+        // _e.ExplosionActivate(temp_Character.gameObject);
+        Debug.Log("폭발물 설치");
     }
 
     // 폭발물 해제
-    public void DoExplosionDefuse()
+    public void DoExplosionDiffuse(Explosion _e)
     {
+        if (temp_Character)
+        {
+            _e.ExplosionDiffuse();
+        }
+        else
+        {
+            Debug.Log("지금은 캐릭터의 턴이 아니라 할 수 없습니다.");
+        }
 
+    }
+
+    public void EditBomb()
+    {
+        // battleController.battleUIManager.GetBombPanel(CheckWhereBombs()., battleController, true)
+
+        // // CheckWhereBombs();
+        // foreach (GameObject o in CheckWhereBombs())
+        // {
+        //     Debug.Log(o.name);
+        // }
     }
 }

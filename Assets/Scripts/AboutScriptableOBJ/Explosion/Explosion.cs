@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//[CreateAssetMenu(fileName = "New Explosion", menuName = "ScriptableObjects/ExplosionMaking", order = 3)]
-public class Explosion
+// 폭발물의 뼈대를 생성. 이 후 상속을 통해 별도의 폭발물을 생성할 계획.
+// [CreateAssetMenu(fileName = "New Explosion", menuName = "ScriptableObjects/ExplosionMaking", order = 3)]
+
+// AccessAgree?: 보다 상위 행동을 진행하기 위해 
+public enum ExplosionType { Attack, Defend, Buff, Debuff, Heal, AccessAgree }
+
+public class Explosion : ScriptableObject
 {
     // 폭탄에 담길 폭발물을 의미하는 클래스.
 
@@ -13,7 +18,7 @@ public class Explosion
     public string exploDescription;
 
     public Sprite exploImage;
-    public GameObject exploEffect;
+    // public GameObject exploEffect;
 
     public int exploDamage;
     public int exploRadius;
@@ -28,26 +33,22 @@ public class Explosion
     public int exploMinCountDown;
     public int exploMaxCountDown;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public int ExplosionRadius;
 
     //폭.8물 가동!!!
-    public void ExplosionActivate()
+    public virtual void ExplosionActivate(Temp_Character _Character)
     {
         Debug.Log("폭발하고 말았다!");
     }
+    // public virtual void ExplosionDiffuse(Temp_Character _Character)
 
-    public Explosion(bool _canStack, int _maxStack, int _countdown, int _minCountdown, int _maxCountdown)
-    { //생성자
-
+    public virtual void ExplosionDiffuse()
+    {
+        Debug.Log("폭발하지 못했다...");
     }
+
+    // public Explosion(bool _canStack, int _maxStack, int _countdown, int _minCountdown, int _maxCountdown)
+    // { //생성자
+
+    // }
 }
