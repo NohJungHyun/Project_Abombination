@@ -24,16 +24,16 @@ public class Explosion : ScriptableObject
     public int exploRadius;
     public bool exploCanStack;
     public int exploMaxStack;
-    public int[] exploDispelNum; // 폭발물을 해제하기 위해서 필요한 숫자들
-    public int[] exploAugmentNum; // 폭발물을 강화하기 위해서 필요한 숫자들
-    public int[] exploSetupNum; // 폭발물을 설치하기 위해서 필요한 숫자들
+    // public int[] exploDispelNum; // 폭발물을 해제하기 위해서 필요한 숫자들
+    // public int[] exploAugmentNum; // 폭발물을 강화하기 위해서 필요한 숫자들
+    // public int[] exploSetupNum; // 폭발물을 설치하기 위해서 필요한 숫자들
 
     public int exploCountDown; // 폭발물이 작동하는데 남은 시간
 
     public int exploMinCountDown;
     public int exploMaxCountDown;
 
-    public int ExplosionRadius;
+    public IImpact[] bombImpacts;
 
     //폭.8물 가동!!!
     public virtual void ExplosionActivate(Temp_Character _Character)
@@ -42,9 +42,18 @@ public class Explosion : ScriptableObject
     }
     // public virtual void ExplosionDiffuse(Temp_Character _Character)
 
-    public virtual void ExplosionDiffuse()
+    public virtual void ExplosionDiffuse(Temp_Character _Character)
     {
         Debug.Log("폭발하지 못했다...");
+    }
+
+    public virtual void ExplosionOnPlant(Temp_Character _Character)
+    {
+
+    }
+    public virtual void ExplosionSetUp(Temp_Character _Character)
+    {
+
     }
 
     // public Explosion(bool _canStack, int _maxStack, int _countdown, int _minCountdown, int _maxCountdown)

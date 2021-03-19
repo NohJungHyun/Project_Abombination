@@ -9,7 +9,7 @@ public class BombManager : MonoBehaviour
 
     //현재 전장 내 존재하는 폭탄의 개수를 담는 큐 제작.
     [SerializeField]
-    public Queue<GameObject> bombs = new Queue<GameObject>();
+    public List<Temp_Character> bombs = new List<Temp_Character>();
 
     // public BattleController battle;
 
@@ -21,29 +21,38 @@ public class BombManager : MonoBehaviour
     public bool setupGo = false; // 폭탄이 마우스와 같이 돌아다니는가(설치 준비 중인가?)
     public bool hasTempBomb = false; // 현재 임시적으로 폭탄을 마우스 끝에 담고 있는가?
 
-    public GameObject bObject;
+    public Temp_Character bObject;
+    public Temp_Character boomer;
 
-    void Countdown()
+    public void Countdown()
     {
+        for (int c = 0; c < bombs.Count; c++)
+        {
+            for (int b = 0; b < bombs[c].haveBombs.Count; b++)
+            {
+                bombs[c].haveBombs[b].bombCurCountDown--;
+                Debug.Log(bombs[c].haveBombs[b].name +" "+ bombs[c].haveBombs[b].bombCurCountDown);
 
+                if (bombs[c].haveBombs[b].bombCurCountDown <= 0)
+                {
+                    bombs[c].haveBombs[b].Boom();
+                }
+            }
+            if(bombs[c].haveBombs.Count <= 0){
+                bombs.Remove(bombs[c]);
+            }
+        }
     }
 
     public void CreateBombtoButtonClick(Temp_Character _tempCharacter, bool _needSetupChance)
     {
-        // bObject = Instantiate(_b.gameObject, setupPos, Quaternion.identity);
-        //bObject = _tempCharacter.gameObject;
-        bObject = _tempCharacter.gameObject;
-        
-        if (_needSetupChance && !setupGo)
-        {
-            setupGo = true;
-        }
-        // return bObject;
+        bObject = _tempCharacter;
 
-        
+        if (_needSetupChance && !setupGo)
+            setupGo = true;
     }
 
-    public void ReadytoSetup(Vector3 _hitPos)
+    public void ReadytoSetup(Vector3 _hitPos, Temp_Character _Character)
     {
         if (!hasTempBomb)
         {
@@ -52,71 +61,40 @@ public class BombManager : MonoBehaviour
         }
         else
         {
-            bObject.transform.position = new Vector3(_hitPos.x, 0, _hitPos.z);
-
-            if (Input.GetMouseButtonDown(0))
+            if (bObject != null)
             {
-                setupGo = false;
-                GameObject actualObj = bObject;
+                bObject.transform.position = new Vector3(_hitPos.x, bObject.transform.localScale.x * 0.5f, _hitPos.z);
 
-                Instantiate(actualObj);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    setupGo = false;
+                    GameObject actualObj = bObject.gameObject;
 
-                bObject.SetActive(false);
-                hasTempBomb = false;
+                    Instantiate(actualObj);
+
+                    bObject.gameObject.SetActive(false);
+                    hasTempBomb = false;
+
+                    // bombs.Add(actualObj.GetComponent<Temp_Character>());
+
+                    for (int i = 0; i < actualObj.GetComponent<Temp_Character>().haveBombs.Count; i++)
+                    {
+                        Bomb b = bObject.haveBombs[i];
+                        b.SetCountDown();
+                        b.SetbombOwner(_Character);
+                        Debug.Log(b.bombCurCountDown);
+                    }
+                    bombs.Add(actualObj.GetComponent<Temp_Character>());
+                    
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    Destroy(bObject);
+                }
             }
         }
     }
-
-    // Start is called before the first frame update
-    // void Start()
-    // {
-    //     if (bombs.Count == 0)
-    //     {
-    //         // GameObject bomb = new GameObject("Primitive Bomb");
-    //         //bomb.AddComponent<Bomb>();
-    //         // bombs.Enqueue(bomb);
-    //     }
-    //     print(bombs.Count);
-    // }
-
-    // void Update()
-    // {
-    //     setupPos = battle.hit.point;
-
-    //     if (setupGo)
-    //     {
-    //         ReadytoSetup();
-    //     }
-    // }
-
-    // public void ReturnBombPosition(Bomb _b, Temp_Character _t, bool _needSetupChance) // 폭탄의 설치 유형, 현재 턴 캐릭터, 설치 가능 위치 등을 매개변수로 받음.
-    // {
-    //     Vector3 returnPos = Vector3.zero;
-
-    //     if (_b.startSetPos == StartSetPos.Hand) //캐릭터 자신의 위치에 폭탄을 설치
-    //     {
-    //         SetBombinHand(_b, _t);
-    //     }
-    //     else if (_b.startSetPos == StartSetPos.Point) // 임의 지점에 폭탄을 설치
-    //     {
-    //         SetBombwithPoint(setupPos, _b);
-    //     }
-    // }
-
-    // public void SetBombwithPoint(Vector3 _v, Bomb _b)
-    // { // 폭탄 설치 시 Point를 통해 폭탄을 설치할 위치를 지정.
-
-    //     GameObject b = CreateBombtoButtonClick(_b, _v);
-
-    //     bool setEnd = false;
-
-    //     if (b != null && !setEnd)
-    //     {
-    //         b.transform.position = new Vector3(_v.x, b.transform.localScale.y * 0.5f, _v.z);
-    //     }
-    //     if (Input.GetMouseButtonDown(0))
-    //     {
-    //         setEnd = true;
-    //     }
-    // }
+    public void GetBoomer(Temp_Character _tempCharacter){
+        boomer = _tempCharacter;
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ClassJob{Warrrior, Mage, Thief}
 public enum ClassifyWhatisIt{Character, Object}
@@ -14,6 +15,7 @@ public class CharacterInfo : ScriptableObject
     public CharacterType characterType;
 
     public string characterName;
+    //public Sprite characterImage;
     public Sprite characterImage;
     public GameObject characterModel;
     #endregion
@@ -57,18 +59,22 @@ public class CharacterInfo : ScriptableObject
         statCharisma = new Stat(characterCharisma);
         statLuck = new Stat(characterLuck);
         statInitiative = new Stat(characterInitiative);
+
+        currentHP = maxHP;
+        Debug.Log("전투 준비 완료");
         // Debug.Log(statInitiative.baseStat);
     }
 
-    public void Die()
+    public void TakeDamage(int _dmg)
     {
-
+        Debug.Log("피해를 입었다: " + _dmg);
+        currentHP -= _dmg;
+        if(currentHP <= 0)
+            Dead();
     }
 
-    public void TakeDamage(int dmg)
+    public void Dead()
     {
-        Debug.Log("피해를 입었다: " + dmg);
+        Debug.Log("끄앙 주금");
     }
-    
-
 }

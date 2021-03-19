@@ -2,16 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class BattleUIManager : MonoBehaviour
 {
-    // public Temp_Character temp_Character;
-    // 폭탄의 상태 관리, 설치 등을 통제하고자 제작.
-    // public BombManager bombManager;
     public UItoShowBombInfo uitoShowBomb;
     public UItoShowExplosionInfo uItoShowExplosion;
-    public CharacterBattleAction characterBattleAction;
-    // public BattleController battleController;
+    // public ActBar actBar;
 
     // public Image characterImage; //캐릭터의 스프라이트 정보를 가져와 출력하는 스프라이트
     // public Image hpBar; //캐릭터의 체력 바를 출력
@@ -20,94 +17,160 @@ public class BattleUIManager : MonoBehaviour
     // public delegate void UIControllor();
     // public UIControllor uIControllor = null;
 
-    [Header("캐릭터 턴일 때 띄울 UI")]
+    [Header("캐릭터가 할 수 있는 액션 UI")]
     public GameObject characterActUI;
 
-    [Header("캐릭터 턴일 때 폭탄 제작에 띄울 UI")]
-    public GameObject createBombUI;
+    [Header("캐릭터 턴일 때 설치가능한 폭탄 UI")]
+    public GameObject bombUI;
 
-    [Header("캐릭터가 지닌 폭발물 목록을 보여줄 때 띄울 UI")]
-    public GameObject showExplosionListUI;
-
-    // public GameObject CharacterExplosions;
-
+    public GameObject additionalBombUI;
 
     public List<Button> bombButtons = new List<Button>(20);
-    // public List<Bomb> bombs = new List<Bomb>();
+    // public Temp_Character temp_Character;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         characterActUI.SetActive(false);
-        createBombUI.SetActive(false);
-        characterBattleAction = GameObject.Find("BattleController").GetComponent<CharacterBattleAction>();
+        bombUI.SetActive(false);
+        additionalBombUI.SetActive(false);
+        // characterBattleAction = GameObject.Find("BattleController").GetComponent<CharacterBattleAction>();
     }
 
-    public void ActivateActionUI()
+    public void ActivateActionUI(bool isOn)
     {
-        characterActUI.SetActive(true);
-        createBombUI.SetActive(false);
+        characterActUI.SetActive(isOn);
+        bombUI.SetActive(!isOn);
     }
 
-    public void ShowBombInfo()
+    public void GetActCharacter()
     {
-
+        // actBar.SetActImages();
     }
 
-    public void GetBombPanel(List<Bomb> _bombs, BattleController _battle, bool _setOn)
+    public void GetBombPanel(List<Bomb> _bombs, BattleController _battle)
     {
+        if (bombUI.activeInHierarchy) return;
 
-        if (createBombUI.activeInHierarchy)
+        characterActUI.SetActive(false);
+        bombUI.SetActive(true);
+        Debug.Log("????");
+
+        if (_bombs.Count <= bombUI.GetComponentsInChildren<Button>().Length)
         {
-            return;
-        }
-        else
-        {
-            characterActUI.SetActive(!_setOn);
-            createBombUI.SetActive(_setOn);
-
-            SetBombListinUI(_bombs, _battle);
-        }
-
-    }
-
-    // 현재 캐릭터가 지닌 폭탄 목록을 UI에 출력 및 버튼 이벤트 추가.
-    public void SetBombListinUI(List<Bomb> _bombs, BattleController _battle)
-    {
-        if (_bombs.Count < createBombUI.GetComponentsInChildren<Button>().Length)
-        {
-            // for (int u = 0; u < createBombUI.GetComponentsInChildren<Button>().Length - 1; u++)
             for (int u = 0; u < _bombs.Count; u++)
             {
                 int uiIndex = u;
-                Debug.Log(uiIndex);
 
-                bombButtons.Add(createBombUI.GetComponentsInChildren<Button>()[uiIndex]);
-                // 버튼 이미지
+                bombButtons.Add(bombUI.GetComponentsInChildren<Button>()[uiIndex]);
+                bombButtons[uiIndex].onClick.RemoveAllListeners();
                 bombButtons[uiIndex].image.sprite = _bombs[uiIndex].bombImage;
-                // 버튼 클릭 이미지 추가.
-                bombButtons[uiIndex].onClick.AddListener(() => _battle.bombManager.CreateBombtoButtonClick(_battle.nowPlayCharacter,
-                        _bombs[uiIndex].setBomb.isNeedSetup));
 
+                CreateBombListInUI(_bombs, _battle, uiIndex);
             }
         }
     }
 
-    // 캐릭터가 지닌 폭발물 목록을 보여주기 위해 만든 함수.
-    public void ExhibitExlposionList(Temp_Character _t)
+    // 폭탄을 지닌 대상들 선별
+    public void GetCharacterPanel(List<Temp_Character> _temp, BattleController _battle)
     {
-        if (_t.canSetExplosions.Count > 0)
+        if (bombUI.activeInHierarchy) return;
+
+        characterActUI.SetActive(false);
+        bombUI.SetActive(true);
+
+        if (_temp.Count <= bombUI.GetComponentsInChildren<Button>().Length)
         {
-            Button[] bt = showExplosionListUI.GetComponentsInChildren<Button>();
-            // 버튼의 이미지를 폭발물의 이미지로 대체하기 전, 버튼의 수가 캐릭터가 지닌 개수보다 많은 지 확인.
-            if (bt.Length >= _t.canSetExplosions.Count)
+            for (int u = 0; u < _temp.Count; u++)
             {
-                for (int e = 0; e < _t.canSetExplosions.Count; e++)
-                {
-                    bt[e].GetComponent<Image>().sprite = _t.canSetExplosions[e].exploImage;
-                    bt[e].GetComponent<Text>().text = _t.canSetExplosions[e].exploCountDown.ToString();
-                }
+                int uiIndex = u;
+
+                bombButtons.Add(bombUI.GetComponentsInChildren<Button>()[uiIndex]);
+                bombButtons[uiIndex].onClick.RemoveAllListeners();
+                bombButtons[uiIndex].image.sprite = _temp[uiIndex].characterInfo.characterImage;
+
+                DetectedCharactersListInUi(_temp, uiIndex);
             }
         }
+    }
+
+    // 현재 캐릭터가 지닌 폭탄 목록을 UI에 출력 및 버튼 이벤트 추가.
+    public void CreateBombListInUI(List<Bomb> _bombs, BattleController _battle, int _u)
+    {
+        bombButtons[_u].onClick.AddListener(() => _battle.bombManager.CreateBombtoButtonClick(_battle.nowPlayCharacter,
+                _bombs[_u].setBomb.isNeedSetup));
+    }
+
+    public void DetectedCharactersListInUi(List<Temp_Character> _characters, int _u)
+    {
+        int u = _u;
+        bombButtons[u].onClick.AddListener(() => ShowAdditionalBombPanal(_characters[u]));
+        // bombButtons[_u].onClick.AddListener(() => _battle.doZoom = false);
+        // bombButtons[u].onClick.AddListener(() => temp_Character = _characters[u]);
+
+        uItoShowExplosion.gameObject.SetActive(true);
+        bombButtons[u].onClick.AddListener(() => uItoShowExplosion.ExhibitExploButtons());
+
+        // uitoShowBomb.GetBattleUIManager(this);
+        bombButtons[u].onClick.AddListener(() => uitoShowBomb.OnOffShowBombUI(true));
+        bombButtons[u].onClick.AddListener(() => uitoShowBomb.ShowBomb(_characters[u]));
+    }
+
+    public void ShowAdditionalBombPanal(Temp_Character _temp)
+    {
+        additionalBombUI.gameObject.SetActive(true);
+        for (int a = 0; a < additionalBombUI.GetComponentsInChildren<Button>().Length; a++)
+        {
+            Button b = additionalBombUI.GetComponentsInChildren<Button>()[a];
+            if (a < _temp.haveBombs.Count)
+            {
+                int additionalEvent = a;
+                b.image.sprite = _temp.haveBombs[additionalEvent].bombImage;
+                // additionalBombPanal[additionalEvent].onClick.AddListener(() => CharacterBattleAction.instance.EditBomb());
+            }
+        }
+    }
+
+    // public void CloseCurUI(List<Button> _buttons)
+    // {
+    //     if (Input.GetMouseButtonDown(1))
+    //     {
+    //         if (EventSystem.current.IsPointerOverGameObject())
+    //         {
+    //             ActivateActionUI(true);
+    //             // for (int i = 0; i < _buttons.Count; i++)
+    //             // {
+    //             //     _buttons[i].onClick.RemoveAllListeners();
+    //             //     _buttons[i].image.sprite = null;
+    //             //     _buttons[i].gameObject.SetActive(false);
+    //             // }
+    //         }
+    //     }
+    // }
+
+    public void CloseUI()
+    {
+        if (uitoShowBomb || uItoShowExplosion || additionalBombUI)
+        {
+
+            uitoShowBomb.gameObject.SetActive(false);
+            uItoShowExplosion.gameObject.SetActive(false);
+            additionalBombUI.SetActive(false);
+        }
+
+        if (bombUI)
+        {
+            ActivateActionUI(true);
+        }
+        else
+        {
+            ActivateActionUI(false);
+        }
+    }
+
+    public void OnOffUIManager(bool _onOff)
+    {
+        this.gameObject.SetActive(_onOff);
     }
 }
+

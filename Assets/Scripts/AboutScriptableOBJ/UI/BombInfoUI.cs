@@ -23,7 +23,7 @@ public class BombInfoUI : BaseUIStorage
     public override void ShowUI()
     {
         bombName.text = bomb.bombName;
-        bombCount.text = bomb.bombCountDown.ToString();
+        bombCount.text = bomb.bombCurCountDown.ToString();
         bombImage = bomb.bombImage;
         
 

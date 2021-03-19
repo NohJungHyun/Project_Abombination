@@ -10,23 +10,21 @@ public class AttackExplosion: Explosion
     public int attackDamage;
 
     public LayerMask layer;
+    public List<Impact> impacts = new List<Impact>(15); 
     // Start is called before the first frame update
     public override void ExplosionActivate(Temp_Character _Character)
     {
         Collider[] cols = Physics.OverlapSphere(_Character.transform.position, base.exploRadius, layer);
         for(int o = 0; o < cols.Length; o++){
-            cols[o].GetComponent<CharacterInfo>().TakeDamage(attackDamage);
+            cols[o].GetComponent<Temp_Character>().TakeDamage(attackDamage);
+            Debug.Log(cols[o].GetComponent<Temp_Character>().characterInfo.currentHP);
         } 
         // base.ExplosionActivate();
     }
 
-    public override void ExplosionDiffuse()
+    public override void ExplosionDiffuse(Temp_Character _temp_character)
     {
         //obj.SetActive(false);
         Debug.Log("폭발 실패");
     }
-
-
-
-    
 }
