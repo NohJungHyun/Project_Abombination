@@ -5,23 +5,26 @@ using UnityEngine;
 public class BattleStartState : BattleState
 {
 
-    public BattleStartState(BattleSystem _battleSystem) : base(_battleSystem)
+    public BattleStartState(BattleController _battleController) : base(_battleController)
     {
-        base.battleSystem = _battleSystem;
+        base.battleController = _battleController;
     }
 
-    public override void EnterState(BattleSystem _battleSystem)
+    public override void EnterState(BattleController _BattleController)
     {
-        
+        Debug.Log("FAQ");    
     }
 
-    public override void UpdateState(BattleSystem _battleSystem)
+    public override void UpdateState(BattleController _BattleController)
     {
-
+        // 뭔가 처리하자...
+        // 없으면 일단 패스
+        ExitState(_BattleController);
     }
 
-    public override void ExitState(BattleSystem _battleSystem)
+    public override void ExitState(BattleController _BattleController)
     {
-
+        _BattleController.SetState(new PlayerTurnStartState(_BattleController));
+        Debug.Log("???");
     }
 }

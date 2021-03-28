@@ -18,20 +18,23 @@ public class Temp_Character : MonoBehaviour
     public List<Bomb> canSetBombs = new List<Bomb>(10);
     public List<Bomb> haveBombs = new List<Bomb>(10);
 
+    Vector3 basicPos;
+
     float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
 
     // 버프 List 제작 
     // 장비 List 제작
     // 스킬 List 제작
 
-    void Awake()
+    void Start()
     {
-        info = ScriptableObject.Instantiate(characterInfo);
+        info = Instantiate(characterInfo);
 
         for (int b = 0; b < canSetBombs.Count; b++)
         {
-            canSetBombs[b] = ScriptableObject.Instantiate(canSetBombs[b]);
+            canSetBombs[b] = Instantiate(canSetBombs[b]);
         }
+        basicPos = transform.position;
     }
 
 
@@ -78,8 +81,8 @@ public class Temp_Character : MonoBehaviour
     {
         Debug.Log("피해를 입었다: " + _dmg);
 
-        characterInfo.currentHP -= _dmg;
-        if(characterInfo.currentHP <= 0)
+        info.currentHP -= _dmg;
+        if (info.currentHP <= 0)
             Dead();
     }
 
@@ -87,6 +90,16 @@ public class Temp_Character : MonoBehaviour
     {
         Debug.Log("끄앙 주금");
         this.gameObject.SetActive(false);
+    }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(basicPos, info.characterMovement);
+
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireSphere(transform.position, info.characterDetectRange);
+
+        Gizmos.DrawLine(transform.position, SearchWithRayCast.GetHitPoint());
     }
 
 }

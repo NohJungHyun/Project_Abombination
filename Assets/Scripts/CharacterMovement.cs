@@ -9,35 +9,20 @@ public class CharacterMovement : MonoBehaviour
     public Temp_Character temp_Character;
     public BattleController battleController;
 
-    Ray ray;
-    RaycastHit hit;
-    //Vector3 getMousePos; // raycast로 찾은 좌표를 저장. 
-
     Vector3 beforePos; // 턴 시작 시, 캐릭터의 위치를 담아서 다시 돌아올 수 있도록 제작. 
     float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
 
-
-    // Start is called before the first frame update
-    // void Start()
-    // {
-    //     battleController = GameObject.Find("BattleController").GetComponent<BattleController>();
-    // }
-
-    // Update is called once per frame
-    void Update()
+    void LetMove()
     {
         if (Input.GetMouseButtonDown(1))
         {
             temp_Character = battleController.nowPlayCharacter;
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         }
         if (temp_Character != null)
         {
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                Vector3 pos = new Vector3(hit.point.x, 0.5f, hit.point.z);
-                temp_Character.transform.position = Vector3.MoveTowards(temp_Character.transform.position, pos, temp_Character.characterInfo.characterMovement * Time.deltaTime);
-            }
+            SearchWithRayCast.GetHitSomething();
+            Vector3 pos = new Vector3(SearchWithRayCast.GetHitPoint().x, 0.5f, SearchWithRayCast.hit.point.z);
+            temp_Character.transform.position = Vector3.MoveTowards(temp_Character.transform.position, pos, temp_Character.info.characterMovement * Time.deltaTime);
         }
     }
 }

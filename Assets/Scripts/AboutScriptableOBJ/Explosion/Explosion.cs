@@ -33,7 +33,7 @@ public class Explosion : ScriptableObject
     public int exploMinCountDown;
     public int exploMaxCountDown;
 
-    public IImpact[] bombImpacts;
+    public List<BombEffect> bombEffects = new List<BombEffect>();
 
     //폭.8물 가동!!!
     public virtual void ExplosionActivate(Temp_Character _Character)

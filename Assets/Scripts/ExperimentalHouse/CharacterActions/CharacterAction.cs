@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAction : MonoBehaviour
+[System.Serializable]
+public abstract class CharacterAction //: ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
+    public static CharacterAction instance;
+    protected static Temp_Character temp_Character;
+    protected static BattleController battleController;
+    public static Temp_Character Temp_Character { get => temp_Character; }
+    public static BattleController BattleController { get => battleController;}
+
+    public abstract void ActCharacter();
+    public abstract void ControllUI(BattleUIManager _BattleUI);
+
+    public CharacterAction(BattleController _battleController)
     {
-        
+        temp_Character = _battleController.GetTemp_Character();
+        battleController = _battleController;
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void onEnable()
     {
-        
+        instance = this;
     }
 }

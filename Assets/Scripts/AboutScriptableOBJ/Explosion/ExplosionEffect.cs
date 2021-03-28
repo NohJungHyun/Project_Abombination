@@ -2,20 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionEffect: ScriptableObject
+public class ExplosionEffect : AbombinationEffect
 {
-
-    //public Settiming adjustTime { get; set; }
-    Temp_Character temp_Character;
-
-    public void GetCharacterInfo(Temp_Character _temp_Character)
+    public override void ActivateEffect(Temp_Character _Character)
     {
-        temp_Character = _temp_Character;
+        // if (!temp_Character) return;
+
+        
     }
-
-    public void AdjustEffect(Temp_Character _temp_Character)
-    {
-
-    }
-
 }

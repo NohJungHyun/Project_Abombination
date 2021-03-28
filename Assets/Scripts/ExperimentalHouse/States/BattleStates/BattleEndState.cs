@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class BattleEndState : BattleState
 {
-    public BattleEndState(BattleSystem _battleSystem) : base(_battleSystem)
+    public BattleEndState(BattleController _battleController) : base(_battleController)
     {
-        base.battleSystem = _battleSystem;
+        base.battleController = _battleController;
     }
 
-    public override void EnterState(BattleSystem _battleSystem)
-    {
-        
-    }
-
-    public override void UpdateState(BattleSystem _battleSystem)
+    public override void EnterState(BattleController _BattleController)
     {
 
     }
 
-    public override void ExitState(BattleSystem _battleSystem)
+    public override void UpdateState(BattleController _BattleController)
+    {
+
+    }
+
+    public override void ExitState(BattleController _BattleController)
     {
 
     }

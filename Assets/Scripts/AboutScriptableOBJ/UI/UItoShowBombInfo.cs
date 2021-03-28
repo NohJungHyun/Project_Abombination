@@ -12,6 +12,7 @@ public class UItoShowBombInfo : MonoBehaviour
     public Text bombCount;
     public Image bombImage;
     public Button bombDiffuseButton;
+    public Button bombBoomButton;
     public Button afterBomb, beforeBomb;
     public Button[] explosionsinBomb = new Button[10];
 
@@ -19,16 +20,17 @@ public class UItoShowBombInfo : MonoBehaviour
     public int indexBomb = 0;
 
     public delegate void dele(Temp_Character _temp);
-    public dele ShowBomb;
+    public dele CheckBomb;
     public Temp_Character targetedCharacter;
+    public BattleUIManager battleUIManager;
 
     void Awake()
     {
         // ShowBomb = new dele(GetInfofromRaycast);
-        ShowBomb = new dele(CheckBombList);
-        ShowBomb += new dele(GetInfofromRaycast);
-        ShowBomb += new dele(ExhibitBombCondition);
-        ShowBomb += new dele(ExhibitExplosionsCondition);
+        CheckBomb = new dele(CheckBombList);
+        CheckBomb += new dele(GetInfofromRaycast);
+        CheckBomb += new dele(ExhibitBombCondition);
+        CheckBomb += new dele(ExhibitExplosionsCondition);
     }
 
     public void CheckBombList(Temp_Character _temp)
@@ -65,7 +67,7 @@ public class UItoShowBombInfo : MonoBehaviour
         if (indexBomb < _t.haveBombs.Count - 1)
         {
             afterBomb.onClick.AddListener(() => indexBomb++);
-            afterBomb.onClick.AddListener(() => ShowBomb(_t));
+            afterBomb.onClick.AddListener(() => CheckBomb(_t));
             afterBomb.interactable = true;
         }
         else
@@ -74,7 +76,7 @@ public class UItoShowBombInfo : MonoBehaviour
         if (indexBomb > 0)
         {
             beforeBomb.onClick.AddListener(() => indexBomb--);
-            beforeBomb.onClick.AddListener(() => ShowBomb(_t));
+            beforeBomb.onClick.AddListener(() => CheckBomb(_t));
             beforeBomb.interactable = true;
         }
         else
@@ -92,9 +94,11 @@ public class UItoShowBombInfo : MonoBehaviour
         bombCount.text = _t.haveBombs[indexBomb].bombCurCountDown.ToString();
         bombImage.sprite = _t.haveBombs[indexBomb].bombImage;
 
-        if (CharacterBattleAction.instance.battleController.nowPlayCharacter)
-            bombDiffuseButton.onClick.AddListener(() => CharacterBattleAction.instance.DiffuseBomb(_t.haveBombs, _t.haveBombs[indexBomb]));
-
+        if (BattleController.instance.nowPlayCharacter)
+        {
+            SetDiffuseEvent(targetedCharacter);
+            SetBoomEvent(targetedCharacter);
+        }
     }
 
     public void ExhibitExplosionsCondition(Temp_Character _t)
@@ -109,9 +113,23 @@ public class UItoShowBombInfo : MonoBehaviour
             explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploImage;
             explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploCountDown.ToString();
 
-            if (CharacterBattleAction.instance.battleController.nowPlayCharacter)
-                explosionsinBomb[explosionCheck].onClick.AddListener(() => CharacterBattleAction.instance.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
+            if (BattleController.instance.nowPlayCharacter)
+                explosionsinBomb[explosionCheck].onClick.AddListener(() => RemoveExplosion.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
         }
+    }
+
+    public void SetDiffuseEvent(Temp_Character _Character)
+    {
+        DiffuseBomb diffuseEvent = new DiffuseBomb(BattleController.instance);
+        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ControllUI(battleUIManager));
+        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ActCharacter());
+    }
+
+    public void SetBoomEvent(Temp_Character _Character)
+    {
+        BoomBomb boomEvent = new BoomBomb(BattleController.instance);
+        bombBoomButton.onClick.AddListener(() => boomEvent.ControllUI(battleUIManager));
+        bombBoomButton.onClick.AddListener(() => boomEvent.ActCharacter());
     }
 
     public void ClearAllEvents()

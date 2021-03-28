@@ -39,7 +39,7 @@ public class UItoShowExplosionInfo : MonoBehaviour, ICloseUI
     {
         showExplosionCondition.gameObject.SetActive(true);
 
-        Temp_Character temp_char = CharacterBattleAction.instance.battleController.nowPlayCharacter;
+        Temp_Character temp_char = BattleController.instance.nowPlayCharacter;
 
         for (int e = 0; e < temp_char.canSetExplosions.Count; e++)
         {
@@ -47,7 +47,7 @@ public class UItoShowExplosionInfo : MonoBehaviour, ICloseUI
 
             exploSetupButton[explosLisnter].image.sprite = temp_char.canSetExplosions[explosLisnter].exploImage;
             exploSetupButton[explosLisnter].onClick.RemoveAllListeners();
-            exploSetupButton[explosLisnter].onClick.AddListener(() => CharacterBattleAction.instance.DoExplosionSetUp(temp_char.canSetExplosions[explosLisnter], uitoShowBomb));
+            exploSetupButton[explosLisnter].onClick.AddListener(() => AddExplosion.DoExplosionSetUp(temp_char.canSetExplosions[explosLisnter], uitoShowBomb));
         }
     }
     

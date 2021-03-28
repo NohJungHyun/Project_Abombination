@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54f464bd4155add419a554baa3fed93f, type: 3}
   m_Name: SetBombtoCharacter
   m_EditorClassIdentifier: 
-  battleController: {fileID: 0}
+  createBomb: {fileID: 0}
+  temp_Character: {fileID: 0}
   isNeedSetup: 1
+  layer:
+    serializedVersion: 2
+    m_Bits: 512

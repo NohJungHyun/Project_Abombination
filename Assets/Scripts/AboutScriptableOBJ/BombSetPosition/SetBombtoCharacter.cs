@@ -8,34 +8,40 @@ public class SetBombtoCharacter : SetBombPositions
     //  public BattleController battleController;public BattleController battleController;
 
     // 폭탄에 대한 정보와 좌표 값을 가져와서 폭탄을 생성할 때 위치를 삼도록 하는 함수.
-    public override Vector3 SettoPos(Bomb _b, GameObject _target)
-    {
-        return SetCharacter();
-    }
+    // public override Vector3 SettoPos(Bomb _b, GameObject _target)
+    // {
+    //     return SetCharacter();
+    // }
 
     // 폭탄을 설치할 때, 랜덤하게 결정하는 지, 특정한 규칙으로 결정되는 지 파악하는 함수.
-    public override void DecideSetWay()
+    public override void DecideSetWay(CreateBomb _createBomb)
     {
-
+        if (createBomb.canSetBomb)
+        {
+            Debug.Log("Pootis2");
+            createBomb = _createBomb;
+            SelectCharacter();
+        }
     }
 
-    public Vector3 SetCharacter()
+    public void SelectCharacter()
     {
-        Vector3 trans = Vector3.zero;
-
-        if (battleController)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (battleController.hit.collider.tag == "Character")
+            SearchWithRayCast.SetLayer(layer);
+            Debug.Log("Pootis1");
+            if (SearchWithRayCast.GetHitSomething().tag.Equals("Player"))
             {
-                trans = battleController.hit.collider.transform.position;
-            }
-            else
-            {
-
+                temp_Character = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>();
+                temp_Character.GetHaveBombs().Add(CreateBomb.targetBomb);
+                SearchWithRayCast.ReturnBasicLayer();
+                BombManager.AddBomb(CreateBomb.targetBomb);
+                createBomb.canSetBomb = false;
             }
         }
-
-        return trans;
+        else if (Input.GetMouseButtonDown(1))
+        {
+            createBomb.canSetBomb = false;
+        }
     }
-
 }

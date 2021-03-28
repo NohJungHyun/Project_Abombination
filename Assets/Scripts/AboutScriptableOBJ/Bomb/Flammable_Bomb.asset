@@ -19,20 +19,21 @@ MonoBehaviour:
     \uC774 \uD3ED\uD0C4\uC774 \uD0DC\uC5B4\uB0AC\uC2B5\uB2C8\uB2E4. \uD0DC\uC5B4\uB0A8\uACFC
     \uB3D9\uC2DC\uC5D0 \uC774\uAC78 \uC6D0\uD588\uB358 \uC0AC\uB78C\uC774 \uBD8D\uD0DC\uC6CC\uC84C\uC9C0\uB9CC\uC694."
   bombImage: {fileID: 21300000, guid: 9a9d42cf85a94a745a2248cb65ed19a1, type: 3}
-  bombObject: {fileID: 123682, guid: 2624760c2371db742833f9b7b7f9f8ae, type: 3}
-  setBomb: {fileID: 11400000, guid: 7dc5c4b877856ff4d85342951f549b66, type: 2}
+  setBombPosition: {fileID: 11400000, guid: 7dc5c4b877856ff4d85342951f549b66, type: 2}
   bombOwner: {fileID: 0}
-  bombDamage: 0
+  explosionList:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
+  bombCurCountDown: 0
+  bombMinCountDown: 3
+  bombMaxCountDown: 4
   bombRadius: 0
   bombCanStack: 0
   bombMaxStack: 0
-  bombDispelNum: 
-  bombAugmentNum: 
-  bombSetupNum: 
-  bombCurCountDown: -1
-  bombMinCountDown: 3
-  bombMaxCountDown: 4
   setUpAP: 2
   diffuseAP: 1
   boomAP: 2
-  explosionList: []
+  bombDamage: 0
+  boomObject: {fileID: 0}
+  bombDispelNum: 
+  bombAugmentNum: 
+  bombSetupNum: 

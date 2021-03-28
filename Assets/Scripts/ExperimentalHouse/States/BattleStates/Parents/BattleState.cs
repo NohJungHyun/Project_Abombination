@@ -4,15 +4,15 @@ using UnityEngine;
 
 public abstract class BattleState
 {
-    protected BattleSystem battleSystem;
-    public abstract void EnterState(BattleSystem _battleSystem);
+    protected BattleController battleController;
+    public abstract void EnterState(BattleController _battleController);
 
-    public abstract void UpdateState(BattleSystem _battleSystem);
+    public abstract void UpdateState(BattleController _battleController);
 
-    public abstract void ExitState(BattleSystem _battleSystem);
+    public abstract void ExitState(BattleController _battleController);
 
-    public BattleState(BattleSystem _battleSystem)
+    public BattleState(BattleController _battleController)
     {
-        battleSystem = _battleSystem;
+        battleController = _battleController;
     }
 }
