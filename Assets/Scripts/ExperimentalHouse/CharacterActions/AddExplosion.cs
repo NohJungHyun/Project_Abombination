@@ -10,13 +10,24 @@ public class AddExplosion : CharacterAction
         // Setting ㄱㄱ
     }
 
-    public override void ActCharacter()
+    public override void EnterCharacterAction()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
+
     public override void ControllUI(BattleUIManager _BattleUI)
     {
 
+    }
+
+    public override void ActCharacterAction()
+    {
+        // throw new System.NotImplementedException();
+    }
+
+    public override void ExitCharacterAction()
+    {
+        // throw new System.NotImplementedException();
     }
 
     // 폭발물 설치

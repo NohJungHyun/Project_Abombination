@@ -13,14 +13,12 @@ public static class BombManager
 
     public static void Countdown(Temp_Character _Character)
     {
-        for (int c = 0; c < _Character.haveBombs.Count; c++)
-        {
-            _Character.haveBombs[c].bombCurCountDown--;
+        foreach(Bomb bomb in _Character.GetHaveBombs()){
+            bomb.bombCurCountDown--;
 
-            if (bombs[c].bombCurCountDown <= 0)
-            {
-                bombs[c].Boom();
-                bombs.Remove(bombs[c]);
+            if(bomb.bombCurCountDown <= 0){
+                bomb.bombCurCountDown = 0;
+                bomb.Boom();
             }
         }
     }

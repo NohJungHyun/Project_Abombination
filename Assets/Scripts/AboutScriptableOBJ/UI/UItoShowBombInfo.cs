@@ -122,14 +122,14 @@ public class UItoShowBombInfo : MonoBehaviour
     {
         DiffuseBomb diffuseEvent = new DiffuseBomb(BattleController.instance);
         bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ControllUI(battleUIManager));
-        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ActCharacter());
+        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ActCharacterAction());
     }
 
     public void SetBoomEvent(Temp_Character _Character)
     {
         BoomBomb boomEvent = new BoomBomb(BattleController.instance);
         bombBoomButton.onClick.AddListener(() => boomEvent.ControllUI(battleUIManager));
-        bombBoomButton.onClick.AddListener(() => boomEvent.ActCharacter());
+        bombBoomButton.onClick.AddListener(() => boomEvent.ActCharacterAction());
     }
 
     public void ClearAllEvents()

@@ -10,6 +10,8 @@ public class AreaIndicatorStorage : MonoBehaviour
     public GameObject circleIndicator;
     public GameObject smallAreaIndicator;
 
+    Vector3 basicScale;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -30,13 +32,25 @@ public class AreaIndicatorStorage : MonoBehaviour
 
     }
 
-    public void MoveIndicator(GameObject _indicator, Transform _trans)
+    public void MoveIndicator(GameObject _indicator, Vector3 _vec)
     {
-        _indicator.transform.position = _trans.position;
+        _indicator.transform.position = _vec;
     }
 
     public void ModifyIndicatorSize(GameObject _indicator, float _scale)
     {
-        _indicator.transform.localScale = new Vector3(_indicator.transform.localScale.x * _scale, _indicator.transform.localScale.y * _scale, 0);
+        //_indicator.GetComponent<SpriteRenderer>().size *= _scale;
+
+        _indicator.transform.localScale *= _scale;
+    }
+
+    public void ResetIndicatorSize(GameObject _indicator)
+    {
+        _indicator.GetComponent<SpriteRenderer>().size = basicScale;
+        _indicator.transform.localScale = basicScale; 
+    }
+
+    public GameObject GetCircleIndicator(){
+        return circleIndicator;
     }
 }

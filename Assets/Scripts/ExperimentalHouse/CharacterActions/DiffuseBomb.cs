@@ -13,7 +13,18 @@ public class DiffuseBomb : CharacterAction
         // Setting ㄱㄱ
     }
 
-    public override void ActCharacter()
+    public override void EnterCharacterAction()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void ControllUI(BattleUIManager _BattleUI)
+    {
+        _BattleUI.OnOffUIManager(false);
+        GetDiffuseBomb(_BattleUI.uitoShowBomb);
+    }
+
+    public override void ActCharacterAction()
     {
         if (bombs.Equals(bomb))
         {
@@ -25,10 +36,9 @@ public class DiffuseBomb : CharacterAction
         // throw new System.NotImplementedException();
     }
 
-    public override void ControllUI(BattleUIManager _BattleUI)
+    public override void ExitCharacterAction()
     {
-        _BattleUI.OnOffUIManager(false);
-        GetDiffuseBomb(_BattleUI.uitoShowBomb);
+        throw new System.NotImplementedException();
     }
 
     public void GetDiffuseBomb(UItoShowBombInfo _uitoShowBomb)

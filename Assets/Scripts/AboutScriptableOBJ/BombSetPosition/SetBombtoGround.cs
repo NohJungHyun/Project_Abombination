@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SetBombtoCharacter", menuName = "ScriptableObjects/SetBombPosition/ToArea")]
 public class SetBombtoGround : SetBombPositions
 {
-    static bool setupGo = false; // 폭탄이 마우스와 같이 돌아다니는가(설치 준비 중인가?)
+    // static bool setupGo = false; // 폭탄이 마우스와 같이 돌아다니는가(설치 준비 중인가?)
     static bool hasTempBomb = false; // 현재 임시적으로 폭탄을 마우스 끝에 담고 있는가?
     public static Temp_Character bombObject;
 
@@ -37,7 +37,7 @@ public class SetBombtoGround : SetBombPositions
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    setupGo = false;
+                   //  setupGo = false;
                     GameObject actualObj = bombObject.gameObject;
 
                     Instantiate(actualObj);
@@ -50,8 +50,8 @@ public class SetBombtoGround : SetBombPositions
                     for (int i = 0; i < actualObj.GetComponent<Temp_Character>().haveBombs.Count; i++)
                     {
                         Bomb b = actualObj.GetComponent<Temp_Character>().haveBombs[i];
-                        b.SetCountDown(b.bombCurCountDown, b.bombMinCountDown, b.bombMaxCountDown);
-                        b.SetbombOwner(_createBomb.boomer);
+                        b.SetCountDown();
+                        b.SetbombOwner(_createBomb.bombOwner);
                         Debug.Log(b.bombCurCountDown);
                     }
                     // bombs.Add(actualObj.GetComponent<Temp_Character>());

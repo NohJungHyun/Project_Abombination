@@ -11,16 +11,18 @@ public class PlayerTurnEndState : BattleState
 
     public override void EnterState(BattleController _BattleController)
     {
-        Debug.Log("플레이어 턴 종료");
+        Debug.Log("Player End Enter!");
+        ExitState(_BattleController);
     }
 
     public override void UpdateState(BattleController _BattleController)
     {
-
+        Debug.Log("Player End Update!");
     }
 
     public override void ExitState(BattleController _BattleController)
     {
-
+        Debug.Log("Player End Exit!");
+        _BattleController.NextTurn();
     }
 }

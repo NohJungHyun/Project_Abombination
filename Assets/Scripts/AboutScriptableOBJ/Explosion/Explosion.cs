@@ -20,6 +20,8 @@ public class Explosion : ScriptableObject
     public Sprite exploImage;
     // public GameObject exploEffect;
 
+    public Temp_Character explosionOwner;
+
     public int exploDamage;
     public int exploRadius;
     public bool exploCanStack;

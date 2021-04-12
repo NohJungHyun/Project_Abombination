@@ -33,10 +33,26 @@ public class Temp_Character : MonoBehaviour
         for (int b = 0; b < canSetBombs.Count; b++)
         {
             canSetBombs[b] = Instantiate(canSetBombs[b]);
+
+            canSetBombs[b].bombOwner = this;
+        }
+
+        for (int h = 0; h < haveBombs.Count; h++)
+        {
+            haveBombs[h] = Instantiate(haveBombs[h]);
+            haveBombs[h].SetCountDown();
+            Debug.Log("가지고 있는 폭탄의 이름: " + haveBombs[h].bombName + ", " + "가지고 있는 폭탄의 카운트 다운: " + haveBombs[h].bombCurCountDown);
+            // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
+            haveBombs[h].bombOwner = this;
+        }
+
+        for (int e = 0; e < canSetExplosions.Count; e++)
+        {
+            canSetExplosions[e] = Instantiate(canSetExplosions[e]);
+            canSetExplosions[e].explosionOwner = this;
         }
         basicPos = transform.position;
     }
-
 
     public List<Bomb> GetCanSetBombs()
     {
@@ -91,15 +107,25 @@ public class Temp_Character : MonoBehaviour
         Debug.Log("끄앙 주금");
         this.gameObject.SetActive(false);
     }
-    void OnDrawGizmosSelected()
+    // void OnDrawGizmosSelected()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawWireSphere(basicPos, info.characterMovement);
+
+    //     // Gizmos.color = Color.red;
+    //     // Gizmos.DrawWireSphere(transform.position, info.characterDetectRange);
+
+    //     Gizmos.DrawLine(transform.position, SearchWithRayCast.GetHitPoint());
+    // }
+
+    public Vector3 GetCharacterPos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(basicPos, info.characterMovement);
+        return this.transform.position;
+    }
 
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawWireSphere(transform.position, info.characterDetectRange);
-
-        Gizmos.DrawLine(transform.position, SearchWithRayCast.GetHitPoint());
+    public void SetCharacterPos(Vector3 _pos)
+    {
+        this.transform.position = _pos;
     }
 
 }

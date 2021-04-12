@@ -14,34 +14,52 @@ public class SetBombtoCharacter : SetBombPositions
     // }
 
     // 폭탄을 설치할 때, 랜덤하게 결정하는 지, 특정한 규칙으로 결정되는 지 파악하는 함수.
+
+    public Vector3 target;
+
+    public void OnEnable()
+    {
+        target = Vector3.zero;
+    }
+
     public override void DecideSetWay(CreateBomb _createBomb)
     {
-        if (createBomb.canSetBomb)
+        if (_createBomb.canSetBomb)
         {
-            Debug.Log("Pootis2");
             createBomb = _createBomb;
+
             SelectCharacter();
+        }
+
+        if (target != Vector3.zero)
+        {
+            
+            CreateBomb.targetBomb.TransportBomb(BattleController.instance.GetNowPlayCharacter().transform.position, target);
         }
     }
 
     public void SelectCharacter()
     {
-        if (Input.GetMouseButtonDown(0))
+        SearchWithRayCast.SetLayer(layer);
+
+        if (!SearchWithRayCast.GetHitSomething()) return;
+
+        if (SearchWithRayCast.GetHitSomething().tag.Equals("Player") && Input.GetMouseButtonDown(0))
         {
-            SearchWithRayCast.SetLayer(layer);
-            Debug.Log("Pootis1");
-            if (SearchWithRayCast.GetHitSomething().tag.Equals("Player"))
-            {
-                temp_Character = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>();
-                temp_Character.GetHaveBombs().Add(CreateBomb.targetBomb);
-                SearchWithRayCast.ReturnBasicLayer();
-                BombManager.AddBomb(CreateBomb.targetBomb);
-                createBomb.canSetBomb = false;
-            }
+            temp_Character = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>();
+            target = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>().transform.position;
+
+            CreateBomb.targetBomb.SetBombtoCharacter(temp_Character);
+            CreateBomb.targetBomb.SetBombtoBombManager();
+            // BombManager.AddBomb(CreateBomb.targetBomb);
+            SearchWithRayCast.ReturnBasicLayer();
+            createBomb.canSetBomb = false;
         }
-        else if (Input.GetMouseButtonDown(1))
+
+        if (Input.GetMouseButtonDown(1))
         {
             createBomb.canSetBomb = false;
+            BattleController.instance.SetCharacterAction(new WaitingOrder(BattleController.instance));
         }
     }
 }

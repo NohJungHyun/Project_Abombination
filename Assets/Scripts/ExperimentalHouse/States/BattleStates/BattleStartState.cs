@@ -12,7 +12,9 @@ public class BattleStartState : BattleState
 
     public override void EnterState(BattleController _BattleController)
     {
-        Debug.Log("FAQ");    
+        Debug.Log("BattleStart!");    
+        _BattleController.characterList.AddRange(_BattleController.enemyCharacterList);
+        _BattleController.characterList.AddRange(_BattleController.playerCharactersList);
     }
 
     public override void UpdateState(BattleController _BattleController)
@@ -24,7 +26,6 @@ public class BattleStartState : BattleState
 
     public override void ExitState(BattleController _BattleController)
     {
-        _BattleController.SetState(new PlayerTurnStartState(_BattleController));
-        Debug.Log("???");
+        _BattleController.SetState(new RoundStartState(_BattleController));
     }
 }

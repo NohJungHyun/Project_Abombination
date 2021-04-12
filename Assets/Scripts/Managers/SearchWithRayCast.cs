@@ -8,13 +8,14 @@ public static class SearchWithRayCast
     private static Ray ray;
     private static Camera mainCamera = Camera.main;
     private static LayerMask layer;
+    private static LayerMask characterSelectLayer;
     public static LayerMask basicLayer;
 
     public static GameObject GetHitSomething()
     {
         ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out hit, 100, layer))
+        if (Physics.Raycast(ray, out hit, 100))
             return hit.collider.gameObject;
         else
             return null;
@@ -29,9 +30,27 @@ public static class SearchWithRayCast
             return Vector3.zero;
     }
 
+    public static Temp_Character GetHitCharacter()
+    {
+        if(hit.collider == null) return null;
+
+        characterSelectLayer = LayerMask.GetMask("Characters");
+
+        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit, 100, characterSelectLayer))
+            return hit.collider.GetComponent<Temp_Character>();
+        else
+            return null;
+    }
+
     public static void SetLayer(LayerMask _layer)
     {
         layer = _layer;
+    }
+
+    public static void SetLayer(string _layerString)
+    {
+        layer = LayerMask.GetMask(_layerString);
     }
 
     public static void ReturnBasicLayer()

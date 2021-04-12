@@ -24,17 +24,20 @@ MonoBehaviour:
   bombOwner: {fileID: 0}
   explosionList:
   - {fileID: 11400000, guid: 9181c9b79aa51ec40b5653275b28f03a, type: 2}
-  bombCurCountDown: 0
+  abombinationEffects: []
+  bombCurCountDown: 3
   bombMinCountDown: 2
   bombMaxCountDown: 5
-  bombRadius: 0
+  bombRadius: 5
   bombCanStack: 0
   bombMaxStack: 0
   setUpAP: 1
   diffuseAP: 2
   boomAP: 1
   bombDamage: 0
-  boomObject: {fileID: 0}
+  bombObject: {fileID: 1694848149411730, guid: dffe57e4e8411e8429b0c5c20a5892d6, type: 3}
   bombDispelNum: 
   bombAugmentNum: 
   bombSetupNum: 
+  instantiatedBomb: {fileID: 0}
+  bombTrail: {fileID: 5096946077676374305, guid: 41983e14bbe804241959d728c20ed3b1, type: 3}

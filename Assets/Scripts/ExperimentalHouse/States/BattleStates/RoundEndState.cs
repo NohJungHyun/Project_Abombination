@@ -11,7 +11,7 @@ public class RoundEndState : BattleState
 
     public override void EnterState(BattleController _BattleController)
     {
-
+        Debug.Log("Round End!");
     }
 
     public override void UpdateState(BattleController _BattleController)

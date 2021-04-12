@@ -14,33 +14,33 @@ public class CharacterBattleAction : MonoBehaviour
 
     public LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
 
-    [SerializeField]
+    [SerializeField]   
     public List<CharacterAction> characterActions = new List<CharacterAction>(10); // 전투에서 캐릭터가 진행가능한 액션들을 담은 리스트.
     public static CharacterAction nowAction;
 
-    public void Start()
-    {
-        battleController.battleUIManager.SetEventToActUI(this);
-        nowAction = new TurnStart(battleController);
-    }
+    // public void Start()
+    // {
+    //     // battleController.battleUIManager.SetEventToActUI(this);
+    //     nowAction = new TurnStart(battleController);
+    // }
 
-    public void Update()
-    {
-        nowAction.ActCharacter();
-    }
+    // public void Update()
+    // {
+    //     nowAction.ActCharacter();
+    // }
 
-    public void CheckWhereBombs()
-    {
-        List<Temp_Character> detectedCharacters = new List<Temp_Character>();
-        foreach (Collider col in Physics.OverlapSphere(battleController.nowPlayCharacter.transform.position, battleController.nowPlayCharacter.info.characterDetectRange, detectMask))
-        {
-            if (col.gameObject.GetComponent<Temp_Character>())
-            {
-                detectedCharacters.Add(col.gameObject.GetComponent<Temp_Character>());
-            }
-        }
-        battleController.battleUIManager.GetCharacterPanel(detectedCharacters, battleController);
-    }
+    // public void CheckWhereBombs()
+    // {
+    //     List<Temp_Character> detectedCharacters = new List<Temp_Character>();
+    //     foreach (Collider col in Physics.OverlapSphere(battleController.nowPlayCharacter.transform.position, battleController.nowPlayCharacter.info.characterDetectRange, detectMask))
+    //     {
+    //         if (col.gameObject.GetComponent<Temp_Character>())
+    //         {
+    //             detectedCharacters.Add(col.gameObject.GetComponent<Temp_Character>());
+    //         }
+    //     }
+    //     battleController.battleUIManager.GetCharacterPanel(detectedCharacters, battleController);
+    // }
 
     public void SetNowAction(CharacterAction _characterAction)
     {

@@ -38,10 +38,10 @@ public class BombGuideLine : ScriptableObject
     public int diffuseAP;
     public int boomAP;
 
-    public BombGuideLine(Temp_Character _temp_character)
-    {
-        bombOwner = _temp_character;
-    }
+    // public BombGuideLine(Temp_Character _temp_character)
+    // {
+    //     bombOwner = _temp_character;
+    // }
 
     public virtual void Boom()
     {
@@ -80,10 +80,14 @@ public class BombGuideLine : ScriptableObject
         }
     }
 
-    public virtual int SetCountDown(int _cur, int _min, int _max)
+    public virtual void SetCountDown( int _min, int _max)
     {
-        _cur = Random.Range(_min, _max + 1);
-        return _cur;
+        this.bombCurCountDown = Random.Range(_min, _max + 1);
+    }
+
+    public virtual void SetCountDown()
+    {
+        this.bombCurCountDown = Random.Range(this.bombMinCountDown, bombMaxCountDown + 1);
     }
 
     public void SetbombOwner(Temp_Character _tempCharacter)

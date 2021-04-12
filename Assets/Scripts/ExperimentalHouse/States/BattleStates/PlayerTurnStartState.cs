@@ -4,32 +4,41 @@ using UnityEngine;
 
 public class PlayerTurnStartState : BattleState
 {
-    public Temp_Character character;
+    Temp_Character character;
+
+    CameraController cameraController;
 
     public PlayerTurnStartState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
-        character = _battleController.nowPlayCharacter;
+        character = _battleController.GetNowPlayCharacter();
+        cameraController = _battleController.cameraController;
     }
 
     public override void EnterState(BattleController _BattleController)
     {
-        // if (_BattleController.nowPlayCharacter && _BattleController.doZoom)
-        battleController.battleUIManager.ActivateActionUI(true);
+        Debug.Log("Player Start Enter!");
+
+        character = _BattleController.nowPlayCharacter;
+
         battleController.cameraController.SetZoomCondition(true);
-        BombManager.Countdown(character);
-        // battleController.cameraController.setCharacter(character);
-        // UpdateState(_BattleController);
+
+        if (character && character.GetHaveBombs().Count > 0)
+        {
+            Debug.Log("카운트 다운!");
+            BombManager.Countdown(character);
+        }
     }
 
     public override void UpdateState(BattleController _BattleController)
     {
-        battleController.cameraController.CameraZoomIn(character);
-        // ExitState(_BattleController);
+        Debug.Log("Player Start Update!");
     }
 
     public override void ExitState(BattleController _BattleController)
     {
+        Debug.Log("Player Start End!");
         battleController.SetState(new PlayerTurnDoState(_BattleController));
+        //battleController.battleState.EnterState(_BattleController);
     }
 }

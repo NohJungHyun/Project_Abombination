@@ -10,12 +10,22 @@ public class UseSkill : CharacterAction
         // Setting ㄱㄱ
     }
 
-    public override void ActCharacter()
+    public override void EnterCharacterAction()
+    {
+
+    }
+
+    public override void ControllUI(BattleUIManager _BattleUI)
+    {
+
+    }
+
+    public override void ActCharacterAction()
     {
         throw new System.NotImplementedException();
     }
 
-    public override void ControllUI(BattleUIManager _BattleUI)
+    public override void ExitCharacterAction()
     {
 
     }
