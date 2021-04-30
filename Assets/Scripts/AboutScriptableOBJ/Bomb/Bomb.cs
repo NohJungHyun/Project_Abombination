@@ -37,42 +37,42 @@ public class Bomb : BombGuideLine
         }
         Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
     }
-
-    public void TransportBomb(Vector3 _from, Vector3 _to)
-    {
-        if (!instantiatedBomb)
-        {
-            instantiatedBomb = Instantiate(bombObject, _from, Quaternion.identity);
-        }
-
-        if (Vector3.Distance(instantiatedBomb.transform.position, _to) <= 0.25f || isGoal)
-        {
-            instantiatedBomb.SetActive(false);
-            isGoal = true;
-            instantiatedBomb.transform.position = _from;            
-        }
-        else
-        {
-            instantiatedBomb.SetActive(true);
-            instantiatedBomb.transform.position = Vector3.MoveTowards(instantiatedBomb.transform.position, _to, 5f * Time.deltaTime); 
-        }
-    }
-
-    public GameObject GetbombObject()
-    {
-        return bombObject;
-    }
-
-    public void SetBombtoCharacter(Temp_Character _target)
-    {
-        SetCountDown(bombMinCountDown, bombMaxCountDown);
-        _target.haveBombs.Add(this);
-    }
-
+    
     public void SetBombtoBombManager()
     {
         BombManager.AddBomb(this);
     }
+
+    // public void TransportBomb(Vector3 _from, Vector3 _to)
+    // {
+    //     if (!instantiatedBomb)
+    //     {
+    //         instantiatedBomb = Instantiate(bombObject, _from, Quaternion.identity);
+    //     }
+
+    //     if (Vector3.Distance(instantiatedBomb.transform.position, _to) <= 0.25f || isGoal)
+    //     {
+    //         instantiatedBomb.SetActive(false);
+    //         isGoal = true;
+    //         instantiatedBomb.transform.position = _from;            
+    //     }
+    //     else
+    //     {
+    //         instantiatedBomb.SetActive(true);
+    //         instantiatedBomb.transform.position = Vector3.MoveTowards(instantiatedBomb.transform.position, _to, 5f * Time.deltaTime); 
+    //     }
+    // }
+
+    // public GameObject GetbombObject()
+    // {
+    //     return bombObject;
+    // }
+
+    // public void SetBombtoCharacter(Temp_Character _target)
+    // {
+    //     SetCountDown(bombMinCountDown, bombMaxCountDown);
+    //     _target.haveBombs.Add(this);
+    // }
 
     // public List<AbombinationEffect> GetSetupEffects()
     // {

@@ -35,6 +35,9 @@ public class Explosion : ScriptableObject
     public int exploMinCountDown;
     public int exploMaxCountDown;
 
+    public int needRemoveCost;
+    public int needAddCost;
+
     public List<BombEffect> bombEffects = new List<BombEffect>();
 
     //폭.8물 가동!!!

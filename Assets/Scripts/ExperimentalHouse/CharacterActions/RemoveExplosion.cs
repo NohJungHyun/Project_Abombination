@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // [CreateAssetMenu(menuName = "ScriptableObjects/CharacterActions/RemoveExplosion")]
-public class RemoveExplosion : CharacterAction
+public class RemoveExplosion : ModifyAbombination
 {
     public RemoveExplosion(BattleController _battleController) : base(_battleController)
     {
@@ -22,12 +22,12 @@ public class RemoveExplosion : CharacterAction
 
     public override void ActCharacterAction()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
 
     public override void ExitCharacterAction()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
 
     // 폭발물 해제
@@ -42,4 +42,5 @@ public class RemoveExplosion : CharacterAction
             Debug.Log("지금은 캐릭터의 턴이 아니라 할 수 없습니다.");
         }
     }
+
 }

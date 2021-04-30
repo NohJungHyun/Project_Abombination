@@ -8,54 +8,63 @@ public class BattleUIManager : MonoBehaviour
 {
     // public CharacterBattleAction characterBattleAction;
 
-    public UItoShowBombInfo uitoShowBomb;
-    public UItoShowExplosionInfo uItoShowExplosion;
+    // public UItoShowBombInfo uitoShowBomb;
+    // public UItoShowExplosionInfo uItoShowExplosion;
     public Button turnEndButton;
 
-    [Header("캐릭터가 할 수 있는 액션 UI")]
-    public GameObject characterActUI;
+    // [Header("캐릭터가 할 수 있는 액션 UI")]
+    // public GameObject characterActUI;
 
-    [Header("캐릭터 턴일 때 설치가능한 폭탄 UI")]
-    public GameObject bombUI;
+    // [Header("캐릭터 턴일 때 설치가능한 폭탄 UI")]
+    // public GameObject bombUI;
 
-    public GameObject additionalBombUI;
+    // public GameObject additionalBombUI;
 
     public List<Button> bombButtons = new List<Button>(20);
+
+    [Header("폭탄 조작용 UI")]
+    public BombModifier bombModifier;
+
+    [Header("커맨드 포인트 표현 UI")]
+    public SelectCharacterUI selectCharacterUI;
     // public Temp_Character temp_Character;
 
 
     void Start()
     {
-        characterActUI.SetActive(false);
-        bombUI.SetActive(false);
-        additionalBombUI.SetActive(false);
+        // characterActUI.SetActive(false);
+        // bombUI.SetActive(false);
+        // additionalBombUI.SetActive(false);
+
+        bombModifier.gameObject.SetActive(false);
+        selectCharacterUI.gameObject.SetActive(true);        
     }
 
     public void ActivateActionUI(bool isOn)
     {
-        characterActUI.SetActive(isOn);
-        bombUI.SetActive(!isOn);
+        // characterActUI.SetActive(isOn);
+        // bombUI.SetActive(!isOn);
     }
 
-    public void CloseUI()
-    {
-        if (uitoShowBomb || uItoShowExplosion || additionalBombUI)
-        {
+    // public void CloseUI()
+    // {
+    //     if (uitoShowBomb || uItoShowExplosion || additionalBombUI)
+    //     {
 
-            uitoShowBomb.gameObject.SetActive(false);
-            uItoShowExplosion.gameObject.SetActive(false);
-            additionalBombUI.SetActive(false);
-        }
+    //         uitoShowBomb.gameObject.SetActive(false);
+    //         uItoShowExplosion.gameObject.SetActive(false);
+    //         additionalBombUI.SetActive(false);
+    //     }
 
-        if (bombUI)
-        {
-            ActivateActionUI(true);
-        }
-        else
-        {
-            ActivateActionUI(false);
-        }
-    }
+    //     if (bombUI)
+    //     {
+    //         ActivateActionUI(true);
+    //     }
+    //     else
+    //     {
+    //         ActivateActionUI(false);
+    //     }
+    // }
 
     public void OnOffUIManager(bool _onOff)
     {

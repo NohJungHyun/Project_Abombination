@@ -34,9 +34,11 @@ public class BombGuideLine : ScriptableObject
     public bool bombCanStack;
     public int bombMaxStack;
 
-    public int setUpAP;
-    public int diffuseAP;
-    public int boomAP;
+    public int setUpCost;
+    public int diffuseCost;
+    public int boomCost;
+    public int addCountdownCost;
+    public int subtractCountdownCost;
 
     // public BombGuideLine(Temp_Character _temp_character)
     // {

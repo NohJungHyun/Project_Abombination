@@ -11,7 +11,10 @@ public class PlayerTurnEndState : BattleState
 
     public override void EnterState(BattleController _BattleController)
     {
+        battleController.baseCharacterPos = Vector3.zero;
+
         Debug.Log("Player End Enter!");
+        
         ExitState(_BattleController);
     }
 
@@ -23,6 +26,6 @@ public class PlayerTurnEndState : BattleState
     public override void ExitState(BattleController _BattleController)
     {
         Debug.Log("Player End Exit!");
-        _BattleController.NextTurn();
+        // _BattleController.NextTurn();
     }
 }

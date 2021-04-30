@@ -14,7 +14,9 @@ public class RoundStartState : BattleState
     {
         Debug.Log("Round Start Enter!");
 
-        RolltoInitiative();
+        // RolltoInitiative();
+
+        battleController.SetState(new SelectActCharacter(battleController));
         // _BattleController.nowPlayCharacter = _BattleController.characterList[0];
     }
 
@@ -27,7 +29,7 @@ public class RoundStartState : BattleState
         // {
         //     battleController.ChangeNowPlayerCharacter();
         // }
-        ExitState(battleController);
+        
     }
 
     public override void ExitState(BattleController _BattleController)
@@ -35,7 +37,7 @@ public class RoundStartState : BattleState
         // Debug.Log("Round Start End!");        
         // _BattleController.battleState = new PlayerTurnStartState(_BattleController);
         // _BattleController.battleState.EnterState(_BattleController);
-        battleController.SetState(new SelectActCharacter(battleController));
+        
     }
 
     void RolltoInitiative() // 우선권 결정
@@ -62,7 +64,6 @@ public class RoundStartState : BattleState
         {
             foreach (Temp_Character temp_Character in battleController.characterList)
             {
-
                 temp_Character.info.statInitiative.CheckCal(0, Random.Range(1, 7), 0);
                 Debug.Log(temp_Character.name + "의 우선권: " + temp_Character.info.statInitiative.resultStat);
 

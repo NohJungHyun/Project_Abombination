@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // [CreateAssetMenu(menuName = "ScriptableObjects/CharacterActions/DiffuseBomb")]
-public class DiffuseBomb : CharacterAction
+public class DiffuseBomb : ModifyAbombination
 {
     List<Bomb> bombs;
-    Bomb bomb;
 
     public DiffuseBomb(BattleController _battleController) : base(_battleController)
     {
@@ -21,7 +20,7 @@ public class DiffuseBomb : CharacterAction
     public override void ControllUI(BattleUIManager _BattleUI)
     {
         _BattleUI.OnOffUIManager(false);
-        GetDiffuseBomb(_BattleUI.uitoShowBomb);
+        // GetDiffuseBomb(_BattleUI.uitoShowBomb);
     }
 
     public override void ActCharacterAction()

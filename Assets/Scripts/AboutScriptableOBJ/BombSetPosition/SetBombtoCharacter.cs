@@ -24,42 +24,42 @@ public class SetBombtoCharacter : SetBombPositions
 
     public override void DecideSetWay(CreateBomb _createBomb)
     {
-        if (_createBomb.canSetBomb)
-        {
-            createBomb = _createBomb;
+        // if (_createBomb.canSetBomb)
+        // {
+        //     createBomb = _createBomb;
 
-            SelectCharacter();
-        }
+        //     SelectCharacter();
+        // }
 
-        if (target != Vector3.zero)
-        {
+        // if (target != Vector3.zero)
+        // {
             
-            CreateBomb.targetBomb.TransportBomb(BattleController.instance.GetNowPlayCharacter().transform.position, target);
-        }
+        //     CreateBomb.targetBomb.TransportBomb(BattleController.instance.GetNowPlayCharacter().transform.position, target);
+        // }
     }
 
-    public void SelectCharacter()
-    {
-        SearchWithRayCast.SetLayer(layer);
+    // public void SelectCharacter()
+    // {
+    //     SearchWithRayCast.SetLayer(layer);
 
-        if (!SearchWithRayCast.GetHitSomething()) return;
+    //     if (!SearchWithRayCast.GetHitSomething()) return;
 
-        if (SearchWithRayCast.GetHitSomething().tag.Equals("Player") && Input.GetMouseButtonDown(0))
-        {
-            temp_Character = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>();
-            target = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>().transform.position;
+    //     if (SearchWithRayCast.GetHitSomething().tag.Equals("Player") && Input.GetMouseButtonDown(0))
+    //     {
+    //         temp_Character = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>();
+    //         target = SearchWithRayCast.GetHitSomething().GetComponent<Temp_Character>().transform.position;
 
-            CreateBomb.targetBomb.SetBombtoCharacter(temp_Character);
-            CreateBomb.targetBomb.SetBombtoBombManager();
-            // BombManager.AddBomb(CreateBomb.targetBomb);
-            SearchWithRayCast.ReturnBasicLayer();
-            createBomb.canSetBomb = false;
-        }
+    //         CreateBomb.targetBomb.SetBombtoCharacter(temp_Character);
+    //         CreateBomb.targetBomb.SetBombtoBombManager();
+    //         // BombManager.AddBomb(CreateBomb.targetBomb);
+    //         SearchWithRayCast.ReturnBasicLayer();
+    //         createBomb.canSetBomb = false;
+    //     }
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            createBomb.canSetBomb = false;
-            BattleController.instance.SetCharacterAction(new WaitingOrder(BattleController.instance));
-        }
-    }
+    //     if (Input.GetMouseButtonDown(1))
+    //     {
+    //         createBomb.canSetBomb = false;
+    //         BattleController.instance.SetCharacterAction(new WaitingOrder(BattleController.instance));
+    //     }
+    // }
 }

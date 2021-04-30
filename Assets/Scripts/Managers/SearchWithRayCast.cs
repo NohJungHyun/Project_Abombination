@@ -32,11 +32,10 @@ public static class SearchWithRayCast
 
     public static Temp_Character GetHitCharacter()
     {
-        if(hit.collider == null) return null;
+        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
         characterSelectLayer = LayerMask.GetMask("Characters");
 
-        ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit, 100, characterSelectLayer))
             return hit.collider.GetComponent<Temp_Character>();
         else

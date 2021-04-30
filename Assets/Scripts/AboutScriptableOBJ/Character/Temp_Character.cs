@@ -20,6 +20,8 @@ public class Temp_Character : MonoBehaviour
 
     Vector3 basicPos;
 
+    public int actionPoint;
+
     float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
 
     // 버프 List 제작 
@@ -41,7 +43,7 @@ public class Temp_Character : MonoBehaviour
         {
             haveBombs[h] = Instantiate(haveBombs[h]);
             haveBombs[h].SetCountDown();
-            Debug.Log("가지고 있는 폭탄의 이름: " + haveBombs[h].bombName + ", " + "가지고 있는 폭탄의 카운트 다운: " + haveBombs[h].bombCurCountDown);
+            // Debug.Log("가지고 있는 폭탄의 이름: " + haveBombs[h].bombName + ", " + "가지고 있는 폭탄의 카운트 다운: " + haveBombs[h].bombCurCountDown);
             // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
             haveBombs[h].bombOwner = this;
         }
@@ -107,16 +109,6 @@ public class Temp_Character : MonoBehaviour
         Debug.Log("끄앙 주금");
         this.gameObject.SetActive(false);
     }
-    // void OnDrawGizmosSelected()
-    // {
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawWireSphere(basicPos, info.characterMovement);
-
-    //     // Gizmos.color = Color.red;
-    //     // Gizmos.DrawWireSphere(transform.position, info.characterDetectRange);
-
-    //     Gizmos.DrawLine(transform.position, SearchWithRayCast.GetHitPoint());
-    // }
 
     public Vector3 GetCharacterPos()
     {
@@ -128,4 +120,29 @@ public class Temp_Character : MonoBehaviour
         this.transform.position = _pos;
     }
 
+    public void LookMousePos(bool _canRotate)
+    {
+        if (!_canRotate) return;
+
+        Vector3 lookPos = new Vector3(SearchWithRayCast.GetHitPoint().x, transform.position.y, SearchWithRayCast.GetHitPoint().z);
+        transform.LookAt(lookPos);
+    }
+
+    public void SubtractActionPoint(int _point)
+    {
+        actionPoint -= _point;
+    }
+
+    public void AddActionPoint(int _point)
+    {
+        actionPoint += _point;
+    }
+
+    public void SetActionPoint(int _point){
+        actionPoint = _point;
+    }
+
+    public int GetActionPoint(){
+        return actionPoint;
+    }
 }

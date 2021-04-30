@@ -51,7 +51,7 @@ public class SetBombtoGround : SetBombPositions
                     {
                         Bomb b = actualObj.GetComponent<Temp_Character>().haveBombs[i];
                         b.SetCountDown();
-                        b.SetbombOwner(_createBomb.bombOwner);
+                        // b.SetbombOwner(_createBomb.bombOwner);
                         Debug.Log(b.bombCurCountDown);
                     }
                     // bombs.Add(actualObj.GetComponent<Temp_Character>());

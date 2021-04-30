@@ -11,30 +11,39 @@ public class BattleController : BattleStateMachine
     // 캐릭터 다수한테 전투관련 스크립트를 부착하는 것보다, 하나의 스크립트에서 처리하게 끔하여 최적화 추구
 
     // 외부 참조
+
     public static BattleController instance;
+
+    public Player player;
 
     public BattleUIManager battleUIManager;
 
     public CameraController cameraController;
-
-    public Temp_Character target;
-
-    public Temp_Character nowPlayCharacter; // 현재 턴에 행동가능한 캐릭터를 의미.
-    public CharacterAction nowAction;
-
-    public AreaIndicatorStorage areaIndicatorStorage;
 
     public List<Temp_Character> playerCharactersList = new List<Temp_Character>(10);
     public List<Temp_Character> enemyCharacterList = new List<Temp_Character>(10);
 
     public List<Temp_Character> characterList = new List<Temp_Character>(); // 전투에 참여하는 캐릭터들을 담는 리스트.
 
+    public Temp_Character nowPlayCharacter; // 현재 턴에 행동가능한 캐릭터를 의미.
+
+    public List<Transform> targetedCharacters;
+
+    public CharacterAction nowAction;
+
+    public ConeRangeMesh coneRangeMesh;
+
     public int battleRound = 0; // 배틀 경과 라운드
     public int battleTurn = 0; // 배틀 경과 턴
 
     public int index = 0; // 현재 선택된 캐릭터를 측정하기 위해 사용되는 카운터.
 
-    public int canSetBombinBattle;
+    public Vector3 baseCharacterPos;
+
+    public delegate void ReactionDelegate();
+
+    public static ReactionDelegate reactionDele;
+
 
     void Awake()
     {
@@ -51,56 +60,29 @@ public class BattleController : BattleStateMachine
         battleState.UpdateState(this);
     }
 
-    public void NextTurn()
+    private void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ChangeNowPlayerCharacter();
-        }
+        if (nowAction != null)
+            nowAction.ActCharacterAction();
     }
 
-    public void ChangeNowPlayerCharacter()
-    {
-        battleTurn++;
-
-        if (index == 0)
-        {
-            nowPlayCharacter = characterList[0];
-            SetCharacterAction(new WaitingOrder(this));
-            SetState(new PlayerTurnStartState(this));
-
-        }
-        else if (index < characterList.Count - 1)
-        {
-            //index++;
-            nowPlayCharacter = characterList[index];
-            Debug.Log("www");
-            SetCharacterAction(new WaitingOrder(this));
-            SetState(new PlayerTurnStartState(this));
-
-        }
-        else
-        {
-            index = 0;
-            battleRound++;
-            nowPlayCharacter = characterList[index];
-            Debug.Log("eee");
-            SetState(new RoundStartState(this));
-
-        }
-
-        // areaIndicatorStorage.MoveIndicator(areaIndicatorStorage.circleIndicator, nowPlayCharacter.transform);
-        // areaIndicatorStorage.ModifyIndicatorSize(areaIndicatorStorage.circleIndicator, nowPlayCharacter.characterInfo.characterDetectRange);
-
-        index++;
-        // battleState.EnterState(this);
-    }
+    // IEnumerator GetCharactersFromArea()
+    // {
+    //     yield return new WaitForSeconds(1f);
+    //     if(nowPlayCharacter)
+            
+    // }
 
     public override void SetState(BattleState _battleState)
     {
+        if (battleState != null)
+            battleState.ExitState(this);
+        
         battleState = _battleState;
-        _battleState.EnterState(this);
-        //throw new System.NotImplementedException();
+
+        if (battleState != null)
+            battleState.EnterState(this);
+
     }
 
     public Vector3 GetNowCharacterPos()
@@ -113,20 +95,21 @@ public class BattleController : BattleStateMachine
         return nowPlayCharacter;
     }
 
-    public void SetTemp_Character(Temp_Character _now)
+    public void SetNowCharacter(Temp_Character _now)
     {
         nowPlayCharacter = _now;
-    }
-    public void SetCharacterAction(CharacterAction _CharacterAction)
-    {
-        CharacterAction ca = _CharacterAction;
-        nowAction = ca;
-        ca.ControllUI(battleUIManager);
+        // coneRangeMesh.transform.position = Vector3.zero;
     }
 
-    public void SetMoveAction()
+    public void SetCharacterAction(CharacterAction _CharacterAction)
     {
-        SetCharacterAction(new MoveCharacter(BattleController.instance));
+        if(nowAction != null)
+            nowAction.ExitCharacterAction();
+
+        nowAction = _CharacterAction;
+         
+        if(nowAction != null)
+            nowAction.EnterCharacterAction();
     }
 
     public CharacterAction GetCharacterAction()
@@ -134,26 +117,20 @@ public class BattleController : BattleStateMachine
         return nowAction;
     }
 
-    void OnDrawGizmos()
+    public List<Transform> GetTargetedCharacter()
     {
-        if (SearchWithRayCast.hit.point != Vector3.zero)
-        {
-            if (Vector3.Distance(nowPlayCharacter.GetCharacterPos(), SearchWithRayCast.GetHitPoint()) < nowPlayCharacter.info.characterDetectRange)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(nowPlayCharacter.GetCharacterPos(), SearchWithRayCast.GetHitPoint());
-            }
-        }
+        return targetedCharacters;
     }
 
-    public Temp_Character GetTargetedCharacter()
+    public void AddTargetedCharacter(Transform _target)
     {
-        return target;
+        targetedCharacters.Add(_target);
     }
 
-    public void SetTargetedCharacter(Temp_Character _target)
+    public void RemoveTargetedCharacter(Transform _target)
     {
-        target = _target;
+        if(targetedCharacters.Equals(_target))
+            targetedCharacters.Remove(_target);
     }
 
     public void SetBattleTurn(int _turnNum)
@@ -172,5 +149,10 @@ public class BattleController : BattleStateMachine
     public int GetBattleRound()
     {
         return battleRound;
+    }
+
+    public void TransportTargetsToList()
+    {
+        targetedCharacters = coneRangeMesh.visibleTargets;
     }
 }

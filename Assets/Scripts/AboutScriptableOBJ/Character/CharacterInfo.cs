@@ -43,6 +43,8 @@ public class CharacterInfo : ScriptableObject
     public int curActionPoint;
     public int maxActionPoint;
     public int minActionPoint;
+
+    public int needCommandPoint;
     #endregion
 
     #region 4. 캐릭터 능력치 변수로부터 Stat 적용.

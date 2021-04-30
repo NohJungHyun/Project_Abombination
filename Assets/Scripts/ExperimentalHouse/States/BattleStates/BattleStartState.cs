@@ -15,17 +15,17 @@ public class BattleStartState : BattleState
         Debug.Log("BattleStart!");    
         _BattleController.characterList.AddRange(_BattleController.enemyCharacterList);
         _BattleController.characterList.AddRange(_BattleController.playerCharactersList);
+
+        _BattleController.SetState(new RoundStartState(_BattleController));
     }
 
     public override void UpdateState(BattleController _BattleController)
     {
-        // 뭔가 처리하자...
-        // 없으면 일단 패스
-        ExitState(_BattleController);
+
     }
 
     public override void ExitState(BattleController _BattleController)
     {
-        _BattleController.SetState(new RoundStartState(_BattleController));
+        // Debug.Log("푸헤헤");
     }
 }

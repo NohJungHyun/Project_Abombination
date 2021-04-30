@@ -27,5 +27,10 @@ MonoBehaviour:
   characterLuck: 3
   characterInitiative: 3
   characterDetectRange: 5
+  characterThrowRange: 0
   currentHP: 0
   maxHP: 0
+  curActionPoint: 3
+  maxActionPoint: 3
+  minActionPoint: 0
+  needCommandPoint: 2
