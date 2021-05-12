@@ -20,7 +20,7 @@ public class WaitingOrder : CharacterAction
     public override void EnterCharacterAction()
     {
         if(cameraController.zoomingCharacter != nowTurnCharacter)
-            cameraController.zoomingCharacter = nowTurnCharacter;
+            cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
         
         // throw new System.NotImplementedException();
     }
@@ -30,7 +30,7 @@ public class WaitingOrder : CharacterAction
 
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
     {
         if (Input.GetAxis("Horizontal") != 0f || Input.GetAxis("Vertical") != 0f)
         {
@@ -40,6 +40,10 @@ public class WaitingOrder : CharacterAction
                 battleController.SetCharacterAction(new MoveCharacter(battleController));
             }
         }
+    }
+    public override void CharacterPhysicUpdate()
+    {
+        // throw new System.NotImplementedException();
     }
 
     public override void ExitCharacterAction()

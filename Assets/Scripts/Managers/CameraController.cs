@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     public float maxZoomInDist;
     public float minZoomInDist;
 
-    public Temp_Character zoomingCharacter;
+    public Transform zoomingCharacter;
     bool canChaseMousePos = false;
 
     void Start()
@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
     {
         if (_CharacterPos.gameObject)
         {
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, _CharacterPos.position + cameraOffset, 2f * Time.deltaTime);
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, _CharacterPos.position + cameraOffset, 3f * Time.deltaTime);
         }
         // mainCamera.transform.LookAt(Vector3.Lerp(_Character.transform.position, _Character.transform.position + cameraOffset, cameraZoomInMoveSpeed));
     }
@@ -122,12 +122,12 @@ public class CameraController : MonoBehaviour
         Debug.Log("!!!");
     }
 
-    public void SetZoomingCharacter(Temp_Character _character)
+    public void SetZoomingCharacter(Transform _character)
     {
         zoomingCharacter = _character;
     }
 
-    public Temp_Character GetZoomingCharacter()
+    public Transform GetZoomingCharacter()
     {
         return zoomingCharacter;
     }

@@ -7,19 +7,22 @@ public class BattleLoseState : BattleState
     public BattleLoseState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
+        // SetEventBoxByString("BattleLose");
+        // BattleStateEventBoxes.instance.CallByString("BattleLose");
+        SetEventBox(BattleEventManager.instance.battleStateEventBoxDictionary["BattleLose"]);
     }
 
-    public override void EnterState(BattleController _BattleController)
+    public override void EnterState()
     {
 
     }
 
-    public override void UpdateState(BattleController _BattleController)
+    public override void UpdateState()
     {
 
     }
 
-    public override void ExitState(BattleController _BattleController)
+    public override void ExitState()
     {
 
     }

@@ -22,10 +22,10 @@ public class SelectTarget : CharacterAction
     public override void ControllUI(BattleUIManager _BattleUI)
     {
         // battleUIManager.
-        _BattleUI.ActivateActionUI(true);
+        // _BattleUI.ActivateActionUI(true);
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
     {
         // throw new System.NotImplementedException();
         float hitPointX = SearchWithRayCast.GetHitPoint().x;
@@ -44,6 +44,11 @@ public class SelectTarget : CharacterAction
         {
             Debug.Log("지정 범위 내 대상 발견");
         }
+    }
+
+    public override void CharacterPhysicUpdate()
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void ExitCharacterAction()

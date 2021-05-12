@@ -21,7 +21,7 @@ public class MoveCharacter : CharacterAction
         coneRangeMesh = nowTurnCharacter.GetComponentInChildren<ConeRangeMesh>();
         rb = nowTurnCharacter.GetComponent<Rigidbody>();
 
-        cameraController.SetZoomingCharacter(nowTurnCharacter);
+        cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
         // Setting ㄱㄱ        
 
         ControllUI(_battleController.battleUIManager);
@@ -40,7 +40,7 @@ public class MoveCharacter : CharacterAction
         // _BattleUI.bombUI.SetActive(false);
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
     {
         Moving();
         if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
@@ -49,9 +49,14 @@ public class MoveCharacter : CharacterAction
         }
     }
 
+    public override void CharacterPhysicUpdate()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void ExitCharacterAction()
     {
-        
+
     }
 
     public void Moving()

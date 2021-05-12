@@ -19,7 +19,12 @@ public class MovingAttack : CharacterAction
 
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void CharacterPhysicUpdate()
     {
         throw new System.NotImplementedException();
     }

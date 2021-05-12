@@ -113,8 +113,8 @@ public class UItoShowBombInfo : MonoBehaviour
             explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploImage;
             explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploCountDown.ToString();
 
-            if (BattleController.instance.nowPlayCharacter)
-                explosionsinBomb[explosionCheck].onClick.AddListener(() => RemoveExplosion.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
+            // if (BattleController.instance.nowPlayCharacter)
+            //     explosionsinBomb[explosionCheck].onClick.AddListener(() => RemoveExplosion.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
         }
     }
 
@@ -122,14 +122,14 @@ public class UItoShowBombInfo : MonoBehaviour
     {
         DiffuseBomb diffuseEvent = new DiffuseBomb(BattleController.instance);
         bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ControllUI(battleUIManager));
-        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ActCharacterAction());
+        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.CharacterDataUpdate());
     }
 
     public void SetBoomEvent(Temp_Character _Character)
     {
         BoomBomb boomEvent = new BoomBomb(BattleController.instance);
         bombBoomButton.onClick.AddListener(() => boomEvent.ControllUI(battleUIManager));
-        bombBoomButton.onClick.AddListener(() => boomEvent.ActCharacterAction());
+        bombBoomButton.onClick.AddListener(() => boomEvent.CharacterDataUpdate());
     }
 
     public void ClearAllEvents()

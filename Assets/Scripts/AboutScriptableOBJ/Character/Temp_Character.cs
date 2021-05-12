@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Temp_Character : MonoBehaviour
+public class Temp_Character : MonoBehaviour, IDamageable
 {
     public CharacterInfo characterInfo;
 
@@ -13,10 +13,13 @@ public class Temp_Character : MonoBehaviour
     public bool canUseSkill;
 
     // 캐릭터가 설치가능한 폭발물 리스트
-    public List<Explosion> canSetExplosions = new List<Explosion>(30);
+    public List<Explosion> canSetExplosions = new List<Explosion>(6);
     // 캐릭터가 설치가능한 폭탄 리스트
-    public List<Bomb> canSetBombs = new List<Bomb>(10);
-    public List<Bomb> haveBombs = new List<Bomb>(10);
+    public List<Bomb> canSetBombs = new List<Bomb>(6);
+    public List<Bomb> haveBombs = new List<Bomb>(6);
+
+    public List<ItemData> haveItems = new List<ItemData>(6);
+    public List<SkillData> haveSkills = new List<SkillData>(6);
 
     Vector3 basicPos;
 
@@ -32,6 +35,8 @@ public class Temp_Character : MonoBehaviour
     {
         info = Instantiate(characterInfo);
 
+        this.actionPoint = info.maxActionPoint;
+
         for (int b = 0; b < canSetBombs.Count; b++)
         {
             canSetBombs[b] = Instantiate(canSetBombs[b]);
@@ -41,16 +46,30 @@ public class Temp_Character : MonoBehaviour
 
         for (int h = 0; h < haveBombs.Count; h++)
         {
-            haveBombs[h] = Instantiate(haveBombs[h]);
+            haveBombs[h] = ScriptableObject.Instantiate(haveBombs[h]);
             haveBombs[h].SetCountDown();
             // Debug.Log("가지고 있는 폭탄의 이름: " + haveBombs[h].bombName + ", " + "가지고 있는 폭탄의 카운트 다운: " + haveBombs[h].bombCurCountDown);
             // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
-            haveBombs[h].bombOwner = this;
+            haveBombs[h].attachedTarget = this;
+
+            if (!haveBombs[h].bombOwner)
+            {
+                haveBombs[h].bombOwner = this;
+            }
+
+            if (haveBombs[h].GetExplosionsList().Count > 0)
+            {
+                for (int e = 0; e < haveBombs[h].GetExplosionsList().Count; e++)
+                {
+                    haveBombs[h].GetExplosionsList()[e].GetRidOfExplosionAllEvent(haveBombs[h]);
+                    haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(haveBombs[h]);
+                }
+            }
         }
 
         for (int e = 0; e < canSetExplosions.Count; e++)
         {
-            canSetExplosions[e] = Instantiate(canSetExplosions[e]);
+            canSetExplosions[e] = ScriptableObject.Instantiate(canSetExplosions[e]);
             canSetExplosions[e].explosionOwner = this;
         }
         basicPos = transform.position;
@@ -138,11 +157,28 @@ public class Temp_Character : MonoBehaviour
         actionPoint += _point;
     }
 
-    public void SetActionPoint(int _point){
+    public void SetActionPoint(int _point)
+    {
         actionPoint = _point;
     }
 
-    public int GetActionPoint(){
+    public int GetActionPoint()
+    {
         return actionPoint;
+    }
+
+    public void ResetActionPoint()
+    {
+        actionPoint = info.maxActionPoint;
+    }
+
+    public List<ItemData> GetHaveItems()
+    {
+        return haveItems;
+    }
+
+    public List<SkillData> GetHaveSkills()
+    {
+        return haveSkills;
     }
 }

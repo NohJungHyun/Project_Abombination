@@ -1,93 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum StartSetPos { Hand, Point, Random, Character }
+using UnityEngine.UI;
 
 // [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
-public class Bomb : BombGuideLine
+public class Bomb : BombGuideLine, ICanSetButtons, ICostable
 {
     //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
 
-    public int bombDamage;
-    public GameObject bombObject; // 폭탄이 구현될 때 생성할 게임 오브젝트.
-    public int[] bombDispelNum; // 폭발물을 해제하기 위해서 필요한 숫자들
-    public int[] bombAugmentNum; // 폭발물을 강화하기 위해서 필요한 숫자들
-    public int[] bombSetupNum; // 폭발물을 설치하기 위해서 필요한 숫자들
+    // 폭탄에 일어날 수 있는 이벤트들을 델리게이트로 제작.
+    public delegate void BombEventDelegate(Temp_Character _bombTarget);
 
-    public GameObject instantiatedBomb;
+    public event BombEventDelegate EventPlant;
+    public event BombEventDelegate EventUpdate;
+    public event BombEventDelegate EventBoom;
+    public event BombEventDelegate EventDiffuse;
 
-    public GameObject bombTrail;
-    public bool isGoal;
-    // public List<BombEffect> bombEffects = new List<BombEffect>();
+    // public delegate void BombEventInUpdate();
+    // public BombEventInUpdate bombEventInUpdate;
 
-    // public Bomb(Temp_Character _temp_character) : base(_temp_character)
-    // {
-    //     bombOwner = _temp_character;
-    // }
-
-    public override void Boom()
+    public void OnEnable()
     {
-        if (!bombOwner)
-            bombOwner = BattleController.instance.GetNowPlayCharacter();
+        EventBoom += TestMethod;
+    }
 
-        if (bombOwner.GetHaveBombs().Equals(this))
+    public override void Boom() //Temp_Character _target
+    {
+        EventBoom?.Invoke(attachedTarget);
+
+        if (bombOwner.GetHaveBombs().Contains(this))// && BombManager.entireBombs.Contains(this))
         {
+            explosionList.Clear();
+
             bombOwner.GetHaveBombs().Remove(this);
+            // BombManager.RemoveBombFromEntire(this);
+            Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
         }
-        Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
     }
-    
-    public void SetBombtoBombManager()
+
+    public void SetExplosionEvent()
     {
-        BombManager.AddBomb(this);
+        for (int e = 0; e < GetExplosionsList().Count; e++)
+        {
+
+        }
     }
 
-    // public void TransportBomb(Vector3 _from, Vector3 _to)
-    // {
-    //     if (!instantiatedBomb)
-    //     {
-    //         instantiatedBomb = Instantiate(bombObject, _from, Quaternion.identity);
-    //     }
+    public void SetToButton(Button _button)
+    {
 
-    //     if (Vector3.Distance(instantiatedBomb.transform.position, _to) <= 0.25f || isGoal)
-    //     {
-    //         instantiatedBomb.SetActive(false);
-    //         isGoal = true;
-    //         instantiatedBomb.transform.position = _from;            
-    //     }
-    //     else
-    //     {
-    //         instantiatedBomb.SetActive(true);
-    //         instantiatedBomb.transform.position = Vector3.MoveTowards(instantiatedBomb.transform.position, _to, 5f * Time.deltaTime); 
-    //     }
-    // }
+    }
 
-    // public GameObject GetbombObject()
-    // {
-    //     return bombObject;
-    // }
+    public void Use()
+    {
+    }
 
-    // public void SetBombtoCharacter(Temp_Character _target)
-    // {
-    //     SetCountDown(bombMinCountDown, bombMaxCountDown);
-    //     _target.haveBombs.Add(this);
-    // }
+    public void AddToUse()
+    {
 
-    // public List<AbombinationEffect> GetSetupEffects()
-    // {
-    //     return setupEffects;
-    // }
-    // public List<AbombinationEffect> GetAttachEffects()
-    // {
-    //     return attachEffects;
-    // }
-    // public List<AbombinationEffect> GetDiffuseEffects()
-    // {
-    //     return diffuseEffects;
-    // }
-    // public List<AbombinationEffect> GetBoomEffects()
-    // {
-    //     return boomEffects;
-    // }
+    }
+
+    public Sprite GetSprite()
+    {
+        return bombImage;
+    }
+
+    public ICanSetButtons GetCanSet()
+    {
+        return this;
+    }
+
+    public int PayCost(int _costNum)
+    {
+        return 0;
+    }
+
+    public bool CheckCost(int _costNum)
+    {
+        return false;
+    }
+
+    public void TestMethod(Temp_Character _t){
+        Debug.Log("안녕하세요?");
+    }
 }
+

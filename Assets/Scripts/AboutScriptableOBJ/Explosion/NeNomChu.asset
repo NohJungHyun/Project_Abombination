@@ -17,16 +17,19 @@ MonoBehaviour:
     \uBD80\uCC29\uD569\uB2C8\uB2E4. \uADF8 \uD6C4\uC5D0\uB294\uC694? \uADF8 \uACB0\uB9D0\uC744
     \uC9C0\uAE08 \uD655\uC778\uD558\uC2DC\uAC8C \uB420 \uAC81\uB2C8\uB2E4!"
   exploImage: {fileID: 21300000, guid: bbf3ae038fff6694b87c456fa2854178, type: 3}
-  exploDamage: 10
-  exploRadius: 5
+  explosionOwner: {fileID: 0}
+  exploRadius: 0
   exploCanStack: 1
   exploMaxStack: 5
   exploCountDown: 5
   exploMinCountDown: 1
   exploMaxCountDown: 7
+  needRemoveCost: 0
+  needAddCost: 0
+  abombinations:
+  - {fileID: 11400000, guid: 97bc4db8152ebc34abe466b298f8e3fc, type: 2}
   effectNum: 0
-  attackDamage: 0
+  attackDamage: 10
   layer:
     serializedVersion: 2
     m_Bits: 512
-  impacts: []

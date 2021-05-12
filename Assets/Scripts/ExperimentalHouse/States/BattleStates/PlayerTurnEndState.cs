@@ -7,23 +7,24 @@ public class PlayerTurnEndState : BattleState
     public PlayerTurnEndState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
+        //stateEventBox = BombEventManager.battleStateEventBoxDictionary[this.ToString()];
     }
 
-    public override void EnterState(BattleController _BattleController)
+    public override void EnterState()
     {
         battleController.baseCharacterPos = Vector3.zero;
 
         Debug.Log("Player End Enter!");
         
-        ExitState(_BattleController);
+        ExitState();
     }
 
-    public override void UpdateState(BattleController _BattleController)
+    public override void UpdateState()
     {
         Debug.Log("Player End Update!");
     }
 
-    public override void ExitState(BattleController _BattleController)
+    public override void ExitState()
     {
         Debug.Log("Player End Exit!");
         // _BattleController.NextTurn();

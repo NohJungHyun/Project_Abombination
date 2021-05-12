@@ -12,7 +12,7 @@ public class TurnEnd : CharacterAction
 
     public override void EnterCharacterAction()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -20,14 +20,19 @@ public class TurnEnd : CharacterAction
 
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
     {
-        // throw new System.NotImplementedException();
+        throw new System.NotImplementedException();
+    }
+
+    public override void CharacterPhysicUpdate()
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void ExitCharacterAction()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
 
     public void EndCurTurn()

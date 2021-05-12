@@ -20,9 +20,14 @@ public class RemoveExplosion : ModifyAbombination
 
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
     {
-        // throw new System.NotImplementedException();
+        throw new System.NotImplementedException();
+    }
+
+    public override void CharacterPhysicUpdate()
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void ExitCharacterAction()
@@ -31,15 +36,11 @@ public class RemoveExplosion : ModifyAbombination
     }
 
     // 폭발물 해제
-    public static void DoExplosionDiffuse(Explosion _e)
+    public static void DoExplosionDiffuse(Bomb _bomb, Explosion _explosion)
     {
-        if (BattleController.nowPlayCharacter)
+        if (_bomb.GetExplosionsList().Contains(_explosion))
         {
-            _e.ExplosionDiffuse(BattleController.nowPlayCharacter);
-        }
-        else
-        {
-            Debug.Log("지금은 캐릭터의 턴이 아니라 할 수 없습니다.");
+            _bomb.GetExplosionsList().Remove(_explosion);
         }
     }
 

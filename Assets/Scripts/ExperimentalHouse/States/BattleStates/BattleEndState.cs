@@ -6,20 +6,22 @@ public class BattleEndState : BattleState
 {
     public BattleEndState(BattleController _battleController) : base(_battleController)
     {
-        base.battleController = _battleController;
+        battleController = _battleController;
+        // stateEventBox = BombEventManager.instance.battleStateEventBoxDictionary["BattleEnd"];
+        //stateEventBox = BombEventManager.battleStateEventBoxDictionary["BattleEnd"];
     }
 
-    public override void EnterState(BattleController _BattleController)
+    public override void EnterState()
     {
 
     }
 
-    public override void UpdateState(BattleController _BattleController)
+    public override void UpdateState()
     {
 
     }
 
-    public override void ExitState(BattleController _BattleController)
+    public override void ExitState()
     {
 
     }

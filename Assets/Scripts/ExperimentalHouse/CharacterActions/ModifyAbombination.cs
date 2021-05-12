@@ -4,98 +4,67 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // [CreateAssetMenu(menuName = "ScriptableObjects/CharacterActions/ModifyAbombination")]
-public class ModifyAbombination : CharacterAction
+public class ModifyAbombination : CharacterAction, IBombCatch
 {
     BattleUIManager battleUIManager;
     BombModifier bombModifier;
     CameraController cameraController;
 
-    int characterIndex = 0;
-
     protected Bomb bomb;
-    
+
     public ModifyAbombination(BattleController _battleController) : base(_battleController)
     {
         // Setting ㄱㄱ
         battleController = _battleController;
         nowTurnCharacter = _battleController.GetNowPlayCharacter();
-        cameraController = battleController.cameraController;
 
         battleUIManager = battleController.battleUIManager;
-        bombModifier = battleUIManager.bombModifier;   
-    
+        bombModifier = battleUIManager.bombModifier;
+        cameraController = battleController.cameraController;
     }
 
     public override void EnterCharacterAction()
-    {  
-        Debug.Log("characterIndex: " + characterIndex);
+    {
         ControllUI(battleUIManager);
 
-        // targetedCharacters = coneRangeMesh.GetVisibleTargets();
         cameraController.ChangeCanChaseMousePos(false);
-
-
         battleController.TransportTargetsToList();
-        bombModifier.SetNowTurnPlayCharacter(nowTurnCharacter);
-        bombModifier.SetModifiedCharacter(battleController.GetTargetedCharacter()[characterIndex].GetComponent<Temp_Character>());
-    }
 
+        if(battleController.targetedCharacters.Count > 0)
+            bombModifier.SetModifiedCharacter(battleController.targetedCharacters[0].GetComponent<Temp_Character>());
+        else
+            bombModifier.SetModifiedCharacter(nowTurnCharacter);
+    }
 
     public override void ControllUI(BattleUIManager _BattleUI)
     {
+        bombModifier.SetAbombinationModifier(this);
         bombModifier.gameObject.SetActive(true);
     }
 
-    public override void ActCharacterAction()
+    public override void CharacterDataUpdate()
     {
-        cameraController.MoveToCharacter(battleController.GetTargetedCharacter()[characterIndex]);
-
-        if (battleController.targetedCharacters.Count > 0)
-        {
-            if(Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.Log("A: " + characterIndex);
-                if(characterIndex < 1) return;
-
-                characterIndex--;
-                Debug.Log("characterIndex--: " + characterIndex);
-                
-                bombModifier.SetModifiedCharacter(battleController.targetedCharacters[characterIndex].GetComponent<Temp_Character>());
-            }
-
-            if(Input.GetKeyDown(KeyCode.D))
-            {
-                Debug.Log("D: " + characterIndex);
-                if(characterIndex > battleController.targetedCharacters.Count) return;
-
-                characterIndex++;
-                Debug.Log("characterIndex++: " + characterIndex);
-
-                bombModifier.SetModifiedCharacter(battleController.targetedCharacters[characterIndex].GetComponent<Temp_Character>());
-                
-            }
-
-            if(battleController.targetedCharacters.Equals(SearchWithRayCast.GetHitCharacter()))
-            {
-                Debug.Log("하히후헤호");
-            }
-        }
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            bombModifier.EscapeModify();
-            battleController.SetCharacterAction(new WaitingOrder(battleController));
-        }
+        cameraController.MoveToCharacter(bombModifier.modifiedCharacter.transform);
     }
+
+    public override void CharacterPhysicUpdate()
+    {
+        throw new System.NotImplementedException();
+    }
+
 
     public override void ExitCharacterAction()
     {
-        // scrollRect.gameObject.SetActive(false);
-        // throw new System.NotImplementedException();
+        bombModifier.gameObject.SetActive(false);
     }
 
-    public virtual void GetBomb(Bomb _b)
+    public void ChangeModifyAction(ModifyAbombination _ma)
     {
-        bomb = _b;
+        battleController.SetCharacterAction(_ma);
+    }
+
+    public void GetBomb(Bomb _bomb)
+    {
+        bomb = _bomb;
     }
 }

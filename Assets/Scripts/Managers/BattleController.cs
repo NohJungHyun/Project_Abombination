@@ -40,9 +40,9 @@ public class BattleController : BattleStateMachine
 
     public Vector3 baseCharacterPos;
 
-    public delegate void ReactionDelegate();
+    // public delegate void ReactionDelegate();
 
-    public static ReactionDelegate reactionDele;
+    // public static ReactionDelegate reactionDele;
 
 
     void Awake()
@@ -57,31 +57,24 @@ public class BattleController : BattleStateMachine
 
     private void Update()
     {
-        battleState.UpdateState(this);
+        battleState.UpdateState();
     }
 
     private void FixedUpdate()
     {
         if (nowAction != null)
-            nowAction.ActCharacterAction();
+            nowAction.CharacterDataUpdate();
     }
-
-    // IEnumerator GetCharactersFromArea()
-    // {
-    //     yield return new WaitForSeconds(1f);
-    //     if(nowPlayCharacter)
-            
-    // }
 
     public override void SetState(BattleState _battleState)
     {
         if (battleState != null)
-            battleState.ExitState(this);
+            battleState.ExitState();
         
         battleState = _battleState;
 
         if (battleState != null)
-            battleState.EnterState(this);
+            battleState.EnterState();
 
     }
 

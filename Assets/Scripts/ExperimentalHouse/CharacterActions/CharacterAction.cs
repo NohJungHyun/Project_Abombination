@@ -10,8 +10,9 @@ public abstract class CharacterAction //: ScriptableObject
     public static Temp_Character NowTurnCharacter { get => nowTurnCharacter; }
     public static BattleController BattleController { get => battleController;}
 
-    public abstract void ActCharacterAction();
+    public abstract void CharacterDataUpdate();
     
+    public abstract void CharacterPhysicUpdate();
 
     public abstract void EnterCharacterAction();
     public abstract void ExitCharacterAction();

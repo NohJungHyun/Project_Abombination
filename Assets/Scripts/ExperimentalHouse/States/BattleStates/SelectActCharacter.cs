@@ -12,7 +12,8 @@ public class SelectActCharacter : BattleState
     Button playThisCharacterButton;
     Player player;
 
-    bool canControlCamera;
+    bool canControlCamera = false;
+    bool canControllCharacter = false;
 
     public SelectActCharacter(BattleController _battleController) : base(_battleController)
     {
@@ -25,13 +26,16 @@ public class SelectActCharacter : BattleState
         playThisCharacterButton = battleUIManager.turnEndButton;
     }
 
-    public override void EnterState(BattleController _BattleController)
+    public override void EnterState()
     {
         canControlCamera = true;
         battleController.SetCharacterAction(null);
+
+        playThisCharacterButton.gameObject.SetActive(true);
+        player.selectCharacterUI.gameObject.SetActive(true);
     }
 
-    public override void UpdateState(BattleController _BattleController)
+    public override void UpdateState()
     {
         Debug.Log("SelectActCharacter!");
 
@@ -41,6 +45,9 @@ public class SelectActCharacter : BattleState
 
             battleController.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
             character = SearchWithRayCast.GetHitCharacter();
+
+            if (character.GetHaveBombs().Count > 0)
+                CharacterInfoUI.instance.FillWithBomb(character.GetCanSetBombs());
 
             canControlCamera = false;
 
@@ -63,39 +70,35 @@ public class SelectActCharacter : BattleState
         {
             DecidePlayCharacter();
         }
-    }
-
-    public override void ExitState(BattleController _BattleController)
-    {
-        
-    }
-
-    public void DecidePlayCharacter()
-    {
-        if (battleController.nowPlayCharacter)
-        {
-            if (player.curCommandPoint >= character.info.needCommandPoint)
-            {
-                Debug.Log("한 번 해보자고!");
-
-                canControlCamera = false;
-                playThisCharacterButton.gameObject.SetActive(false);
-
-                player.AdjustPoint(false, character.info.needCommandPoint);
-                battleUIManager.selectCharacterUI.gameObject.SetActive(false);
-                
-                battleController.SetState(new PlayerTurnStartState(battleController));
-            }
-
+        else if(!battleUIManager.selectCharacterUI.isActiveAndEnabled)
+        {   
+            battleController.SetState(new PlayerTurnStartState(battleController));
         }
     }
 
-    public void OnSelectButton(bool _on)
+    public override void ExitState()
+    {
+
+    }
+
+    void DecidePlayCharacter()
+    {
+        if (battleController.nowPlayCharacter)
+        {
+            canControlCamera = false;
+            playThisCharacterButton.gameObject.SetActive(false);
+
+            if (player.AdjustPoint(false, character.info.needCommandPoint))
+                battleUIManager.selectCharacterUI.SpendCommandPoints(character.info.needCommandPoint);
+        }
+    }
+
+    void OnSelectButton(bool _on)
     {
         playThisCharacterButton.gameObject.SetActive(_on);
         playThisCharacterButton.onClick.RemoveAllListeners();
 
-        if(_on)
+        if (_on)
         {
             playThisCharacterButton.GetComponentInChildren<Text>().text = "Play Character";
             playThisCharacterButton.onClick.AddListener(() => DecidePlayCharacter());

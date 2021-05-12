@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects /new Abombination/new AttakEffect")]
-public class Abomb_Attack : AbombinationEffect
+public class Abomb_Attack : Abombination
 {
     [SerializeField]
     protected string effectName;
@@ -16,10 +16,18 @@ public class Abomb_Attack : AbombinationEffect
 
     public LayerMask layerMask;
 
-    public override void ActivateEffect(Temp_Character _Character)
+    public override void ActivateEffect()
     {
-        _Character.info.TakeDamage(explosionDamage);
-        Collider[] cols = Physics.OverlapSphere(_Character.transform.position, explosionRadius, layerMask);
+        // Collider[] cols = Physics.OverlapSphere(_target.transform.position, explosionRadius, layerMask);
+        // for (int c = 0; c < cols.Length; c++)
+        // {
+        //     if(cols[c].GetComponent<Temp_Character>())
+        //         cols[c].GetComponent<Temp_Character>().TakeDamage(explosionDamage);
+        // }
+    }
+    public override void ActivateEffect(Temp_Character _target)
+    {
+        Collider[] cols = Physics.OverlapSphere(_target.transform.position, explosionRadius, layerMask);
         for (int c = 0; c < cols.Length; c++)
         {
             if(cols[c].GetComponent<Temp_Character>())

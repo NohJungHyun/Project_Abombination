@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da22f11c6d8c5843878ea509922e764, type: 3}
   m_Name: FireAbomb
   m_EditorClassIdentifier: 
-  effectTiming: 03000000
+  canAttechedEventBox:
+  - {fileID: 11400000, guid: 3780175e4d4f1394a9386657a28c2cba, type: 2}
   canAffect: 01000000
   effectName: "\uBD88\uBD90"
   effectNum: 1234567

@@ -8,37 +8,26 @@ public class SelectCharacterUI : MonoBehaviour
     public Player player;
     public List<Image> commandPointOutlines;
 
+    [SerializeField] int pointIdx = 0;
+
+    public bool canProceed;
+
     void Start()
     {
         ResetCommandPoints();
-        
-        for(int p = 0; p <player.maxCommandPoint; p++)
+
+        for (int p = 0; p < player.maxCommandPoint; p++)
         {
             /// Debug.Log("???");
             commandPointOutlines[p].gameObject.SetActive(true);
-            commandPointOutlines.Add(commandPointOutlines[p].GetComponentInChildren<Image>());
+            commandPointOutlines[p] = commandPointOutlines[p].GetComponentInChildren<Image>();
         }
     }
 
-    public void CountCommandPoints(int _cpCost)
+    public bool SpendCommandPoints(int _cpCost)
     {
-        // for (int cp = 0; cp < _cpCost; cp++)
-        // {
-        //     Debug.Log("???");
-        //     commandPointOutlines[cp].gameObject.SetActive(false);
-        // }
-        int cp = 0;
-        int index = 0;
-        while(cp < _cpCost)
-        {
-            if(commandPointOutlines[index].gameObject.activeInHierarchy)
-            {
-                commandPointOutlines[index].gameObject.SetActive(false);
-                cp++;
-            }
-            index++;
-        }
-        // Debug.Log("Not Enough Command Point!");
+        StartCoroutine(FadeOutPoint(_cpCost));
+        return canProceed;
     }
 
     public void ResetCommandPoints()
@@ -48,6 +37,60 @@ public class SelectCharacterUI : MonoBehaviour
             commandPointOutlines[i].gameObject.SetActive(false);
         }
     }
+
+    public void TurnOffThis()
+    {
+        gameObject.SetActive(false);
+        // CancelInvoke("TurnOffThis");
+    }
+
+    public IEnumerator FadeOutPoint(int _cpCost)
+    {
+        int i = 0;
+        while (i < _cpCost)
+        {
+            yield return new WaitForSeconds(0.2f);
+
+            Debug.Log("wwww");
+            commandPointOutlines[i].gameObject.SetActive(false);
+            i++;
+        }
+        yield return new WaitForSeconds(0.2f);
+        canProceed = true;
+        TurnOffThis();
+    }
+
+    // public void DisappearImage()
+    // {
+
+    //     pointIdx++;
+    // }
+
+    // IEnumerator FadeOutUI(int _cpCost)
+    // {
+    //     yield return FadeOutImage(_cpCost);
+    //     yield return new WaitForSeconds(1f);
+
+    //     CheckSpendPoint = false;
+    //     gameObject.SetActive(false);
+    // }
+
+    // IEnumerator FadeOutImage(int _cpCost)
+    // {
+    //     int i = 0;
+    //     while (true)
+    //     {
+    //         yield return new WaitForSeconds(1f);
+
+    //         if (DisappearImage(commandPointOutlines[i]))
+    //             commandPointOutlines[i].gameObject.SetActive(false);
+
+    //         if (i < _cpCost)
+    //             i++;
+    //         else
+    //             yield break;
+    //     }
+    // }
 
     // public void CheckPointImage(bool _isOn, int _index)
     // {
@@ -59,5 +102,5 @@ public class SelectCharacterUI : MonoBehaviour
     //             commandPoints[p].gameObject.SetActive(false);
     //     }
     // }
-     
+
 }

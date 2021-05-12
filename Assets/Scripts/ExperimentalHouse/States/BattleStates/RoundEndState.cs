@@ -9,17 +9,17 @@ public class RoundEndState : BattleState
         base.battleController = _battleController;
     }
 
-    public override void EnterState(BattleController _BattleController)
-    {
-        Debug.Log("Round End!");
-    }
-
-    public override void UpdateState(BattleController _BattleController)
+    public override void EnterState()
     {
 
     }
 
-    public override void ExitState(BattleController _BattleController)
+    public override void UpdateState()
+    {
+
+    }
+
+    public override void ExitState()
     {
 
     }

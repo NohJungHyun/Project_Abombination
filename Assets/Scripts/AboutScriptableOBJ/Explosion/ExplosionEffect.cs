@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionEffect : AbombinationEffect
+public class ExplosionEffect : Abombination
 {
-    public override void ActivateEffect(Temp_Character _Character)
+    public override void ActivateEffect()
     {
         // if (!temp_Character) return;
 
-        
+
+    }
+    public override void ActivateEffect(Temp_Character _target)
+    {
+        throw new System.NotImplementedException();
     }
 }

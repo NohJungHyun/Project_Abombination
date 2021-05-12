@@ -22,10 +22,11 @@ public class Player : MonoBehaviour
         curCommandPoint = maxCommandPoint;
     }
 
-    public void AdjustPoint(bool _isAdd, int _num)
+    public bool AdjustPoint(bool _isAdd, int _num)
     {
-        if(_num > curCommandPoint) return;
-
+        if(_num > curCommandPoint) 
+            return false;
+    
         if(_isAdd)
             curCommandPoint += _num;
         else    
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour
 
         if(curCommandPoint < 0)
             curCommandPoint = 0;
-
-        selectCharacterUI.CountCommandPoints(_num);
+        
+        return true;
     }
 }

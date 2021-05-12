@@ -24,7 +24,8 @@ public class BoomBomb : ModifyAbombination
         Debug.Log("BoomBomb에서 UI를 담당하고 있답니다");
     }
 
-    public override void ActCharacterAction()
+
+    public override void CharacterDataUpdate()
     {
         // 애니메이션같은 거 처리
         Debug.Log("BoomBomb에서 Update를 담당하고 있답니다");
@@ -35,9 +36,15 @@ public class BoomBomb : ModifyAbombination
         }
     }
 
+    public override void CharacterPhysicUpdate()
+    {
+
+    }
+
     public override void ExitCharacterAction()
     {
         Debug.Log("BoomBomb에서 Exit를 담당하고 있답니다");
+        BattleEventManager.instance.characterActionBoxDictionary["BoomBomb"].InvokeEventCollection();
         bomb.Boom();
         // throw new System.NotImplementedException();
     }
