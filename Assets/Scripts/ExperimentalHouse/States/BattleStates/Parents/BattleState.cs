@@ -6,9 +6,10 @@ using UnityEngine;
 public abstract class BattleState
 {
     protected BattleController battleController;
+    protected BattleEventManager battleEventManager;
 
     // public static event BattleStateEventDelegate BattleStateEvent;
-    public EventBox stateEventBox;
+    // public EventBox stateEventBox;
 
     public abstract void EnterState();
 
@@ -19,21 +20,22 @@ public abstract class BattleState
     public BattleState(BattleController _battleController)
     {
         battleController = _battleController;
+        battleEventManager = _battleController.battleEventManager;
         // stateEventBox = BattleStateEventBoxes.instance.CallByString();
     }
 
-    public virtual void InvokeEventBox()
-    {
-        stateEventBox.InvokeEventCollection();
-    }
+    // public virtual void InvokeEventBox()
+    // {
+    //     stateEventBox.InvokeEventCollection();
+    // }
 
-    public virtual void SetEventBox(EventBox _eb)
-    {
-        stateEventBox = _eb;
-    }
+    // public virtual void SetEventBox(EventBox _eb)
+    // {
+    //     stateEventBox = _eb;
+    // }
 
     public virtual void SetEventBoxByString(string _s)
     {
-        stateEventBox = BattleEventManager.instance.battleStateEventBoxDictionary[_s];
+        // stateEventBox = BattleEventManager.instance.battleStateEventBoxDictionary[_s];
     }
 }

@@ -36,7 +36,7 @@ public class PlayerTurnDoState : BattleState
 
         coneRange.gameObject.SetActive(true);
         coneRange.transform.SetParent(nowCharacter.transform);
-        coneRange.SetProperties(nowCharacter.info.characterDetectRange, 360);
+        coneRange.SetProperties(nowCharacter.GetCharacterInfo().characterDetectRange, 360);
     }
 
     public override void UpdateState()
@@ -62,16 +62,6 @@ public class PlayerTurnDoState : BattleState
             battleController.SetCharacterAction(new WaitingOrder(battleController));
             battleController.SetState(new SelectActCharacter(battleController));
             battleController.SetNowCharacter(null);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            isNowSkill = !isNowSkill;
-            
-            if(isNowSkill)
-                battleController.battleUIManager.quickBarUI.SetItemToButtons(nowCharacter.GetHaveItems());
-            else    
-                battleController.battleUIManager.quickBarUI.SetSkillToButtons(nowCharacter.GetHaveSkills());
         }
 
         coneRange.transform.position = nowCharacter.transform.position;

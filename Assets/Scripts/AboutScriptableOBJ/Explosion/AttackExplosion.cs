@@ -13,18 +13,19 @@ public class AttackExplosion : Explosion
 
     public override void OnEnable()
     {
-        base.OnEnable();
+        // base.OnEnable();
+        Debug.Log("왜 안되냐;;");
         explosionBoomCarrier += DamageWithBoom;
     }
 
     public void DamageWithBoom(Temp_Character _target)
     {
-        Debug.Log("여기까지 오면 성공");
+        Debug.Log("왜 안터지냐;;");
         Collider[] cols = Physics.OverlapSphere(_target.transform.position, base.exploRadius, layer);
         for (int o = 0; o < cols.Length; o++)
         {
             cols[o].GetComponent<Temp_Character>().TakeDamage(attackDamage);
-            Debug.Log(cols[o].GetComponent<Temp_Character>().info.currentHP);
+            Debug.Log("!!!: " + cols[o].GetComponent<Temp_Character>().GetCharacterInfo().currentHP);
         }
         // base.ExplosionActivate();
     }

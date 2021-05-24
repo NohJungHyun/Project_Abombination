@@ -6,6 +6,7 @@ using System.Reflection;
 using System;
 
 [CustomPropertyDrawer(typeof(EventDictionaryInBattle))]
+[CustomPropertyDrawer(typeof(characterEventBox))]
 public class SerializableDictionaryPropertyDrawer : PropertyDrawer
 {
 	const string KeysFieldName = "m_keys";
@@ -19,7 +20,6 @@ public class SerializableDictionaryPropertyDrawer : PropertyDrawer
 	static GUIContent s_warningIconNull = IconContent ("console.warnicon.sml", "Null key, this entry will be lost");
 	static GUIStyle s_buttonStyle = GUIStyle.none;
 	static GUIContent s_tempContent = new GUIContent();
-
 
 	class ConflictState
 	{

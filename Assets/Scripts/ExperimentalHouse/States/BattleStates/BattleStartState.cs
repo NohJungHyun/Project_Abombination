@@ -6,13 +6,19 @@ public class BattleStartState : BattleState
 {
     public BattleStartState(BattleController _battleController) : base(_battleController)
     {
-        if(battleController)
-            SetEventBox(BattleEventManager.instance.battleStateEventBoxDictionary["BattleStart"]);
+        // if(battleController)
+        //     SetEventBox(BattleEventManager.instance.battleStateEventBoxDictionary["BattleStart"]);
     }
 
     public override void EnterState()
     {
-        Debug.Log("BattleStart!");    
+        Debug.Log("BattleStart!");  
+
+        for(int i = 0; i < battleEventManager.battleStartList.Count; i++)
+        {
+            battleEventManager.battleStartList[i]?.Invoke();
+        }
+          
         battleController.characterList.AddRange(battleController.enemyCharacterList);
         battleController.characterList.AddRange(battleController.playerCharactersList);
 

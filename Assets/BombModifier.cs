@@ -168,35 +168,54 @@ public class BombModifier : MonoBehaviour
             explosionButtonList[idx].gameObject.SetActive(true);
             explosionButtonList[idx].onClick.AddListener(() => GetOutExplosion(targetedBomb.GetExplosionsList()[eventI]));
 
-            explosionButtonList[idx].image.sprite = targetedBomb.GetExplosionsList()[idx].exploImage;
+            explosionButtonList[idx].image.sprite = targetedBomb.GetExplosionsList()[idx].GetSprite();
         }
     }
 
     void ChangeCurBombImage()
     {
         if (targetedBomb)
-            curBombButton.image.sprite = targetedBomb.bombImage;
+            curBombButton.image.sprite = targetedBomb.GetSprite();
     }
 
     public void AddCountdown(int _cost)
     {
-        if (nowTurnPlayCharacter.GetActionPoint() < predictedCost) return;
+        if (nowTurnPlayCharacter.GetActionPoint() < targetedBomb.addCountdownCost) return;
+
+        if(predictedCountdown < 0)
+        {
+            CalculateCost(-_cost);
+        }
+        else
+        {
+            CalculateCost(_cost);
+        }
 
         predictedCountdown++;
-        CalculateCost(_cost);
         ChangeCountdownText();
+        print("predictedCost: " + predictedCost);
 
-        modifyAbombination.ChangeModifyAction(new ModifyCountDown(BattleController.instance));
+        // modifyAbombination.ChangeModifyAction(new ModifyCountDown(BattleController.instance));
     }
 
     public void SubtractCountdown(int _cost)
     {
-        if (nowTurnPlayCharacter.GetActionPoint() < predictedCost) return;
+        if (nowTurnPlayCharacter.GetActionPoint() < targetedBomb.subtractCountdownCost) return;
+
+        if(predictedCountdown > 0)
+        {
+            CalculateCost(-_cost);
+        }
+        else
+        {
+            CalculateCost(_cost);
+        }
 
         predictedCountdown--;
-        CalculateCost(_cost);
         ChangeCountdownText();
-        modifyAbombination.ChangeModifyAction(new ModifyCountDown(BattleController.instance));
+        print("predictedCost: " + predictedCost);
+
+        // modifyAbombination.ChangeModifyAction(new ModifyCountDown(BattleController.instance));
     }
 
     public void BombIndexIncrease()
@@ -235,7 +254,9 @@ public class BombModifier : MonoBehaviour
     {
         if (!targetedBomb || nowTurnPlayCharacter.GetActionPoint() < _cost) return;
 
-        Debug.Log("오이오이");
+        Debug.Log(targetedBomb.name);
+        Debug.Log(targetedBomb.GetOwner());
+        Debug.Log(targetedBomb.attachedTarget);
 
         BoomBomb boomB = new BoomBomb(BattleController.instance);
         boomB.GetBomb(targetedBomb);
@@ -254,10 +275,11 @@ public class BombModifier : MonoBehaviour
 
     public void CalculateCost(int _cost)
     {
-        if (predictedCost > 0 && predictedCountdown > 0)
-            predictedCost += _cost;
-        else
-            predictedCost -= _cost;
+        predictedCost += _cost;
+        // if (predictedCost > 0)
+        //     predictedCost += _cost;
+        // else
+        //     predictedCost -= _cost;
     }
 
     public void AdjustDecision()
@@ -265,6 +287,7 @@ public class BombModifier : MonoBehaviour
         if (nowTurnPlayCharacter.GetActionPoint() > predictedCost)
         {
             nowTurnPlayCharacter.SubtractActionPoint(predictedCost);
+            targetedBomb.bombCurCountDown += predictedCountdown;
 
             if (targetedBomb.bombCurCountDown <= 0)
                 targetedBomb.Boom();
@@ -272,13 +295,16 @@ public class BombModifier : MonoBehaviour
         else
             Debug.Log("응 무리야");
 
-        gameObject.SetActive(false);
+        CancleDecision();
+        // gameObject.SetActive(false);
     }
 
     public void CancleDecision()
     {
         predictedCost = 0;
         predictedCountdown = 0;
+
+        ChangeCountdownText();
     }
 
     public void ChangeCountdownText()
@@ -287,20 +313,17 @@ public class BombModifier : MonoBehaviour
 
         if (predictedCountdown > 0)
         {
-            // countdownText.text = targetedBomb.bombCurCountDown.ToString() + " + " + predictedCountdown.ToString();
-            countdownText.text = (targetedBomb.bombCurCountDown + predictedCountdown).ToString();
             countdownText.color = Color.green;
+            countdownText.text = targetedBomb.bombCurCountDown + " + " + predictedCountdown.ToString();
         }
         else if (predictedCountdown < 0)
         {
-            // countdownText.text = targetedBomb.bombCurCountDown.ToString() + "  " + predictedCountdown.ToString();
-            countdownText.text = (targetedBomb.bombCurCountDown - predictedCountdown).ToString();
             countdownText.color = Color.red;
-
+            countdownText.text = targetedBomb.bombCurCountDown + " - " + (-predictedCountdown).ToString();
         }
         else
         {
-            countdownText.text = (targetedBomb.bombCurCountDown).ToString();
+            countdownText.text = targetedBomb.bombCurCountDown.ToString();
             countdownText.color = Color.gray;
         }
     }
@@ -317,16 +340,6 @@ public class BombModifier : MonoBehaviour
         }
     }
 
-    // void ManageExplosion()
-    // {
-    //     // explosionButtonList = explosionScrollRect.content.GetComponentsInChildren<Button>();
-
-    //     for (int i = 0; i < targetedBomb.explosionList.Count; i++)
-    //     {
-    //         explosionButtonList[i].gameObject.SetActive(true);
-
-    //     }
-    // }
     public void GetOutExplosion(Explosion _explosion)
     {
         targetedBomb.RemoveExplosionToList(_explosion);
@@ -344,6 +357,8 @@ public class BombModifier : MonoBehaviour
         {
             // targetedBomb = targetedBombs[(int)bombIndexSlider.value];
             targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
+            // Debug.Log("???" + targetedBomb);
+            // Debug.Log("???" + targetedBomb.attachedTarget);
 
             bombIndexSlider.maxValue = modifiedCharacter.GetHaveBombs().Count - 1;
             bombIndexSlider.minValue = 0;

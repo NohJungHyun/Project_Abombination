@@ -18,7 +18,7 @@ public abstract class Abombination : ScriptableObject
     {
         for (int i = 0; i < canAttechedEventBox.Count; i++)
         {
-            canAttechedEventBox[i].AddEventCollection(ActivateEffect);
+            // canAttechedEventBox[i].AddEventCollection(ActivateEffect);
         }
     }
 
@@ -26,7 +26,7 @@ public abstract class Abombination : ScriptableObject
     {
         for (int i = 0; i < canAttechedEventBox.Count; i++)
         {
-            canAttechedEventBox[i].RemoveEventCollection(ActivateEffect);
+            // canAttechedEventBox[i].RemoveEventCollection(ActivateEffect);
         }
     }
 }

@@ -23,17 +23,21 @@ public class DiffuseBomb : ModifyAbombination
 
     public override void CharacterDataUpdate()
     {
-        throw new System.NotImplementedException();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            battleController.SetCharacterAction(new ModifyAbombination(battleController));
+        }
+        // throw new System.NotImplementedException();
     }
 
     public override void CharacterPhysicUpdate()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void ExitCharacterAction()
     {
-        
+        bomb.Diffuse();
         // throw new System.NotImplementedException();
     }
 

@@ -49,7 +49,7 @@ public class ModifyAbombination : CharacterAction, IBombCatch
 
     public override void CharacterPhysicUpdate()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
     }
 
 

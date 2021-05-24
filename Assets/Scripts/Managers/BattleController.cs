@@ -58,12 +58,15 @@ public class BattleController : BattleStateMachine
     private void Update()
     {
         battleState.UpdateState();
+
+        if (nowAction != null)
+            nowAction.CharacterDataUpdate();
     }
 
     private void FixedUpdate()
     {
         if (nowAction != null)
-            nowAction.CharacterDataUpdate();
+            nowAction.CharacterPhysicUpdate();
     }
 
     public override void SetState(BattleState _battleState)

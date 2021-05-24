@@ -24,99 +24,99 @@ public class UItoShowBombInfo : MonoBehaviour
     public Temp_Character targetedCharacter;
     public BattleUIManager battleUIManager;
 
-    void Awake()
-    {
-        // ShowBomb = new dele(GetInfofromRaycast);
-        CheckBomb = new dele(CheckBombList);
-        CheckBomb += new dele(GetInfofromRaycast);
-        CheckBomb += new dele(ExhibitBombCondition);
-        CheckBomb += new dele(ExhibitExplosionsCondition);
-    }
+    // void Awake()
+    // {
+    //     // ShowBomb = new dele(GetInfofromRaycast);
+    //     CheckBomb = new dele(CheckBombList);
+    //     CheckBomb += new dele(GetInfofromRaycast);
+    //     CheckBomb += new dele(ExhibitBombCondition);
+    //     CheckBomb += new dele(ExhibitExplosionsCondition);
+    // }
 
-    public void CheckBombList(Temp_Character _temp)
-    {
-        ClearAllEvents();
+    // public void CheckBombList(Temp_Character _temp)
+    // {
+    //     ClearAllEvents();
 
-        if (targetedCharacter && !targetedCharacter.Equals(_temp))
-        {
-            indexBomb = 0;
-        }
+    //     if (targetedCharacter && !targetedCharacter.Equals(_temp))
+    //     {
+    //         indexBomb = 0;
+    //     }
 
-        targetedCharacter = _temp;
+    //     targetedCharacter = _temp;
 
-        if (_temp.haveBombs.Count <= 0)
-        {
-            print("CheckBombList");
+    //     if (_temp.haveBombs.Count <= 0)
+    //     {
+    //         print("CheckBombList");
 
-            bombName.text = " ";
-            bombCount.text = " ";
-            bombImage.sprite = null; // = basicSprite;
+    //         bombName.text = " ";
+    //         bombCount.text = " ";
+    //         bombImage.sprite = null; // = basicSprite;
 
-            for (int b = 0; b < explosionsinBomb.Length; b++)
-            {
-                ClearButton(explosionsinBomb[b]);
-            }
-        }
-    }
+    //         for (int b = 0; b < explosionsinBomb.Length; b++)
+    //         {
+    //             ClearButton(explosionsinBomb[b]);
+    //         }
+    //     }
+    // }
 
-    // raycast로 부터 정보를 받기
-    public void GetInfofromRaycast(Temp_Character _t)
-    {
-        print("GetInfofromRaycast");
+    // // raycast로 부터 정보를 받기
+    // public void GetInfofromRaycast(Temp_Character _t)
+    // {
+    //     print("GetInfofromRaycast");
 
-        if (indexBomb < _t.haveBombs.Count - 1)
-        {
-            afterBomb.onClick.AddListener(() => indexBomb++);
-            afterBomb.onClick.AddListener(() => CheckBomb(_t));
-            afterBomb.interactable = true;
-        }
-        else
-            afterBomb.interactable = false;
+    //     if (indexBomb < _t.haveBombs.Count - 1)
+    //     {
+    //         afterBomb.onClick.AddListener(() => indexBomb++);
+    //         afterBomb.onClick.AddListener(() => CheckBomb(_t));
+    //         afterBomb.interactable = true;
+    //     }
+    //     else
+    //         afterBomb.interactable = false;
 
-        if (indexBomb > 0)
-        {
-            beforeBomb.onClick.AddListener(() => indexBomb--);
-            beforeBomb.onClick.AddListener(() => CheckBomb(_t));
-            beforeBomb.interactable = true;
-        }
-        else
-            beforeBomb.interactable = false;
+    //     if (indexBomb > 0)
+    //     {
+    //         beforeBomb.onClick.AddListener(() => indexBomb--);
+    //         beforeBomb.onClick.AddListener(() => CheckBomb(_t));
+    //         beforeBomb.interactable = true;
+    //     }
+    //     else
+    //         beforeBomb.interactable = false;
 
-    }
+    // }
 
     // 현재 선택한 폭탄의 상태를 확인하기 위해 만든 함수.
-    public void ExhibitBombCondition(Temp_Character _t)
-    {
-        print("ExhibitBombCondition");
-        if (_t.haveBombs.Count <= 0) return;
+    // public void ExhibitBombCondition(Temp_Character _t)
+    // {
+    //     print("ExhibitBombCondition");
+    //     if (_t.haveBombs.Count <= 0) return;
 
-        bombName.text = _t.haveBombs[indexBomb].bombName;
-        bombCount.text = _t.haveBombs[indexBomb].bombCurCountDown.ToString();
-        bombImage.sprite = _t.haveBombs[indexBomb].bombImage;
+    //     bombName.text = _t.haveBombs[indexBomb].thingsName;
+    //     bombCount.text = _t.haveBombs[indexBomb].bombCurCountDown.ToString();
+    //     bombImage.sprite = _t.haveBombs[indexBomb].GetSprite();
 
-        if (BattleController.instance.nowPlayCharacter)
-        {
-            SetDiffuseEvent(targetedCharacter);
-            SetBoomEvent(targetedCharacter);
-        }
-    }
+    //     if (BattleController.instance.nowPlayCharacter)
+    //     {
+    //         SetDiffuseEvent(targetedCharacter);
+    //         SetBoomEvent(targetedCharacter);
+    //     }
+    // }
 
-    public void ExhibitExplosionsCondition(Temp_Character _t)
-    {
-        print("ExhibitExplosionsCondition");
-        if (_t.haveBombs.Count <= 0) return;
+    // public void ExhibitExplosionsCondition(Temp_Character _t)
+    // {
+    //     print("ExhibitExplosionsCondition");
+    //     if (_t.haveBombs.Count <= 0) return;
 
-        for (int e = 0; e < _t.haveBombs[indexBomb].explosionList.Count; e++) // 이거는 폭탄 내 폭발물 개수 파악
-        {
-            int explosionCheck = e;
+    //     for (int e = 0; e < _t.haveBombs[indexBomb].explosionList.Count; e++) // 이거는 폭탄 내 폭발물 개수 파악
+    //     {
+    //         int explosionCheck = e;
 
-            explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploImage;
-            explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploCountDown.ToString();
+    //         explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[indexBomb].explosionList[explosionCheck].GetSprite();
+    //         explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploCountDown.ToString();
 
-            // if (BattleController.instance.nowPlayCharacter)
-            //     explosionsinBomb[explosionCheck].onClick.AddListener(() => RemoveExplosion.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
-        }
-    }
+    //         // if (BattleController.instance.nowPlayCharacter)
+    //         //     explosionsinBomb[explosionCheck].onClick.AddListener(() => RemoveExplosion.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
+    //     }
+    // }
 
     public void SetDiffuseEvent(Temp_Character _Character)
     {

@@ -42,3 +42,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: TestArea
+    uniqueID: 2921695151
+    locked: 0

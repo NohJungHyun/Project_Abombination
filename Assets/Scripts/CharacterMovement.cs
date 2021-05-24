@@ -22,7 +22,7 @@ public class CharacterMovement : MonoBehaviour
         {
             SearchWithRayCast.GetHitSomething();
             Vector3 pos = new Vector3(SearchWithRayCast.GetHitPoint().x, 0.5f, SearchWithRayCast.hit.point.z);
-            temp_Character.transform.position = Vector3.MoveTowards(temp_Character.transform.position, pos, temp_Character.info.characterMovement * Time.deltaTime);
+            temp_Character.transform.position = Vector3.MoveTowards(temp_Character.transform.position, pos, temp_Character.GetCharacterInfo().characterMovement * Time.deltaTime);
         }
     }
 }

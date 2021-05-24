@@ -42,7 +42,6 @@ public class MoveCharacter : CharacterAction
 
     public override void CharacterDataUpdate()
     {
-        Moving();
         if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
         {
             battleController.SetCharacterAction(new WaitingOrder(battleController));
@@ -51,7 +50,8 @@ public class MoveCharacter : CharacterAction
 
     public override void CharacterPhysicUpdate()
     {
-        throw new System.NotImplementedException();
+        // throw new System.NotImplementedException();
+        Moving();
     }
 
     public override void ExitCharacterAction()
@@ -62,7 +62,7 @@ public class MoveCharacter : CharacterAction
     public void Moving()
     {
         Debug.Log("Moving");
-        Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.info.characterMovement * Time.deltaTime;
+        Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.GetCharacterInfo().characterMovement * Time.deltaTime;
         rb.MovePosition(nowTurnCharacter.GetCharacterPos() + movePos);
     }
 }

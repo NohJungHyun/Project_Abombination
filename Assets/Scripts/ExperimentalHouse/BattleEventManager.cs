@@ -2,30 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class EventDictionaryInBattle : SerializableDictionary<string, EventBox> { }
-public class BattleEventManager : MonoBehaviour
+public class BattleEventManager : EventBoxesManager
 {
-    public static BattleEventManager instance;
-    // public static List<EventBox> EventBoxes;
+    BattleController battleController;
+    // public EventDictionaryInBattle battleStateEventBoxDictionary = new EventDictionaryInBattle();
 
-    public EventDictionaryInBattle battleStateEventBoxDictionary = new EventDictionaryInBattle();
-    public EventDictionaryInBattle characterActionBoxDictionary = new EventDictionaryInBattle();
+    public List<DelegateForEventBox> battleStartList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> battleEndList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> battleWinList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> battleLoseList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> roundStartList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> roundEndList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> playerTurnStartList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> playerTurnDoList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> playerTurnEndList = new List<DelegateForEventBox>();
+    public List<DelegateForEventBox> selectActCharacterList = new List<DelegateForEventBox>();
 
-    void Awake()
+    void Start()
     {
-        if (instance != null)
-            Destroy(this);
-        instance = this;
-    }
-
-    public void ChangeEventBoxes(EventBox _from, EventBox _to)
-    {
-        _to = _from;
-    }
-
-    public void ResetEventBoxes(EventBox _eb)
-    {
-        _eb.ResetEventCollection();
+        battleController = BattleController.instance;
     }
 }

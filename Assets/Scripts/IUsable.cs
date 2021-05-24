@@ -4,7 +4,5 @@ using UnityEngine;
 
 public interface IUsable 
 {
-    void Use();
-
-    void AddToUse();
+    IEnumerator Use();
 }

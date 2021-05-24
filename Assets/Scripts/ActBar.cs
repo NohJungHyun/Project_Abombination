@@ -18,7 +18,7 @@ public class ActBar : MonoBehaviour
 
         for (int i = 0; i < battleController.characterList.Count; i++)
         {
-            actSprites.Add(battleController.characterList[i].info.characterImage);
+            actSprites.Add(battleController.characterList[i].GetCharacterInfo().GetSprite());
             GameObject buttonObj = new GameObject();
             buttonObj.AddComponent<Button>();
             // actImages[i].enabled = true;

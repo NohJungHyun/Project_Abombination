@@ -8,11 +8,9 @@ public class BattleUIManager : MonoBehaviour
 {
     public Button turnEndButton;
 
-    public Text actionPointText;
-
     public QuickBarUI quickBarUI;
 
-    public List<Button> bombButtons = new List<Button>(20);
+    // public List<Button> bombButtons = new List<Button>(20);
 
     [Header("폭탄 조작용 UI")]
     public BombModifier bombModifier;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UItoShowExplosionInfo : MonoBehaviour, ICloseUI
+public class UItoShowExplosionInfo : MonoBehaviour
 {
     // CharacterBattleAction characterBattleAction;
     public GameObject showExplosionCondition;
@@ -41,13 +41,13 @@ public class UItoShowExplosionInfo : MonoBehaviour, ICloseUI
 
         Temp_Character temp_char = BattleController.instance.nowPlayCharacter;
 
-        for (int e = 0; e < temp_char.canSetExplosions.Count; e++)
+        for (int e = 0; e < temp_char.GetCharacterInfo().canSetExplosions.Count; e++)
         {
             int explosLisnter = e;
 
-            exploSetupButton[explosLisnter].image.sprite = temp_char.canSetExplosions[explosLisnter].exploImage;
+            exploSetupButton[explosLisnter].image.sprite = temp_char.GetCharacterInfo().canSetExplosions[explosLisnter].GetSprite();
             exploSetupButton[explosLisnter].onClick.RemoveAllListeners();
-            exploSetupButton[explosLisnter].onClick.AddListener(() => AddExplosion.DoExplosionSetUp(temp_char.canSetExplosions[explosLisnter], uitoShowBomb));
+            exploSetupButton[explosLisnter].onClick.AddListener(() => AddExplosion.DoExplosionSetUp(temp_char.GetCharacterInfo().canSetExplosions[explosLisnter], uitoShowBomb));
         }
     }
     

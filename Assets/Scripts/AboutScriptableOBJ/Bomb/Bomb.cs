@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
-public class Bomb : BombGuideLine, ICanSetButtons, ICostable
+public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
 {
     //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
 
@@ -16,34 +16,31 @@ public class Bomb : BombGuideLine, ICanSetButtons, ICostable
     public event BombEventDelegate EventBoom;
     public event BombEventDelegate EventDiffuse;
 
-    // public delegate void BombEventInUpdate();
-    // public BombEventInUpdate bombEventInUpdate;
+    public Temp_Character attachedTarget;
+    public LayerMask layerMask;
 
-    public void OnEnable()
+    public List<Explosion> explosionList = new List<Explosion>(30);
+
+    // public List<Abombination> abombinationEffects = new List<Abombination>(10);
+
+    public int bombCurCountDown; // 폭탄이 폭발물과 상관없이 작동하게 되는 카운트다운을 의미.
+    public int bombMinCountDown;
+    public int bombMaxCountDown;
+
+    public float bombRadius;
+    public bool bombCanStack;
+    public int bombMaxStack;
+
+    public int setUpCost;
+    public int diffuseCost;
+    public int boomCost;
+    public int addCountdownCost;
+    public int subtractCountdownCost;
+
+    public IEnumerator Use()
     {
-        EventBoom += TestMethod;
-    }
-
-    public override void Boom() //Temp_Character _target
-    {
-        EventBoom?.Invoke(attachedTarget);
-
-        if (bombOwner.GetHaveBombs().Contains(this))// && BombManager.entireBombs.Contains(this))
-        {
-            explosionList.Clear();
-
-            bombOwner.GetHaveBombs().Remove(this);
-            // BombManager.RemoveBombFromEntire(this);
-            Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
-        }
-    }
-
-    public void SetExplosionEvent()
-    {
-        for (int e = 0; e < GetExplosionsList().Count; e++)
-        {
-
-        }
+        EventPlant?.Invoke(attachedTarget);
+        yield return null;
     }
 
     public void SetToButton(Button _button)
@@ -51,24 +48,63 @@ public class Bomb : BombGuideLine, ICanSetButtons, ICostable
 
     }
 
-    public void Use()
+    public void Boom() //Temp_Character _target
     {
+        Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
+        EventBoom?.Invoke(attachedTarget);
+        RemoveBomb();
     }
 
-    public void AddToUse()
+    public virtual void Diffuse()
     {
-
+        Debug.Log("폭탄이 해체되었다!");
+        EventDiffuse?.Invoke(attachedTarget);
+        RemoveBomb();
     }
 
-    public Sprite GetSprite()
+    public List<Explosion> GetExplosionsList()
     {
-        return bombImage;
+        return explosionList;
     }
 
-    public ICanSetButtons GetCanSet()
+    public void SetExplosionList(List<Explosion> _explosionList)
     {
-        return this;
+        explosionList = _explosionList;
     }
+
+    public void AddExplosionToList(Explosion _e, int _i)
+    {
+        explosionList.Insert(_i, _e);
+    }
+
+    public void RemoveExplosionToList(Explosion _e)
+    {
+        if (explosionList.Contains(_e))
+        {
+            explosionList.Remove(_e);
+        }
+    }
+
+    public virtual void SetCountDown(int _min, int _max)
+    {
+        this.bombCurCountDown = Random.Range(_min, _max + 1);
+    }
+
+    public virtual void SetCountDown()
+    {
+        this.bombCurCountDown = Random.Range(this.bombMinCountDown, bombMaxCountDown + 1);
+    }
+
+    public void SetbombOwner(Temp_Character _tempCharacter)
+    {
+        owner = _tempCharacter;
+    }
+
+    public void SetAttachedTarget(Temp_Character _target)
+    {
+        attachedTarget = _target;
+    }
+
 
     public int PayCost(int _costNum)
     {
@@ -80,8 +116,31 @@ public class Bomb : BombGuideLine, ICanSetButtons, ICostable
         return false;
     }
 
-    public void TestMethod(Temp_Character _t){
-        Debug.Log("안녕하세요?");
+    public void SetExplosionEvent()
+    {
+        for (int e = 0; e < GetExplosionsList().Count; e++)
+        {
+
+        }
+    }
+
+    public void RemoveBomb()
+    {
+        if (owner.GetHaveBombs().Contains(this))// && BombManager.entireBombs.Contains(this))
+        {
+            explosionList.Clear();
+            owner.GetHaveBombs().Remove(this);
+        }
+    }
+
+    // public void TestMethod(Temp_Character _t)
+    // {
+    //     Debug.Log("안녕하세요?");
+    // }
+
+    public ICanSetButtons GetCanSet()
+    {
+        return this;
     }
 }
 

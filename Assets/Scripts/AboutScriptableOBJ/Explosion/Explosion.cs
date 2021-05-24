@@ -9,20 +9,8 @@ using UnityEngine.UI;
 // AccessAgree?: 보다 상위 행동을 진행하기 위해 
 public enum ExplosionType { Attack, Defend, Buff, Debuff, Heal, AccessAgree }
 
-public class Explosion : ScriptableObject, ICanSetButtons, ICostable
+public class Explosion : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
 {
-    // 폭탄에 담길 폭발물을 의미하는 클래스.
-
-    public string exploName;
-
-    [TextArea]
-    public string exploDescription;
-
-    public Sprite exploImage;
-    // public GameObject exploEffect;
-
-    public Temp_Character explosionOwner;
-
     public int exploRadius;
     public bool exploCanStack;
     public int exploMaxStack;
@@ -65,6 +53,7 @@ public class Explosion : ScriptableObject, ICanSetButtons, ICostable
 
     public void InvokeExplosionWithBoom(Temp_Character _explosionTarget)
     {
+        Debug.Log("흐음...");
         explosionBoomCarrier?.Invoke(_explosionTarget);
     }
     public void InvokeExplosionWithDiffuse(Temp_Character _explosionTarget)
@@ -74,12 +63,16 @@ public class Explosion : ScriptableObject, ICanSetButtons, ICostable
 
     public void SetExplosionOwner(Temp_Character _owner)
     {
-        explosionOwner = _owner;
+        owner = _owner;
     }
-
 
     public virtual void SetExplosionAllEvent(Bomb _b)
     {
+        // _b.EventPlant += InvokeExplosionWithPlant;
+        // _b.EventUpdate += InvokeExplosionWithUpdate;
+        // _b.EventBoom += InvokeExplosionWithBoom;
+        // _b.EventDiffuse += InvokeExplosionWithDiffuse;      
+
         _b.EventPlant += InvokeExplosionWithPlant;
         _b.EventUpdate += InvokeExplosionWithUpdate;
         _b.EventBoom += InvokeExplosionWithBoom;
@@ -99,20 +92,11 @@ public class Explosion : ScriptableObject, ICanSetButtons, ICostable
 
     }
 
-    public void Use()
+    public IEnumerator Use()
     {
-
+        yield return null;
     }
 
-    public void AddToUse()
-    {
-
-    }
-
-    public Sprite GetSprite()
-    {
-        return exploImage;
-    }
     public ICanSetButtons GetCanSet()
     {
         return this;

@@ -9,7 +9,7 @@ public class BattleLoseState : BattleState
         base.battleController = _battleController;
         // SetEventBoxByString("BattleLose");
         // BattleStateEventBoxes.instance.CallByString("BattleLose");
-        SetEventBox(BattleEventManager.instance.battleStateEventBoxDictionary["BattleLose"]);
+        
     }
 
     public override void EnterState()

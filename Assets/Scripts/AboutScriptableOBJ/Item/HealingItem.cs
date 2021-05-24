@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealingItem : ItemData
 {
-   public new void Use()
+   public void Use()
    {
        // base.Use();
    }

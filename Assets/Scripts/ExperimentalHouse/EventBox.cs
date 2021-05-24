@@ -2,34 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System;
 
 public abstract class EventBox : ScriptableObject
 {
-    public delegate void EventDelegate();
-    public event EventDelegate eventCollection;
+    public delegate void EventBoxDelegate();
+    public event EventBoxDelegate characterActionEventBoxDelegate;
+    public Queue<EventBoxDelegate> eventBoxQueue;
 
-    public virtual void InvokeEventCollection()
+    public virtual void InvokeEventQueue()
     {
-        eventCollection?.Invoke();
+        if(eventBoxQueue.Count > 0)
+        {
+            EventBoxDelegate ed = eventBoxQueue.Peek();
+            ed?.Invoke();
+
+            eventBoxQueue.Dequeue();
+        }
     }
 
-    public virtual void ResetEventCollection()
+    public virtual void ResetEventsInQueue()
     {
-        eventCollection = null;
-    }
-
-    public virtual void SetEventCollection(EventDelegate _e)
-    {
-        eventCollection = _e;
-    }
-
-    public virtual void AddEventCollection(EventDelegate _e)
-    {
-        eventCollection += _e;
-    }
-
-    public virtual void RemoveEventCollection(EventDelegate _e)
-    {
-        eventCollection -= _e;
+        eventBoxQueue = null;
     }
 }

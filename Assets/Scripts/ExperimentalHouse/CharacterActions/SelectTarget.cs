@@ -30,8 +30,8 @@ public class SelectTarget : CharacterAction
         // throw new System.NotImplementedException();
         float hitPointX = SearchWithRayCast.GetHitPoint().x;
         float hitPointZ = SearchWithRayCast.GetHitPoint().z;
-        float clampX = Mathf.Clamp(hitPointX, hitPointX - nowTurnCharacter.info.characterDetectRange, hitPointX + nowTurnCharacter.info.characterDetectRange);
-        float clampZ = Mathf.Clamp(hitPointZ, hitPointZ - nowTurnCharacter.info.characterDetectRange, hitPointZ + nowTurnCharacter.info.characterDetectRange);
+        float clampX = Mathf.Clamp(hitPointX, hitPointX - nowTurnCharacter.GetCharacterInfo().characterDetectRange, hitPointX + nowTurnCharacter.GetCharacterInfo().characterDetectRange);
+        float clampZ = Mathf.Clamp(hitPointZ, hitPointZ - nowTurnCharacter.GetCharacterInfo().characterDetectRange, hitPointZ + nowTurnCharacter.GetCharacterInfo().characterDetectRange);
 
         Vector3 clampVector = new Vector3(clampX, 0, clampZ);
 

@@ -46,8 +46,8 @@ public class SelectActCharacter : BattleState
             battleController.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
             character = SearchWithRayCast.GetHitCharacter();
 
-            if (character.GetHaveBombs().Count > 0)
-                CharacterInfoUI.instance.FillWithBomb(character.GetCanSetBombs());
+            // if (character.GetHaveBombs().Count > 0)
+            //     CharacterInfoUI.instance.FillWithBomb(character.GetCanSetBombs());
 
             canControlCamera = false;
 
@@ -87,9 +87,10 @@ public class SelectActCharacter : BattleState
         {
             canControlCamera = false;
             playThisCharacterButton.gameObject.SetActive(false);
+            battleUIManager.quickBarUI.SetNowCharacter(character);
 
-            if (player.AdjustPoint(false, character.info.needCommandPoint))
-                battleUIManager.selectCharacterUI.SpendCommandPoints(character.info.needCommandPoint);
+            if (player.AdjustPoint(false, character.GetCharacterInfo().needCommandPoint))
+                battleUIManager.selectCharacterUI.SpendCommandPoints(character.GetCharacterInfo().needCommandPoint);
         }
     }
 

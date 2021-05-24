@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class characterEventBox : SerializableDictionary<int, EventBox> { }
+
 public enum ClassJob { Warrrior, Mage, Thief }
 public enum ClassifyWhatisIt { Character, Object }
 public enum CharacterType { Human, Construct }
 
 [CreateAssetMenu(fileName = "New Character", menuName = "ScriptableObjects/CharacterMaking", order = 1)]
-public class CharacterInfo : ScriptableObject
+public class CharacterInfo : NeedPlayerThings
 {
     #region 1. 캐릭터 기본 명시 사항 
     public ClassifyWhatisIt definition;
     public CharacterType characterType;
 
-    public string characterName;
-    //public Sprite characterImage;
-    public Sprite characterImage;
     public GameObject characterModel;
     #endregion
 
@@ -45,6 +45,35 @@ public class CharacterInfo : ScriptableObject
     public int minActionPoint;
 
     public int needCommandPoint;
+
+    // 캐릭터가 설치가능한 폭발물 리스트
+    public List<Explosion> canSetExplosions = new List<Explosion>(6);
+    // 캐릭터가 설치가능한 폭탄 리스트
+    public List<Bomb> canSetBombs = new List<Bomb>(6);
+    public List<Bomb> haveBombs = new List<Bomb>(6);
+
+    public List<ItemData> haveItems = new List<ItemData>();
+    public List<SkillData> haveSkills = new List<SkillData>();
+
+    public List<ActiveItem> preparedItems = new List<ActiveItem>(6);
+    public List<ActiveSkill> preparedSkills = new List<ActiveSkill>(6);
+
+    public characterEventBox characterEventBox = new characterEventBox(){
+        {0, null},
+        {1, null},
+        {2, null},
+        {3, null},
+        {4, null},
+        {5, null},
+        {6, null},
+        {7, null},
+        {8, null},
+        {9, null},
+        {10, null},
+        {11, null},
+        {12, null},
+        {13, null}
+    };
     #endregion
 
     #region 4. 캐릭터 능력치 변수로부터 Stat 적용.
@@ -59,7 +88,7 @@ public class CharacterInfo : ScriptableObject
     public Stat statInitiative { get; set; }
     #endregion
 
-    private void Awake()
+    public void SetBasic()
     {
         statAttack = new Stat(characterAttack);
         statDefense = new Stat(characterDefense);
@@ -71,6 +100,12 @@ public class CharacterInfo : ScriptableObject
 
         currentHP = maxHP;
         curActionPoint = maxActionPoint;
+
+        
+        // for (int i = 0; i < characterEventBox.Count; i++)
+        // {
+        //     Debug.Log(characterEventBox[i].name);
+        // }
     }
 
     public void TakeDamage(int _dmg)

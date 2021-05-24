@@ -44,7 +44,7 @@ public class BoomBomb : ModifyAbombination
     public override void ExitCharacterAction()
     {
         Debug.Log("BoomBomb에서 Exit를 담당하고 있답니다");
-        BattleEventManager.instance.characterActionBoxDictionary["BoomBomb"].InvokeEventCollection();
+        // BattleEventManager.instance.characterActionBoxDictionary["BoomBomb"].InvokeEventCollection();
         bomb.Boom();
         // throw new System.NotImplementedException();
     }

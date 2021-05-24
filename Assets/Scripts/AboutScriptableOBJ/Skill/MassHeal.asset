@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ece47338399a645b8e71684f5c47bd, type: 3}
+  m_Name: MassHeal
+  m_EditorClassIdentifier: 
+  thingsName: "\uAD11\uC5ED\uD790"
+  idx: 50001
+  desc: "\uC544, \uD790\uC774 \uBCF5\uC0AC\uAC00 \uB41C\uB2E4\uB2C8\uAE4C?!\t"
+  portrait: {fileID: 21300000, guid: 23ce1973292001a47a75e36d8aa93e73, type: 3}
+  skillEarnPrerequisite: 0
+  skillUsePrerequisite: 0
+  needTarget: 1
+  canUseNum: 1
+  needCost: 1
+  cooltime: 5
+  costActionPoint: 1
+  healNum: 20
+  selectTargetNum: 2
+  selectRange: 20
+  selectedCharacter: []

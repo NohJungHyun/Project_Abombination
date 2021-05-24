@@ -2,125 +2,141 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(characterEventBox))]
 public class Temp_Character : MonoBehaviour, IDamageable
 {
-    public CharacterInfo characterInfo;
+    [SerializeField]
+    CharacterInfo characterInfo;
 
-    public CharacterInfo info { get; set; }
+    CharacterInfo info { get; set; }
 
     public bool canMove;
     public bool canActwithBomb;
     public bool canUseSkill;
 
-    // 캐릭터가 설치가능한 폭발물 리스트
-    public List<Explosion> canSetExplosions = new List<Explosion>(6);
-    // 캐릭터가 설치가능한 폭탄 리스트
-    public List<Bomb> canSetBombs = new List<Bomb>(6);
-    public List<Bomb> haveBombs = new List<Bomb>(6);
-
-    public List<ItemData> haveItems = new List<ItemData>(6);
-    public List<SkillData> haveSkills = new List<SkillData>(6);
-
     Vector3 basicPos;
 
     public int actionPoint;
+    public int curHP;
 
     float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
 
-    // 버프 List 제작 
-    // 장비 List 제작
-    // 스킬 List 제작
+    public delegate void CharacterDelegate();
+    public event CharacterDelegate UpdateDelegate;
+    public event CharacterDelegate TurnStartDelegate;
+    public event CharacterDelegate TakeDamageDelegate;
+    public event CharacterDelegate TurnEndDelegate;
+
 
     void Start()
     {
         info = Instantiate(characterInfo);
+        info.SetBasic();
+
+        curHP = info.maxHP;
 
         this.actionPoint = info.maxActionPoint;
 
-        for (int b = 0; b < canSetBombs.Count; b++)
+        for (int b = 0; b < characterInfo.canSetBombs.Count; b++)
         {
-            canSetBombs[b] = Instantiate(canSetBombs[b]);
+            info.canSetBombs[b] = ScriptableObject.Instantiate(characterInfo.canSetBombs[b]);
 
-            canSetBombs[b].bombOwner = this;
+            info.canSetBombs[b].SetOwner(this);
         }
 
-        for (int h = 0; h < haveBombs.Count; h++)
+        for (int h = 0; h < characterInfo.haveBombs.Count; h++)
         {
-            haveBombs[h] = ScriptableObject.Instantiate(haveBombs[h]);
-            haveBombs[h].SetCountDown();
-            // Debug.Log("가지고 있는 폭탄의 이름: " + haveBombs[h].bombName + ", " + "가지고 있는 폭탄의 카운트 다운: " + haveBombs[h].bombCurCountDown);
-            // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
-            haveBombs[h].attachedTarget = this;
+            info.haveBombs[h] = ScriptableObject.Instantiate(characterInfo.haveBombs[h]);
+            info.haveBombs[h].SetCountDown();
 
-            if (!haveBombs[h].bombOwner)
+            // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
+            info.haveBombs[h].SetAttachedTarget(this);
+
+            if (!characterInfo.haveBombs[h].GetOwner())
             {
-                haveBombs[h].bombOwner = this;
+                info.haveBombs[h].SetOwner(this);
             }
 
-            if (haveBombs[h].GetExplosionsList().Count > 0)
+            if (characterInfo.haveBombs[h].GetExplosionsList().Count > 0)
             {
-                for (int e = 0; e < haveBombs[h].GetExplosionsList().Count; e++)
+                for (int e = 0; e < characterInfo.haveBombs[h].GetExplosionsList().Count; e++)
                 {
-                    haveBombs[h].GetExplosionsList()[e].GetRidOfExplosionAllEvent(haveBombs[h]);
-                    haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(haveBombs[h]);
+                    // info.haveBombs[h].GetExplosionsList()[e].GetRidOfExplosionAllEvent(characterInfo.haveBombs[h]);
+                    info.haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(info.haveBombs[h]);
                 }
             }
         }
 
-        for (int e = 0; e < canSetExplosions.Count; e++)
+        for (int e = 0; e < characterInfo.canSetExplosions.Count; e++)
         {
-            canSetExplosions[e] = ScriptableObject.Instantiate(canSetExplosions[e]);
-            canSetExplosions[e].explosionOwner = this;
+            info.canSetExplosions[e] = ScriptableObject.Instantiate(characterInfo.canSetExplosions[e]);
+            info.canSetExplosions[e].SetOwner(this);
         }
+
         basicPos = transform.position;
     }
 
     public List<Bomb> GetCanSetBombs()
     {
-        return canSetBombs;
+        return info.canSetBombs;
     }
     public List<Bomb> GetHaveBombs()
     {
-        return haveBombs;
+        return info.haveBombs;
     }
 
     public List<Explosion> GetCanSetExplosions()
     {
-        return canSetExplosions;
+        return info.canSetExplosions;
     }
     public void AddBombtoHaveBombs(Bomb _b, int _p)
     {
-        haveBombs.Insert(_p, _b);
+        info.haveBombs.Insert(_p, _b);
     }
 
     public void AddBombtoCanSetBombs(Bomb _b, int _p)
     {
-        canSetBombs.Insert(_p, _b);
+        info.canSetBombs.Insert(_p, _b);
     }
 
     public void RemoveBombtoHaveBombs(Bomb _b)
     {
-        if (haveBombs.Equals(_b))
+        if (info.haveBombs.Equals(_b))
         {
-            haveBombs.Remove(_b);
+            info.haveBombs.Remove(_b);
         }
     }
 
     public void RemoveBombtoCanSetBombs(Bomb _b)
     {
-        if (canSetBombs.Equals(_b))
+        if (info.canSetBombs.Equals(_b))
         {
-            canSetBombs.Remove(_b);
+            info.canSetBombs.Remove(_b);
         }
     }
 
     public void TakeDamage(int _dmg)
     {
-        Debug.Log("피해를 입었다: " + _dmg);
+        Debug.Log(this.name + "가 피해를 입었다: " + _dmg);
 
         info.currentHP -= _dmg;
+        curHP -= _dmg;
         if (info.currentHP <= 0)
             Dead();
+    }
+
+    public void TakeHeal(int _heal)
+    {
+        Debug.Log(this.name + "가 체력을 회복하였다: " + _heal);
+
+        if (curHP >= curHP + _heal)
+            curHP = curHP + _heal;
+        else
+        {
+            info.currentHP += _heal;
+            curHP += _heal;
+        }
+
     }
 
     public void Dead()
@@ -174,11 +190,41 @@ public class Temp_Character : MonoBehaviour, IDamageable
 
     public List<ItemData> GetHaveItems()
     {
-        return haveItems;
+        return characterInfo.haveItems;
     }
 
     public List<SkillData> GetHaveSkills()
     {
-        return haveSkills;
+        return characterInfo.haveSkills;
+    }
+
+    public void AddEventBox(int _idx, EventBox _eb)
+    {
+        characterInfo.characterEventBox.Add(_idx, _eb);
+    }
+
+    public void RemoveEventBox(int _idx)
+    {
+        if (characterInfo.characterEventBox.ContainsKey(_idx) && characterInfo.characterEventBox[_idx] == null)
+            characterInfo.characterEventBox.Remove(_idx);
+    }
+
+    public CharacterInfo GetCharacterInfo()
+    {
+        return this.info;
+    }
+
+    public void SetCurInfoToDraft()
+    {
+        characterInfo = info;
+    }
+
+    public List<ActiveItem> GetPreparedItems()
+    {
+        return info.preparedItems;
+    }
+    public List<ActiveSkill> GetPreparedSkills()
+    {
+        return info.preparedSkills;
     }
 }
