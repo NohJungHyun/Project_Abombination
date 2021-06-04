@@ -70,9 +70,14 @@ public class SelectActCharacter : BattleState
         {
             DecidePlayCharacter();
         }
-        else if(!battleUIManager.selectCharacterUI.isActiveAndEnabled)
-        {   
+        else if (!battleUIManager.selectCharacterUI.isActiveAndEnabled)
+        {
             battleController.SetState(new PlayerTurnStartState(battleController));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            battleController.SetState(new EnemyPhase(battleController));
         }
     }
 

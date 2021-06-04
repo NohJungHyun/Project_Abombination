@@ -42,6 +42,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: TestArea
-    uniqueID: 2921695151
+  - name: MoveLimitSprite
+    uniqueID: 723981053
     locked: 0

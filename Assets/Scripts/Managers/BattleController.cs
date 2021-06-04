@@ -73,7 +73,7 @@ public class BattleController : BattleStateMachine
     {
         if (battleState != null)
             battleState.ExitState();
-        
+
         battleState = _battleState;
 
         if (battleState != null)
@@ -99,12 +99,12 @@ public class BattleController : BattleStateMachine
 
     public void SetCharacterAction(CharacterAction _CharacterAction)
     {
-        if(nowAction != null)
+        if (nowAction != null)
             nowAction.ExitCharacterAction();
 
         nowAction = _CharacterAction;
-         
-        if(nowAction != null)
+
+        if (nowAction != null)
             nowAction.EnterCharacterAction();
     }
 
@@ -125,7 +125,7 @@ public class BattleController : BattleStateMachine
 
     public void RemoveTargetedCharacter(Transform _target)
     {
-        if(targetedCharacters.Equals(_target))
+        if (targetedCharacters.Equals(_target))
             targetedCharacters.Remove(_target);
     }
 

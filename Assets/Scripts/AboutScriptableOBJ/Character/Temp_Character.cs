@@ -150,6 +150,10 @@ public class Temp_Character : MonoBehaviour, IDamageable
         return this.transform.position;
     }
 
+    public Vector3 GetBasicPos(){
+        return basicPos;
+    }
+
     public void SetCharacterPos(Vector3 _pos)
     {
         this.transform.position = _pos;

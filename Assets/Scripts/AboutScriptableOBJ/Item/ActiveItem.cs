@@ -2,41 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveItem : ItemData, IUsable
+public abstract class ActiveItem : ItemData, IUsable
 {
     public delegate IEnumerator ActivateDelegate();
     public ActivateDelegate Activation;
 
     // public List<ActivateDelegate> activateList = new List<ActivateDelegate>();
 
-    void OnEnable()
-    {
-        // if (activateList.Count < 0) return;
+    public abstract IEnumerator Use();
 
-        // activateList.Add(Use);
-        // activateList.Add(SelectTarget);
-        Activation += Use;
-    }
+    // void OnEnable()
+    // {
+    //     // if (activateList.Count < 0) return;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    //     // activateList.Add(Use);
+    //     // activateList.Add(SelectTarget);
+    //     Activation += Use;
+    // }
 
-    }
+    // public virtual IEnumerator Use()
+    // {
+    //     Activation?.Invoke();
+    //     yield return null;
+    // }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public IEnumerator Use()
-    {
-        yield return null;
-    }
-
-    public void OnDisable()
-    {
-        Activation -= Use;
-    }
+    // public void OnDisable()
+    // {
+    //     Activation -= Use;
+    // }
 }

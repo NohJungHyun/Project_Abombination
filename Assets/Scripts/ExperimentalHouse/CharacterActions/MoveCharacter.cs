@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
 
 // [CreateAssetMenu(menuName = "ScriptableObjects/CharacterActions/MoveCharacter")]
 public class MoveCharacter : CharacterAction
@@ -9,6 +10,7 @@ public class MoveCharacter : CharacterAction
     bool moving;
     ConeRangeMesh coneRangeMesh;
     Rigidbody rb;
+    NavMeshAgent navMeshAgent;
 
     CameraController cameraController;
 
@@ -20,6 +22,7 @@ public class MoveCharacter : CharacterAction
 
         coneRangeMesh = nowTurnCharacter.GetComponentInChildren<ConeRangeMesh>();
         rb = nowTurnCharacter.GetComponent<Rigidbody>();
+        navMeshAgent = nowTurnCharacter.GetComponent<NavMeshAgent>();
 
         cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
         // Setting ㄱㄱ        
@@ -46,12 +49,14 @@ public class MoveCharacter : CharacterAction
         {
             battleController.SetCharacterAction(new WaitingOrder(battleController));
         }
+        MovingWithNavMesh();
     }
 
     public override void CharacterPhysicUpdate()
     {
         // throw new System.NotImplementedException();
-        Moving();
+        // Moving();
+        
     }
 
     public override void ExitCharacterAction()
@@ -64,5 +69,12 @@ public class MoveCharacter : CharacterAction
         Debug.Log("Moving");
         Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.GetCharacterInfo().characterMovement * Time.deltaTime;
         rb.MovePosition(nowTurnCharacter.GetCharacterPos() + movePos);
+    }
+
+    public void MovingWithNavMesh()
+    {
+        Debug.Log("Moving");
+        Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.GetCharacterInfo().characterMovement ; //* Time.deltaTime
+        navMeshAgent.destination = nowTurnCharacter.transform.position + movePos;
     }
 }
