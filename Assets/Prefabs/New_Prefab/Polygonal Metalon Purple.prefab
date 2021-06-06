@@ -825,6 +825,7 @@ GameObject:
   - component: {fileID: 4350436197641710346}
   - component: {fileID: 4350436197641710347}
   - component: {fileID: 4350436197641710349}
+  - component: {fileID: 8296139382305658530}
   m_Layer: 0
   m_Name: Polygonal Metalon Purple
   m_TagString: Untagged
@@ -964,6 +965,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866605fb43c14a744ad64b3bb5884f93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8296139382305658530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4349044552679576463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 646ab32e936093943bb5e70db432a1b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlledCharacter: {fileID: 0}
+  characterTurnActions: []
 --- !u!1 &4349053904258295073
 GameObject:
   m_ObjectHideFlags: 0

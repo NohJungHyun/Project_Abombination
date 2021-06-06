@@ -19,7 +19,7 @@ public class SelectActCharacter : BattleState
     {
         base.battleController = _battleController;
 
-        player = battleController.player;
+        player = (Player)battleController.nowTurnContoller;
         cameraController = _battleController.cameraController;
 
         battleUIManager = battleController.battleUIManager;

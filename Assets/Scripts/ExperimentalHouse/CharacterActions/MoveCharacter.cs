@@ -7,6 +7,8 @@ using UnityEngine.AI;
 // [CreateAssetMenu(menuName = "ScriptableObjects/CharacterActions/MoveCharacter")]
 public class MoveCharacter : CharacterAction
 {
+    public MoveCharacter instance;
+
     bool moving;
     ConeRangeMesh coneRangeMesh;
     Rigidbody rb;

@@ -2708,9 +2708,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleEventManager: {fileID: 246501641}
-  player: {fileID: 722878560}
+  nowTurnContoller: {fileID: 0}
   battleUIManager: {fileID: 1208872831}
   cameraController: {fileID: 963194230}
+  battleParticipants:
+  - {fileID: 722878560}
+  - {fileID: 0}
   playerCharactersList: []
   enemyCharacterList: []
   characterList:
@@ -8177,9 +8180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85e066b1aaffe634ba0e9629d93b1f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleController: {fileID: 246501639}
   maxCommandPoint: 4
   curCommandPoint: 4
-  playerCharacters: []
+  haveCharacters: []
   selectCharacterUI: {fileID: 370657901}
 --- !u!1001 &723643003
 PrefabInstance:
@@ -13153,10 +13157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686b227c310d4a74eab41823d17a2916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sss: {fileID: 0}
-  radius: 0.5
-  border: 3
-  mask: {fileID: 0}
 --- !u!212 &1109883089
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -25050,6 +25050,10 @@ PrefabInstance:
     - target: {fileID: 4861878314694810133, guid: 7d1503bce4b2e164699bbf5920bd71f9, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178277334612182970, guid: 7d1503bce4b2e164699bbf5920bd71f9, type: 3}
+      propertyPath: characterTurnActions.Array.size
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d1503bce4b2e164699bbf5920bd71f9, type: 3}

@@ -14,11 +14,13 @@ public class BattleController : BattleStateMachine
 
     public static BattleController instance;
 
-    public Player player;
+    public Participants nowTurnContoller;
 
     public BattleUIManager battleUIManager;
 
     public CameraController cameraController;
+
+    public List<Participants> battleParticipants = new List<Participants>(10);
 
     public List<Temp_Character> playerCharactersList = new List<Temp_Character>(10);
     public List<Temp_Character> enemyCharacterList = new List<Temp_Character>(10);
@@ -48,11 +50,14 @@ public class BattleController : BattleStateMachine
     void Awake()
     {
         instance = this;
+
     }
 
     private void Start()
     {
+        nowTurnContoller = battleParticipants[0];
         SetState(new BattleStartState(this));
+
     }
 
     private void Update()

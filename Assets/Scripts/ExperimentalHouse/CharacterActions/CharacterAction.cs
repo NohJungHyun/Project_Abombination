@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// [System.Serializable]
-public abstract class CharacterAction //: ScriptableObject
+[System.Serializable]
+public abstract class CharacterAction
 {
     protected static Temp_Character nowTurnCharacter;
     protected static BattleController battleController;
