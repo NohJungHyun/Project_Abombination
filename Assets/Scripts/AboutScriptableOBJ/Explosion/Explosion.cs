@@ -111,4 +111,9 @@ public class Explosion : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
     {
         return false;
     }
+
+    public IEnumerator PlayUseAnimation()
+    {
+        return null;
+    }
 }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUsable 
+public interface IWait : ICharacterAction
 {
-    IEnumerator Use();
 
-    IEnumerator PlayUseAnimation();
 }

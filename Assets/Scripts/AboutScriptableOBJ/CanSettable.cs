@@ -20,4 +20,9 @@ public abstract class CanSettable : ScriptableObject, IUsable
         Debug.Log("킹튼 사용함");
         yield return null;
     }
+
+    public IEnumerator PlayUseAnimation()
+    {
+        return null;
+    }
 }

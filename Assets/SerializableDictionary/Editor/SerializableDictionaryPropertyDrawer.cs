@@ -5,8 +5,6 @@ using UnityEditor;
 using System.Reflection;
 using System;
 
-[CustomPropertyDrawer(typeof(EventDictionaryInBattle))]
-[CustomPropertyDrawer(typeof(characterEventBox))]
 public class SerializableDictionaryPropertyDrawer : PropertyDrawer
 {
 	const string KeysFieldName = "m_keys";

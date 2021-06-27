@@ -14,10 +14,10 @@ public class BattleStartState : BattleState
     {
         Debug.Log("BattleStart!");  
 
-        for(int i = 0; i < battleEventManager.battleStartList.Count; i++)
-        {
-            battleEventManager.battleStartList[i]?.Invoke();
-        }
+        // for(int i = 0; i < battleEventManager.battleStartList.Count; i++)
+        // {
+        //     battleEventManager.battleStartList[i]?.Invoke();
+        // }
           
         battleController.characterList.AddRange(battleController.enemyCharacterList);
         battleController.characterList.AddRange(battleController.playerCharactersList);

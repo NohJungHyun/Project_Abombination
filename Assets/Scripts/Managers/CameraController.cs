@@ -36,28 +36,28 @@ public class CameraController : MonoBehaviour
 
     // 코루틴으로 1초마다 돌아가게 만들까?
 
-    public void CameraZoomIn()
-    {
-        if (zoomingCharacter)
-        {
-            if (doZoom)
-            {
-                Vector3 relativePos = mainCamera.transform.position - zoomingCharacter.transform.position;
-                //Quaternion camTurnAngle = Quaternion.AngleAxis(0.25f, Vector3.up); //Input.GetAxis("Mouse X") * 0.5f : 마우스 입력에 따라 바뀌게 끔 하는 식은 요거.
-                //cameraOffset = camTurnAngle * cameraOffset; 
+    // public void CameraZoomIn()
+    // {
+    //     if (zoomingCharacter)
+    //     {
+    //         if (doZoom)
+    //         {
+    //             Vector3 relativePos = mainCamera.transform.position - zoomingCharacter.transform.position;
+    //             //Quaternion camTurnAngle = Quaternion.AngleAxis(0.25f, Vector3.up); //Input.GetAxis("Mouse X") * 0.5f : 마우스 입력에 따라 바뀌게 끔 하는 식은 요거.
+    //             //cameraOffset = camTurnAngle * cameraOffset; 
 
-                mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed);
-                //Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, Camera.main.transform.rotation * camTurnAngle, Time.deltaTime);
-                //Camera.main.transform.LookAt(Vector3.Lerp(Camera.main.transform.position, nowPlayCharacter.transform.position + cameraOffset, cameraMoveSpeed));
-                mainCamera.transform.LookAt(Vector3.Lerp(zoomingCharacter.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed));
-            }
-            else
-            {
-                mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, initialCameraPos, cameraZoomInMoveSpeed);
-                mainCamera.transform.LookAt(Vector3.Lerp(zoomingCharacter.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed));
-            }
-        }
-    }
+    //             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed);
+    //             //Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, Camera.main.transform.rotation * camTurnAngle, Time.deltaTime);
+    //             //Camera.main.transform.LookAt(Vector3.Lerp(Camera.main.transform.position, nowPlayCharacter.transform.position + cameraOffset, cameraMoveSpeed));
+    //             mainCamera.transform.LookAt(Vector3.Lerp(zoomingCharacter.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed));
+    //         }
+    //         else
+    //         {
+    //             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, initialCameraPos, cameraZoomInMoveSpeed);
+    //             mainCamera.transform.LookAt(Vector3.Lerp(zoomingCharacter.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed));
+    //         }
+    //     }
+    // }
 
     public void MoveToCharacter(Transform _CharacterPos)
     {
@@ -92,6 +92,8 @@ public class CameraController : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+
+        Debug.Log(transform.position);
 
         Vector3 cameraMovePos = new Vector3(h, 0, v) * cameraMoveSpeed * Time.deltaTime;
         //mainCamera.transform.position += cameraBasePos + cameraMovePos;

@@ -30,4 +30,8 @@ public abstract class ActiveItem : ItemData, IUsable
     // {
     //     Activation -= Use;
     // }
+    public IEnumerator PlayUseAnimation()
+    {
+        return null;
+    }
 }

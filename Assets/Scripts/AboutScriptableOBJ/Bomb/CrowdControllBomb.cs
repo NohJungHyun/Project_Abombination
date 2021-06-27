@@ -27,7 +27,7 @@ public class CrowdControllBomb : Bomb
 
         EventDiffuse -= FreezeTarget;
 
-        _Character.TurnEndDelegate += (() => ReturnState(_Character));
+        // _Character.TurnEndDelegate += (() => ReturnState(_Character));
     }
 
     void ReturnState(Temp_Character _Character)
@@ -35,6 +35,6 @@ public class CrowdControllBomb : Bomb
         Debug.Log("얼음이 사라지노라..");
         _Character.GetCharacterInfo().characterMovement = adjustNum;
 
-        _Character.TurnEndDelegate -= (() => ReturnState(_Character));
+        // _Character.TurnEndDelegate -= (() => ReturnState(_Character));
     }
 }

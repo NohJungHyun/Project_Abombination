@@ -11,12 +11,8 @@ public class AttackableBomb : Bomb
     void OnEnable()
     {
         EventBoom += CauseDamageToTarget;
+        boomEffect22.SetActive(false);
     }
-
-    // public void SetEventToCharacterActions()
-    // {
-    //     EventBoom += CauseDamageToTarget;
-    // }
 
     public void ShowString()
     {
@@ -29,12 +25,23 @@ public class AttackableBomb : Bomb
 
         foreach (Collider col in cols)
         {
-            col.GetComponent<Temp_Character>().TakeDamage(damage);
+            col.GetComponent<Temp_Character>().TakeDamage(damage + GetOwner().GetCharacterInfo().characterAttack);
         }
+    }
+
+    public IEnumerator OnCallingBoom(Temp_Character _Character)
+    {
+        ShowString();
+        PlayUseAnimation();
+        yield return new WaitForSeconds(boomEffect22.GetComponent<ParticleSystem>().main.duration * 0.5f);
+
+        CauseDamageToTarget(_Character);
+        yield return null;
     }
 
     public void OnDisable()
     {
         EventBoom -= CauseDamageToTarget;
+        boomEffect22.SetActive(false);
     }
 }

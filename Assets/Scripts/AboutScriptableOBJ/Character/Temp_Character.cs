@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(characterEventBox))]
 public class Temp_Character : MonoBehaviour, IDamageable
 {
     [SerializeField]
@@ -20,13 +19,6 @@ public class Temp_Character : MonoBehaviour, IDamageable
     public int curHP;
 
     float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
-
-    public delegate void CharacterDelegate();
-    public event CharacterDelegate UpdateDelegate;
-    public event CharacterDelegate TurnStartDelegate;
-    public event CharacterDelegate TakeDamageDelegate;
-    public event CharacterDelegate TurnEndDelegate;
-
 
     void Start()
     {
@@ -202,16 +194,16 @@ public class Temp_Character : MonoBehaviour, IDamageable
         return characterInfo.haveSkills;
     }
 
-    public void AddEventBox(int _idx, EventBox _eb)
-    {
-        characterInfo.characterEventBox.Add(_idx, _eb);
-    }
+    // public void AddEventBox(int _idx, EventBox _eb)
+    // {
+    //     characterInfo.characterEventBox.Add(_idx, _eb);
+    // }
 
-    public void RemoveEventBox(int _idx)
-    {
-        if (characterInfo.characterEventBox.ContainsKey(_idx) && characterInfo.characterEventBox[_idx] == null)
-            characterInfo.characterEventBox.Remove(_idx);
-    }
+    // public void RemoveEventBox(int _idx)
+    // {
+    //     if (characterInfo.characterEventBox.ContainsKey(_idx) && characterInfo.characterEventBox[_idx] == null)
+    //         characterInfo.characterEventBox.Remove(_idx);
+    // }
 
     public CharacterInfo GetCharacterInfo()
     {

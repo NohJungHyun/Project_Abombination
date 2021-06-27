@@ -33,4 +33,6 @@ MonoBehaviour:
   boomCost: 1
   addCountdownCost: 0
   subtractCountdownCost: 0
+  boomEffect: {fileID: 0}
+  boomEffect22: {fileID: 100008, guid: 1ca16f2a31fb6a548ad8954bed1d321f, type: 3}
   adjustNum: 5

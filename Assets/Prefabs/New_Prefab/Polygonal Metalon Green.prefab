@@ -402,7 +402,6 @@ GameObject:
   - component: {fileID: 4768236940859078801}
   - component: {fileID: 2068596248658679836}
   - component: {fileID: 3563010928663586986}
-  - component: {fileID: 5661299287594950261}
   - component: {fileID: 7555296097713617338}
   - component: {fileID: 3050500303679119748}
   - component: {fileID: 9178277334612182970}
@@ -504,18 +503,6 @@ MonoBehaviour:
   canUseSkill: 1
   actionPoint: 0
   curHP: 0
---- !u!114 &5661299287594950261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4861878314694810133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 866605fb43c14a744ad64b3bb5884f93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &7555296097713617338
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -557,6 +544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 646ab32e936093943bb5e70db432a1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyActionBox: {fileID: 0}
   controlledCharacter: {fileID: 0}
   characterTurnActions: []
 --- !u!1 &4861886151110428749

@@ -13,7 +13,7 @@ public class SelectActCharacter : BattleState
     Player player;
 
     bool canControlCamera = false;
-    bool canControllCharacter = false;
+    // bool canControllCharacter = false;
 
     public SelectActCharacter(BattleController _battleController) : base(_battleController)
     {
@@ -58,6 +58,7 @@ public class SelectActCharacter : BattleState
 
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
+            Debug.Log("@@!");
             canControlCamera = true;
             cameraController.DirectMoveCamera();
         }

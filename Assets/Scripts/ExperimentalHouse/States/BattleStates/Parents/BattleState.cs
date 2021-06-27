@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class BattleState
 {
     protected BattleController battleController;
-    protected BattleEventManager battleEventManager;
+    // protected BattleEventManager battleEventManager;
 
     // public static event BattleStateEventDelegate BattleStateEvent;
     // public EventBox stateEventBox;
@@ -20,7 +20,7 @@ public abstract class BattleState
     public BattleState(BattleController _battleController)
     {
         battleController = _battleController;
-        battleEventManager = _battleController.battleEventManager;
+        // battleEventManager = _battleController.battleEventManager;
         // stateEventBox = BattleStateEventBoxes.instance.CallByString();
     }
 

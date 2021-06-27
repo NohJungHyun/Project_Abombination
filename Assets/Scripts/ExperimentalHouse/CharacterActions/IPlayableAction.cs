@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IUsable 
+public interface IPlaybleAction
 {
-    IEnumerator Use();
 
-    IEnumerator PlayUseAnimation();
 }

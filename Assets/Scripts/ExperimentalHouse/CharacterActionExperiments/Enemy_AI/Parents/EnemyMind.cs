@@ -8,7 +8,7 @@ public class MindSetting
     public string characterActionName;
 
     [SerializeField]
-    public TestAction characterAction;
+    public EnemyAction characterAction;
 }
 
 public class EnemyMind : MonoBehaviour

@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class characterEventBox : SerializableDictionary<int, EventBox> { }
-
 public enum ClassJob { Warrrior, Mage, Thief }
 public enum ClassifyWhatisIt { Character, Object }
 public enum CharacterType { Human, Construct }
@@ -58,22 +55,6 @@ public class CharacterInfo : NeedPlayerThings
     public List<ActiveItem> preparedItems = new List<ActiveItem>(6);
     public List<ActiveSkill> preparedSkills = new List<ActiveSkill>(6);
 
-    public characterEventBox characterEventBox = new characterEventBox(){
-        {0, null},
-        {1, null},
-        {2, null},
-        {3, null},
-        {4, null},
-        {5, null},
-        {6, null},
-        {7, null},
-        {8, null},
-        {9, null},
-        {10, null},
-        {11, null},
-        {12, null},
-        {13, null}
-    };
     #endregion
 
     #region 4. 캐릭터 능력치 변수로부터 Stat 적용.

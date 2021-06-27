@@ -25,4 +25,9 @@ public class ActiveSkill : SkillData, IUsable
         Activation -= Use;
     }
 
+    public IEnumerator PlayUseAnimation()
+    {
+        return null;
+    }
+
 }

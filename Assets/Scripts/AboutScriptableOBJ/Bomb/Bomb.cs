@@ -37,6 +37,10 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
     public int addCountdownCost;
     public int subtractCountdownCost;
 
+    public ParticleSystem boomEffect;
+    public GameObject boomEffect22;
+
+
     public IEnumerator Use()
     {
         EventPlant?.Invoke(attachedTarget);
@@ -141,6 +145,15 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
     public ICanSetButtons GetCanSet()
     {
         return this;
+    }
+
+    public IEnumerator PlayUseAnimation()
+    {
+        if (boomEffect22.GetComponent<ParticleSystem>())
+        {
+            boomEffect22.GetComponent<ParticleSystem>().Play();
+        }
+        yield return null;
     }
 }
 
