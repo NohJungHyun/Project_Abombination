@@ -8,15 +8,17 @@ public class BoomBomb : ModifyAbombination
     public BoomBomb(BattleController _battleController) : base(_battleController)
     {
         Debug.Log("BoomBomb에서 Init을 담당하고 있답니다");
+        nowTurnCharacterManager = battleController.GetComponent<NowTurnCharacterManager>();
+
         // Setting ㄱㄱ
         battleController = _battleController;
-        nowTurnCharacter = battleController.GetNowPlayCharacter();
-
+        nowTurnCharacter = nowTurnCharacterManager.GetNowCharacter();
     }
 
-    public override void EnterCharacterAction()
+    public override IEnumerator EnterState()
     {
         Debug.Log("BoomBomb에서 Enter를 담당하고 있답니다");
+        yield return null;
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -25,27 +27,33 @@ public class BoomBomb : ModifyAbombination
     }
 
 
-    public override void CharacterDataUpdate()
+    public override IEnumerator UpdateState()
     {
-        // 애니메이션같은 거 처리
-        Debug.Log("BoomBomb에서 Update를 담당하고 있답니다");
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        while (true)
         {
-            battleController.SetCharacterAction(new ModifyAbombination(battleController));
+            // 애니메이션같은 거 처리
+            Debug.Log("BoomBomb에서 Update를 담당하고 있답니다");
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                battleController.SetState(new ModifyAbombination(battleController));
+            }
+            yield return null;
         }
     }
 
-    public override void CharacterPhysicUpdate()
+    public override IEnumerator PhysicUpdateState()
     {
-
+        while (true)
+        {
+            yield return null;
+        }
     }
 
-    public override void ExitCharacterAction()
+    public override IEnumerator ExitState()
     {
         Debug.Log("BoomBomb에서 Exit를 담당하고 있답니다");
-        // BattleEventManager.instance.characterActionBoxDictionary["BoomBomb"].InvokeEventCollection();
         bomb.Boom();
-        // throw new System.NotImplementedException();
+        yield return null;
     }
 }

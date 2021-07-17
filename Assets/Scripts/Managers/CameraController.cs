@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public CameraController instance;
     public Camera mainCamera;
     public Rigidbody rb;
 
@@ -24,6 +25,14 @@ public class CameraController : MonoBehaviour
     public Transform zoomingCharacter;
     bool canChaseMousePos = false;
 
+    void Awake()
+    {
+        if(instance != null)
+            Destroy(instance);
+        
+        instance = this;
+    }
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -33,31 +42,6 @@ public class CameraController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Euler(cameraBaseRot);
         rb = GetComponent<Rigidbody>();
     }
-
-    // 코루틴으로 1초마다 돌아가게 만들까?
-
-    // public void CameraZoomIn()
-    // {
-    //     if (zoomingCharacter)
-    //     {
-    //         if (doZoom)
-    //         {
-    //             Vector3 relativePos = mainCamera.transform.position - zoomingCharacter.transform.position;
-    //             //Quaternion camTurnAngle = Quaternion.AngleAxis(0.25f, Vector3.up); //Input.GetAxis("Mouse X") * 0.5f : 마우스 입력에 따라 바뀌게 끔 하는 식은 요거.
-    //             //cameraOffset = camTurnAngle * cameraOffset; 
-
-    //             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed);
-    //             //Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, Camera.main.transform.rotation * camTurnAngle, Time.deltaTime);
-    //             //Camera.main.transform.LookAt(Vector3.Lerp(Camera.main.transform.position, nowPlayCharacter.transform.position + cameraOffset, cameraMoveSpeed));
-    //             mainCamera.transform.LookAt(Vector3.Lerp(zoomingCharacter.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed));
-    //         }
-    //         else
-    //         {
-    //             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, initialCameraPos, cameraZoomInMoveSpeed);
-    //             mainCamera.transform.LookAt(Vector3.Lerp(zoomingCharacter.transform.position, zoomingCharacter.transform.position + cameraOffset, cameraZoomInMoveSpeed));
-    //         }
-    //     }
-    // }
 
     public void MoveToCharacter(Transform _CharacterPos)
     {
@@ -70,13 +54,13 @@ public class CameraController : MonoBehaviour
 
     public void ControlMouseWithCharacter()
     {
-        if(!canChaseMousePos) return;
+        if (!canChaseMousePos) return;
 
         if (zoomingCharacter && SearchWithRayCast.GetHitPoint() != Vector3.zero)
         {
 
             Vector3 dirPos = new Vector3(SearchWithRayCast.GetHitPoint().x, 0, SearchWithRayCast.GetHitPoint().z) - new Vector3(zoomingCharacter.transform.position.x, 0, zoomingCharacter.transform.position.z);
-                
+
             if (Vector2.Distance(dirPos, zoomingCharacter.transform.position) > 0.5f)
             {
                 dirPos.x = Mathf.Clamp(dirPos.x, -2.5f, 2.5f);
@@ -84,7 +68,7 @@ public class CameraController : MonoBehaviour
 
                 Vector3 culculatePos = zoomingCharacter.transform.position + cameraOffset + new Vector3(dirPos.x, 0, dirPos.z);
                 transform.position = Vector3.Lerp(transform.position, culculatePos, 2f * Time.deltaTime);
-            }  
+            }
         }
     }
 

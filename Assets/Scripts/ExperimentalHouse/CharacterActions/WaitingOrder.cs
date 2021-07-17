@@ -8,21 +8,24 @@ public class WaitingOrder : CharacterAction
     CameraController cameraController;
     LayerMask characterLayer;
 
+    CharacterActionController characterActionController;
+
     public WaitingOrder(BattleController _battleController) : base(_battleController)
     {
         // Setting ㄱㄱ
         battleController = _battleController;
         cameraController = _battleController.cameraController;
+        characterActionController = _battleController.GetComponent<CharacterActionController>();
 
         characterLayer = LayerMask.GetMask("Characters");
     }
 
-    public override void EnterCharacterAction()
+    public override IEnumerator EnterState()
     {
         if (cameraController.zoomingCharacter != nowTurnCharacter)
             cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
 
-        // throw new System.NotImplementedException();
+        yield return null; 
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -30,29 +33,33 @@ public class WaitingOrder : CharacterAction
 
     }
 
-    public override void CharacterDataUpdate()
+    public override IEnumerator UpdateState()
     {
-        Debug.Log("캐릭터 액션 업데이트...");
-        Debug.Log(battleController.GetCharacterAction());
-        
-        if (Input.GetAxis("Horizontal") != 0f || Input.GetAxis("Vertical") != 0f)
+        while (true)
         {
-            if (battleController.GetCharacterAction().Equals(this))
+            Debug.Log("캐릭터 액션 업데이트...");
+
+            if (Input.GetAxis("Horizontal") != 0f || Input.GetAxis("Vertical") != 0f)
             {
-                Debug.Log("대기 상태에서 상태 변경 성공");
-                battleController.SetCharacterAction(new MoveCharacter(battleController));
+                if (characterActionController.GetState().Equals(this))
+                {
+                    Debug.Log("대기 상태에서 상태 변경 성공");
+                    characterActionController.SetState(new MoveCharacter(battleController));
+                }
             }
+            yield return null;
         }
+
     }
-    public override void CharacterPhysicUpdate()
+    public override IEnumerator PhysicUpdateState()
     {
-        // throw new System.NotImplementedException();
+        yield return null;
     }
 
-    public override void ExitCharacterAction()
+    public override IEnumerator ExitState()
     {
-        Debug.Log("대기 종료");
-        SearchWithRayCast.ReturnBasicLayer();
+        yield return null;
+        // throw new System.NotImplementedException();
     }
 
     public void EndCurTurn()

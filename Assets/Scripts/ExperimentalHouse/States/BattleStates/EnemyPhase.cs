@@ -8,23 +8,24 @@ public class EnemyPhase : BattleState
 
     public EnemyPhase(BattleController _battleController) : base(_battleController)
     {
-        base.battleController = _battleController;
-        enemies  = battleController.enemyCharacterList;
-        
+        base.battleController = _battleController;        
     }
 
-    public override void EnterState()
+    public override IEnumerator EnterState()
     {
-
+        yield return null;
     }
 
-    public override void UpdateState()
+    public override IEnumerator UpdateState()
     {
-
+        while (true)
+        {
+            yield return null;
+        }
     }
 
-    public override void ExitState()
+    public override IEnumerator ExitState()
     {
-
+        yield return null;
     }
 }

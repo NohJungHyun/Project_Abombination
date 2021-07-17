@@ -3,25 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class CharacterAction
+public abstract class CharacterAction : IState
 {
-    protected static Temp_Character nowTurnCharacter;
-    protected static BattleController battleController;
-    public static Temp_Character NowTurnCharacter { get => nowTurnCharacter; }
-    public static BattleController BattleController { get => battleController;}
+    protected Temp_Character nowTurnCharacter;
+    protected BattleController battleController;
+    public Temp_Character NowTurnCharacter { get => nowTurnCharacter; }
+    public BattleController BattleController { get => battleController; }
 
-    public abstract void CharacterDataUpdate();
-    
-    public abstract void CharacterPhysicUpdate();
+    public CharacterActionController characterActionController;
 
-    public abstract void EnterCharacterAction();
-    public abstract void ExitCharacterAction();
+    public abstract IEnumerator EnterState();
+    public abstract IEnumerator UpdateState();
+    public abstract IEnumerator PhysicUpdateState();
+    public abstract IEnumerator ExitState();
 
     public abstract void ControllUI(BattleUIManager _BattleUI);
 
     public CharacterAction(BattleController _battleController)
     {
-        nowTurnCharacter = _battleController.GetNowPlayCharacter();
         battleController = _battleController;
     }
 }

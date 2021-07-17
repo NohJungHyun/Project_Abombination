@@ -15,21 +15,24 @@ public class BattleLoseState : BattleState
         base.battleController = _battleController;
         // SetEventBoxByString("BattleLose");
         // BattleStateEventBoxes.instance.CallByString("BattleLose");
-        
-    }
-
-    public override void EnterState()
-    {
-        
-    }
-
-    public override void UpdateState()
-    {
 
     }
 
-    public override void ExitState()
+    public override IEnumerator EnterState()
     {
+        yield return null;
+    }
 
+    public override IEnumerator UpdateState()
+    {
+        while (true)
+        {
+            yield return null;
+        }
+    }
+
+    public override IEnumerator ExitState()
+    {
+        yield return null;
     }
 }

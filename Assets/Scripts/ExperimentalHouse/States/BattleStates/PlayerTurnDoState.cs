@@ -11,8 +11,11 @@ public class PlayerTurnDoState : BattleState
 
     CameraController cameraController;
 
+    NowTurnCharacterManager nowTurnCharacterManager;
+    CharacterActionController characterActionController;
+
     LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
-    ConeRangeMesh coneRange;
+    ConeRangeMesh rangeMesh;
 
     bool canLookAround = true;
     bool isNowSkill;
@@ -20,12 +23,15 @@ public class PlayerTurnDoState : BattleState
     public PlayerTurnDoState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
-        nowCharacter = battleController.nowPlayCharacter;
+        nowTurnCharacterManager = battleController.gameObject.GetComponent<NowTurnCharacterManager>();
+        characterActionController = battleController.gameObject.GetComponent<CharacterActionController>();
+
+        nowCharacter = nowTurnCharacterManager.nowPlayCharacter;
         cameraController = battleController.cameraController;
-        coneRange = battleController.coneRangeMesh;
+        rangeMesh = nowTurnCharacterManager.coneRangeMesh;
     }
 
-    public override void EnterState()
+    public override IEnumerator EnterState()
     {
         Debug.Log("Player Do Enter!");
 
@@ -34,41 +40,41 @@ public class PlayerTurnDoState : BattleState
         canLookAround = true;
         cameraController.ChangeCanChaseMousePos(true);
 
-        coneRange.gameObject.SetActive(true);
-        coneRange.transform.SetParent(nowCharacter.transform);
-        coneRange.SetProperties(nowCharacter.GetCharacterInfo().characterDetectRange, 360);
+        rangeMesh.gameObject.SetActive(true);
+        rangeMesh.transform.SetParent(nowCharacter.transform);
+        rangeMesh.SetProperties(nowCharacter.GetCharacterInfo().characterDetectRange, 360);
+        yield return null;
     }
-
-    public override void UpdateState()
+    public override IEnumerator UpdateState()
     {
-        if (!nowCharacter) return;
-
-        nowCharacter.LookMousePos(canLookAround);
-        cameraController.ControlMouseWithCharacter();
-
-        // 폭탄 조작 상태로 이동
-        if (!EventSystem.current.IsPointerOverGameObject())
+        while (true)
         {
-            if (Input.GetKeyDown(KeyCode.Q) && coneRange.GetVisibleTargets().Count > 0)
+            yield return null;
+            cameraController.ControlMouseWithCharacter();
+            
+            if(Input.GetKeyDown(KeyCode.Q))
             {
-                canLookAround = false;
-                Debug.Log("뭐지 버근가");
-                battleController.SetCharacterAction(new ModifyAbombination(battleController));
+                if (!EventSystem.current.IsPointerOverGameObject() && rangeMesh.GetVisibleTargets().Count > 0)
+                {
+                    canLookAround = false;
+                    Debug.Log("뭐지 버근가");
+                    characterActionController.SetState(new ModifyAbombination(battleController));
+                }
             }
-        }
+            else if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                characterActionController.SetState(new WaitingOrder(battleController));
+                battleController.SetState(new SelectActCharacter(battleController));
+                nowTurnCharacterManager.SetNowCharacter(null);
+            }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            battleController.SetCharacterAction(new WaitingOrder(battleController));
-            battleController.SetState(new SelectActCharacter(battleController));
-            battleController.SetNowCharacter(null);
+            rangeMesh.transform.position = nowCharacter.transform.position;
         }
-
-        coneRange.transform.position = nowCharacter.transform.position;
     }
 
-    public override void ExitState()
+    public override IEnumerator ExitState()
     {
         Debug.Log("Player Do Exit!");
+        yield return null;
     }
 }

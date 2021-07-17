@@ -6,7 +6,10 @@ public class MoveLimitArea : MonoBehaviour
 {
     public static MoveLimitArea instance;
 
-    [SerializeField] float radius;
+    public NowTurnCharacterManager nowTurnCharacterManager;
+
+    [SerializeField] 
+    float radius;
 
     public GameObject moveLimitBorder;
 
@@ -34,7 +37,7 @@ public class MoveLimitArea : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            SetInitialSize(BattleController.instance.GetNowPlayCharacter());
+            SetInitialSize(nowTurnCharacterManager.GetNowCharacter());
         }
 
         if (modifiedCharacter && new Vector3(minSize, 0, minSize).magnitude < new Vector3(transform.localScale.x, 0, transform.localScale.z).magnitude) // minSize < transform.localScale.magnitude

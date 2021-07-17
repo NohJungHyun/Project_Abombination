@@ -37,9 +37,7 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
     public int addCountdownCost;
     public int subtractCountdownCost;
 
-    public ParticleSystem boomEffect;
     public GameObject boomEffect22;
-
 
     public IEnumerator Use()
     {
@@ -52,7 +50,7 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
 
     }
 
-    public void Boom() //Temp_Character _target
+    public virtual void Boom() //Temp_Character _target
     {
         Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
         EventBoom?.Invoke(attachedTarget);

@@ -12,18 +12,22 @@ public class BattleUIManager : MonoBehaviour
 
     // public List<Button> bombButtons = new List<Button>(20);
 
-    [Header("폭탄 조작용 UI")]
+    [Header("TargetedCharacter UI")]
     public BombModifier bombModifier;
 
     [Header("커맨드 포인트 표현 UI")]
     public SelectCharacterUI selectCharacterUI;
     // public Temp_Character temp_Character;
 
-
     void Start()
     {
         bombModifier.gameObject.SetActive(false);
         selectCharacterUI.gameObject.SetActive(true);        
+    }
+
+    public void TurnOnBombModifier(bool _turnOn)
+    {
+        bombModifier.gameObject.SetActive(_turnOn);
     }
 
     // public void ActivateActionUI(bool isOn)

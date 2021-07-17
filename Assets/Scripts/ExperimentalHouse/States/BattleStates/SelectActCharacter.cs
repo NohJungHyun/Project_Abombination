@@ -10,7 +10,12 @@ public class SelectActCharacter : BattleState
     CameraController cameraController;
     BattleUIManager battleUIManager;
     Button playThisCharacterButton;
-    Player player;
+    Participants participants;
+
+    NowTurnCharacterManager nowTurnCharacter;
+    CharacterActionController characterActionController;
+
+    BattleParticipantsManager battleParticipantsManager;
 
     bool canControlCamera = false;
     // bool canControllCharacter = false;
@@ -19,83 +24,93 @@ public class SelectActCharacter : BattleState
     {
         base.battleController = _battleController;
 
-        player = (Player)battleController.nowTurnContoller;
         cameraController = _battleController.cameraController;
+        nowTurnCharacter = battleController.GetComponent<NowTurnCharacterManager>();
+        characterActionController = battleController.GetComponent<CharacterActionController>();
 
         battleUIManager = battleController.battleUIManager;
         playThisCharacterButton = battleUIManager.turnEndButton;
+        battleParticipantsManager = battleController.GetComponent<BattleParticipantsManager>();
+        participants = Player.instance;
     }
 
-    public override void EnterState()
+    public override IEnumerator EnterState()
     {
+        Debug.Log("SelectActCharacter Enter!");
         canControlCamera = true;
-        battleController.SetCharacterAction(null);
+        // characterActionController.ResetState();
 
         playThisCharacterButton.gameObject.SetActive(true);
-        player.selectCharacterUI.gameObject.SetActive(true);
+        participants.selectCharacterUI.gameObject.SetActive(true);
+
+        yield return null;
+
     }
 
-    public override void UpdateState()
+    public override IEnumerator UpdateState()
     {
-        Debug.Log("SelectActCharacter!");
-
-        if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter())
+        while (true)
         {
-            Debug.Log("캐릭터 선택 됨: " + SearchWithRayCast.GetHitCharacter().name);
+            Debug.Log("SelectActCharacter Update!");
 
-            battleController.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
-            character = SearchWithRayCast.GetHitCharacter();
+            if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter())
+            {
+                Debug.Log("캐릭터 선택 됨: " + SearchWithRayCast.GetHitCharacter().name);
 
-            // if (character.GetHaveBombs().Count > 0)
-            //     CharacterInfoUI.instance.FillWithBomb(character.GetCanSetBombs());
+                nowTurnCharacter.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
+                character = SearchWithRayCast.GetHitCharacter();
 
-            canControlCamera = false;
+                canControlCamera = false;
 
-            OnSelectButton(true);
+                OnSelectButton(true);
+            }
+
+            cameraController.ZoomWithWheel();
+
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+            {
+                Debug.Log("@@!");
+                canControlCamera = true;
+                cameraController.DirectMoveCamera();
+            }
+            else if (canControlCamera == false)
+            {
+                cameraController.MoveToCharacter(character.transform);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                DecidePlayCharacter();
+            }
+            else if (!battleUIManager.selectCharacterUI.isActiveAndEnabled)
+            {
+                battleController.SetState(new PlayerTurnStartState(battleController));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                battleController.SetState(new EnemyPhase(battleController));
+            }
+
+            yield return null;
         }
 
-        cameraController.ZoomWithWheel();
-
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
-        {
-            Debug.Log("@@!");
-            canControlCamera = true;
-            cameraController.DirectMoveCamera();
-        }
-        else if (canControlCamera == false)
-        {
-            cameraController.MoveToCharacter(character.transform);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            DecidePlayCharacter();
-        }
-        else if (!battleUIManager.selectCharacterUI.isActiveAndEnabled)
-        {
-            battleController.SetState(new PlayerTurnStartState(battleController));
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            battleController.SetState(new EnemyPhase(battleController));
-        }
     }
 
-    public override void ExitState()
+    public override IEnumerator ExitState()
     {
-
+        yield return null;
     }
 
     void DecidePlayCharacter()
     {
-        if (battleController.nowPlayCharacter)
+        if (nowTurnCharacter.GetNowCharacter())
         {
             canControlCamera = false;
             playThisCharacterButton.gameObject.SetActive(false);
             battleUIManager.quickBarUI.SetNowCharacter(character);
 
-            if (player.AdjustPoint(false, character.GetCharacterInfo().needCommandPoint))
+            if (participants.AdjustPoint(false, character.GetCharacterInfo().needCommandPoint))
                 battleUIManager.selectCharacterUI.SpendCommandPoints(character.GetCharacterInfo().needCommandPoint);
         }
     }

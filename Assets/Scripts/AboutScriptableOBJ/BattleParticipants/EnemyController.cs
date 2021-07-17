@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class EnemyController : Participants
 {
+    public static EnemyController instance;
+
     public List<Temp_Character> mainCharacters = new List<Temp_Character>();
     public Queue<Temp_Character> usedCharactersQueue = new Queue<Temp_Character>();
 
+    void Awake()
+    {
+        if (instance != null)
+            Destroy(instance);
+
+        instance = this;
+    }
+
     public void TakePlayCharacter()
     {
-        if (!battleController.GetNowPlayCharacter())
+        if (!nowTurnCharacterManager.GetNowCharacter())
         {
             for (int i = 0; i < mainCharacters.Count; i++)
             {
@@ -23,7 +33,7 @@ public class EnemyController : Participants
             }
         }
 
-        if (!battleController.GetNowPlayCharacter())
+        if (!nowTurnCharacterManager.GetNowCharacter())
         {
             for (int j = 0; j < haveCharacters.Count; j++)
             {
@@ -40,7 +50,7 @@ public class EnemyController : Participants
 
     public void PlaySelectedCharacter(Temp_Character _Character)
     {
-        
+
     }
 
     void ClearQueue()

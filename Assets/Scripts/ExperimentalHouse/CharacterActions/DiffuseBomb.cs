@@ -7,38 +7,33 @@ public class DiffuseBomb : ModifyAbombination
 {
     public DiffuseBomb(BattleController _battleController) : base(_battleController)
     {
-        // Setting ㄱㄱ
+        
     }
 
-    public override void EnterCharacterAction()
+    public override IEnumerator EnterState()
     {
+        yield return null;
+    }
+
+    public override IEnumerator UpdateState()
+    {
+        yield return null;
+    }
+
+    public override IEnumerator PhysicUpdateState()
+    {
+        yield return null;
+    }
+
+    public override IEnumerator ExitState()
+    {
+        yield return null;
         // throw new System.NotImplementedException();
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
     {
-        // _BattleUI.OnOffUIManager(false);
-        // GetDiffuseBomb(_BattleUI.uitoShowBomb);
-    }
 
-    public override void CharacterDataUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            battleController.SetCharacterAction(new ModifyAbombination(battleController));
-        }
-        // throw new System.NotImplementedException();
-    }
-
-    public override void CharacterPhysicUpdate()
-    {
-
-    }
-
-    public override void ExitCharacterAction()
-    {
-        bomb.Diffuse();
-        // throw new System.NotImplementedException();
     }
 
     public void GetDiffuseBomb(UItoShowBombInfo _uitoShowBomb)

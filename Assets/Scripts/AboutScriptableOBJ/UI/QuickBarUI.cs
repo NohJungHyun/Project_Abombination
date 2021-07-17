@@ -25,7 +25,7 @@ public class QuickBarUI : MonoBehaviour
         {
             ResetButtons();
 
-            if (BattleController.instance.GetCharacterAction().GetType().Equals(typeof(ModifyAbombination)))
+            if (CharacterActionController.instance.GetState().GetType().Equals(typeof(ModifyAbombination)))
             {
                 Debug.Log("우효 wwww");
                 isCanSetBombs = !isCanSetBombs;

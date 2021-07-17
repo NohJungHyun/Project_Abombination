@@ -4,29 +4,36 @@ using UnityEngine;
 
 public class PlayerTurnEndState : BattleState
 {
+    NowTurnCharacterManager nowTurnCharacterManager;
+
     public PlayerTurnEndState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
+        nowTurnCharacterManager = battleController.gameObject.GetComponent<NowTurnCharacterManager>();
         //stateEventBox = BombEventManager.battleStateEventBoxDictionary[this.ToString()];
     }
 
-    public override void EnterState()
+    public override IEnumerator EnterState()
     {
-        battleController.baseCharacterPos = Vector3.zero;
+        nowTurnCharacterManager.baseCharacterPos = Vector3.zero;
 
         Debug.Log("Player End Enter!");
-        
+
         ExitState();
+        yield return null;
     }
 
-    public override void UpdateState()
+    public override IEnumerator UpdateState()
     {
-        Debug.Log("Player End Update!");
+        while (true)
+        {
+            yield return null;
+        }
     }
 
-    public override void ExitState()
+    public override IEnumerator ExitState()
     {
         Debug.Log("Player End Exit!");
-        // _BattleController.NextTurn();
+        yield return null;
     }
 }

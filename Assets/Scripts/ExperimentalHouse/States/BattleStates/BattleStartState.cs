@@ -6,32 +6,27 @@ public class BattleStartState : BattleState
 {
     public BattleStartState(BattleController _battleController) : base(_battleController)
     {
-        // if(battleController)
-        //     SetEventBox(BattleEventManager.instance.battleStateEventBoxDictionary["BattleStart"]);
+
     }
 
-    public override void EnterState()
+    public override IEnumerator EnterState()
     {
-        Debug.Log("BattleStart!");  
-
-        // for(int i = 0; i < battleEventManager.battleStartList.Count; i++)
-        // {
-        //     battleEventManager.battleStartList[i]?.Invoke();
-        // }
-          
-        battleController.characterList.AddRange(battleController.enemyCharacterList);
-        battleController.characterList.AddRange(battleController.playerCharactersList);
-
+        Debug.Log("Battle Start Enter!");
+        yield return null;
         battleController.SetState(new RoundStartState(battleController));
+        
     }
 
-    public override void UpdateState()
+    public override IEnumerator UpdateState()
     {
-
+        while (true)
+        {
+            yield return null;
+        }
     }
 
-    public override void ExitState()
+    public override IEnumerator ExitState()
     {
-        // Debug.Log("푸헤헤");
+        yield return null;
     }
 }

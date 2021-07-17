@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Participants : MonoBehaviour
 {
-    public BattleController battleController;
+    protected BattleParticipantsManager battleParticipantsManager;
+    protected NowTurnCharacterManager nowTurnCharacterManager;
+
+
     public int maxCommandPoint;
     public int curCommandPoint;
 
@@ -12,11 +15,12 @@ public class Participants : MonoBehaviour
 
 
     public SelectCharacterUI selectCharacterUI;
-
-    // Start is called before the first frame update
+    
     void Start()
     {
-        battleController = FindObjectOfType<BattleController>();
+        battleParticipantsManager = FindObjectOfType<BattleParticipantsManager>();
+        nowTurnCharacterManager = battleParticipantsManager.GetComponent<NowTurnCharacterManager>();
+        
         ResetCommandPoint();
     }
 

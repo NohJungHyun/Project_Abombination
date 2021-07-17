@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BombModifier : MonoBehaviour
 {
+    public NowTurnCharacterManager nowTurnCharacterManager;
     ModifyAbombination modifyAbombination;
 
     [Header("Initiating")]
@@ -69,6 +70,8 @@ public class BombModifier : MonoBehaviour
             explosionButtonList[i].gameObject.SetActive(false);
             explosionButtonList[i].onClick.RemoveAllListeners();
         }
+
+        nowTurnCharacterManager = GameObject.FindObjectOfType<NowTurnCharacterManager>();
     }
 
     void Update()
@@ -343,11 +346,12 @@ public class BombModifier : MonoBehaviour
     public void GetOutExplosion(Explosion _explosion)
     {
         targetedBomb.RemoveExplosionToList(_explosion);
-        BattleController.instance.SetCharacterAction(new RemoveExplosion(BattleController.instance));
+        CharacterActionController.instance.SetState(new RemoveExplosion(BattleController.instance));
     }
 
     public void SetModifiedCharacter(Temp_Character _target)
     {
+        print(_target.name + "!!!");
         bombIndexSlider.value = 0;
 
         modifiedCharacter = _target;
@@ -377,9 +381,9 @@ public class BombModifier : MonoBehaviour
 
     public void ChangeCurTarget()
     {
-        SetNowTurnPlayCharacter(BattleController.instance.GetNowPlayCharacter());
+        // SetNowTurnPlayCharacter(NowTurnCharacterManager.instance.GetNowCharacter());
 
-        if (BattleController.instance.targetedCharacters.Count > 0)
+        if (nowTurnCharacterManager.GetVisibleTargets().Count > 0)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -390,7 +394,7 @@ public class BombModifier : MonoBehaviour
                     characterIndex--;
                     Debug.Log("characterIndex--: " + characterIndex);
 
-                    SetModifiedCharacter(BattleController.instance.GetTargetedCharacter()[characterIndex].GetComponent<Temp_Character>());
+                    SetModifiedCharacter(nowTurnCharacterManager.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
             }
 
@@ -398,19 +402,19 @@ public class BombModifier : MonoBehaviour
             {
                 Debug.Log("DDD");
 
-                if (characterIndex < BattleController.instance.GetTargetedCharacter().Count - 1)
+                if (characterIndex < nowTurnCharacterManager.GetVisibleTargets().Count - 1)
                 {
                     characterIndex++;
                     Debug.Log("characterIndex++: " + characterIndex);
 
-                    SetModifiedCharacter(BattleController.instance.GetTargetedCharacter()[characterIndex].GetComponent<Temp_Character>());
+                    SetModifiedCharacter(nowTurnCharacterManager.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
 
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (BattleController.instance.GetTargetedCharacter().Equals(SearchWithRayCast.GetHitCharacter()))
+                if (nowTurnCharacterManager.GetVisibleTargets().Equals(SearchWithRayCast.GetHitCharacter()))
                 {
                     Debug.Log("하히후헤호");
                 }

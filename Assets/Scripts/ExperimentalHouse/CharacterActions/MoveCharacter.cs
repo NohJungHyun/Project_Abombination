@@ -19,7 +19,8 @@ public class MoveCharacter : CharacterAction
     public MoveCharacter(BattleController _battleController) : base(_battleController)
     {
         battleController = _battleController;
-        nowTurnCharacter = _battleController.nowPlayCharacter;
+        nowTurnCharacter = _battleController.GetComponent<NowTurnCharacterManager>().GetNowCharacter();
+        characterActionController = _battleController.GetComponent<CharacterActionController>();
         cameraController = _battleController.cameraController;
 
         coneRangeMesh = nowTurnCharacter.GetComponentInChildren<ConeRangeMesh>();
@@ -30,14 +31,15 @@ public class MoveCharacter : CharacterAction
         // Setting ㄱㄱ        
 
         ControllUI(_battleController.battleUIManager);
-        EnterCharacterAction();
+        EnterState();
     }
 
-    public override void EnterCharacterAction()
+    public override IEnumerator EnterState()
     {
         coneRangeMesh.gameObject.SetActive(true);
         Debug.Log(this.GetType());
         //throw new System.NotImplementedException();
+        yield return null;
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -45,30 +47,36 @@ public class MoveCharacter : CharacterAction
         // _BattleUI.bombUI.SetActive(false);
     }
 
-    public override void CharacterDataUpdate()
+    public override IEnumerator UpdateState()
     {
-        if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
+        while (true)
         {
-            battleController.SetCharacterAction(new WaitingOrder(battleController));
+            if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
+            {
+                characterActionController.SetState(new WaitingOrder(battleController));
+            }
+            else
+            {
+                MovingWithNavMesh();
+            }
+            
+
+            yield return null;
         }
-        MovingWithNavMesh();
     }
 
-    public override void CharacterPhysicUpdate()
+    public override IEnumerator PhysicUpdateState()
     {
-        // throw new System.NotImplementedException();
-        // Moving();
-        
+        yield return null;  
     }
 
-    public override void ExitCharacterAction()
+    public override IEnumerator ExitState()
     {
-
+         yield return null;
     }
 
     public void Moving()
     {
-        Debug.Log("Moving");
         Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.GetCharacterInfo().characterMovement * Time.deltaTime;
         rb.MovePosition(nowTurnCharacter.GetCharacterPos() + movePos);
     }

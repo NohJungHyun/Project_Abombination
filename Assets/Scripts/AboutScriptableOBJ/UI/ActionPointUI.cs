@@ -7,6 +7,9 @@ using TMPro;
 public class ActionPointUI : MonoBehaviour
 {
     public TextMeshProUGUI actionPointText;
+    
+    [SerializeField]
+    NowTurnCharacterManager nowTurnCharacterManager;
 
     // Start is called before the first frame update
     void Start()
@@ -17,8 +20,8 @@ public class ActionPointUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(BattleController.instance.GetNowPlayCharacter())
-            actionPointText.text = BattleController.instance.GetNowPlayCharacter().actionPoint.ToString() + " / " + BattleController.instance.GetNowPlayCharacter().GetCharacterInfo().maxActionPoint.ToString();
+        if(nowTurnCharacterManager && nowTurnCharacterManager.GetNowCharacter())
+            actionPointText.text = nowTurnCharacterManager.GetNowCharacter().GetCharacterInfo().curActionPoint.ToString() + " / " + nowTurnCharacterManager.GetNowCharacter().GetCharacterInfo().maxActionPoint.ToString();
         else
             actionPointText.text = " ";
     }

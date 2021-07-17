@@ -11,7 +11,6 @@ public class AttackableBomb : Bomb
     void OnEnable()
     {
         EventBoom += CauseDamageToTarget;
-        boomEffect22.SetActive(false);
     }
 
     public void ShowString()
@@ -29,19 +28,14 @@ public class AttackableBomb : Bomb
         }
     }
 
-    public IEnumerator OnCallingBoom(Temp_Character _Character)
-    {
-        ShowString();
-        PlayUseAnimation();
-        yield return new WaitForSeconds(boomEffect22.GetComponent<ParticleSystem>().main.duration * 0.5f);
+    // public void OnDisable()
+    // {
+    //     EventBoom -= CauseDamageToTarget;
+    //     boomEffect22.SetActive(false);
+    // }
 
-        CauseDamageToTarget(_Character);
-        yield return null;
-    }
-
-    public void OnDisable()
+    public override void Boom()
     {
-        EventBoom -= CauseDamageToTarget;
-        boomEffect22.SetActive(false);
+        
     }
 }

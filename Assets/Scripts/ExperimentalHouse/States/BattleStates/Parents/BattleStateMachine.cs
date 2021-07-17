@@ -2,14 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BattleStateMachine : MonoBehaviour
+public abstract class BattleStateMachine : StateMachine
 {
-    public BattleState battleState;
-    //public BattleEventManager battleEventManager;
-    public abstract void SetState(BattleState _battleState);
+    protected BattleState state;
+    Coroutine runningCoroutine;
 
-    void Start()
+    public override void SetState(IState _state)
     {
-   
+        if (state != null)
+        {
+            if(runningCoroutine != null)
+                StopCoroutine(runningCoroutine);
+                
+            print("Update멈춰!");
+            StartCoroutine(state.ExitState());
+        }
+
+        state = (BattleState)_state;
+
+        if (state != null)
+        {
+            StartCoroutine(state.EnterState());
+            runningCoroutine = StartCoroutine(state.UpdateState());
+        }
+    }
+
+    public override void ResetState()
+    {
+        state = null;
     }
 }

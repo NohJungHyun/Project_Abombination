@@ -1,37 +1,38 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModifyCountDown : ModifyAbombination, IBombCatch
+public class ModifyCountDown : CharacterAction
 {
     public ModifyCountDown(BattleController _battleController) : base(_battleController)
     {
         // Setting ㄱㄱ
     }
 
-    public override void EnterCharacterAction()
+    public override IEnumerator EnterState()
     {
-        //throw new System.NotImplementedException();
+        yield return null;
+    }
+
+    public override IEnumerator UpdateState()
+    {
+        // 폭탄 카운트다운 조작 추가
+        yield return null;
+    }
+
+    public override IEnumerator PhysicUpdateState()
+    {
+        yield return null;
+    }
+
+    public override IEnumerator ExitState()
+    {
+        yield return null;
+        // throw new System.NotImplementedException();
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
     {
 
-    }
-
-    public override void CharacterDataUpdate()
-    {
-        // throw new System.NotImplementedException();
-        battleController.SetCharacterAction(new ModifyAbombination(battleController));
-    }
-
-    public override void CharacterPhysicUpdate()
-    {
-        // throw new System.NotImplementedException();
-    }
-
-    public override void ExitCharacterAction()
-    {
-        //throw new System.NotImplementedException();
     }
 }
