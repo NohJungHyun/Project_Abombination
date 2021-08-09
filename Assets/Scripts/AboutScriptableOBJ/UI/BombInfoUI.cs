@@ -22,11 +22,10 @@ public class BombInfoUI : BaseUIStorage
 
     public override void ShowUI()
     {
-        bombName.text = bomb.bombName;
-        bombCount.text = bomb.bombCountDown.ToString();
-        bombImage = bomb.bombImage;
+        // bombName.text = bomb.bombName;
+        // bombCount.text = bomb.bombCurCountDown.ToString();
+        // bombImage = bomb.bombImage;
         
-
         // 후에 이 밑에다가 폭탄 해제 이벤트를 넣도록 하자.
 
         // throw new System.NotImplementedException();

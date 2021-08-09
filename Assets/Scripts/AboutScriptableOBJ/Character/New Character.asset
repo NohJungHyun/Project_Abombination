@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0775d99edaca90f43ae867bee99003af, type: 3}
   m_Name: New Character
   m_EditorClassIdentifier: 
+  thingsName: Normal Soldier
+  idx: 1
+  desc: "\uC77C\uBC18\uC801\uC778 \uBCD1\uC0AC"
+  portrait: {fileID: 21300000, guid: 834f1d723fd98ad4494d9ddc5ffabb86, type: 3}
   definition: 0
   characterType: 0
-  characterName: Human
-  characterImage: {fileID: 21300000, guid: 017895fc14baf07408b86e24d883dff6, type: 3}
   characterModel: {fileID: 0}
   chracterLevel: 3
   characterClass: 0
@@ -27,5 +29,24 @@ MonoBehaviour:
   characterLuck: 3
   characterInitiative: 3
   characterDetectRange: 5
-  currentHP: 0
-  maxHP: 0
+  characterThrowRange: 0
+  currentHP: 30
+  maxHP: 30
+  curActionPoint: 3
+  maxActionPoint: 3
+  minActionPoint: 3
+  needCommandPoint: 2
+  canSetExplosions:
+  - {fileID: 11400000, guid: 9181c9b79aa51ec40b5653275b28f03a, type: 2}
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
+  canSetBombs:
+  - {fileID: 11400000, guid: a0486df1daa1f6f4baf4779d65e1988c, type: 2}
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
+  haveBombs:
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
+  haveItems: []
+  haveSkills: []
+  preparedItems: []
+  preparedSkills:
+  - {fileID: 11400000, guid: 8e3ad8ebcc6df9845ac6844ddb6b287e, type: 2}

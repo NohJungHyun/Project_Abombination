@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UItoShowExplosionInfo : MonoBehaviour
 {
-    CharacterBattleAction characterBattleAction;
+    // CharacterBattleAction characterBattleAction;
     public GameObject showExplosionCondition;
     public UItoShowBombInfo uitoShowBomb;
 
@@ -22,10 +22,10 @@ public class UItoShowExplosionInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //characterBattleAction = GameObject.Find("BattleController").GetComponent<CharacterBattleAction>();
-        characterBattleAction = GameObject.FindObjectOfType<CharacterBattleAction>();
+        // characterBattleAction = GameObject.FindObjectOfType<CharacterBattleAction>();
         uitoShowBomb = GameObject.FindObjectOfType<UItoShowBombInfo>();
         exploSetupButton.AddRange(GetComponentsInChildren<Button>());
+        showExplosionCondition.gameObject.SetActive(false);
 
         foreach (Button b in GetComponentsInChildren<Button>())
         {
@@ -35,30 +35,24 @@ public class UItoShowExplosionInfo : MonoBehaviour
         }
     }
 
-    public void ExhibitExploCondition()
-    {
-
-    }
-
     public void ExhibitExploButtons()
     {
-        if (uitoShowBomb.showBombContidition.activeInHierarchy)
-        {
-            Temp_Character temp_char = characterBattleAction.battleController.nowPlayCharacter;
+        showExplosionCondition.gameObject.SetActive(true);
 
-            if (temp_char)
-            {
-                for (int e = 0; e < temp_char.canSetExplosions.Count; e++)
-                {
-                    int explosLisnter = e;
-                    exploSetupButton[explosLisnter].image.sprite = temp_char.canSetExplosions[explosLisnter].exploImage;
-                    // exploSetupButton[e].image.sprite = temp_char.canSetExplosions[e].exploImage;
-                    exploSetupButton[explosLisnter].onClick.AddListener(() => characterBattleAction.DoExplosionSetUp(temp_char.canSetExplosions[explosLisnter]));
-                }
-            }
-            showExplosionCondition.SetActive(true);
+        Temp_Character temp_char = NowTurnCharacterManager.instance.nowPlayCharacter;
+
+        for (int e = 0; e < temp_char.GetCharacterInfo().canSetExplosions.Count; e++)
+        {
+            int explosLisnter = e;
+
+            exploSetupButton[explosLisnter].image.sprite = temp_char.GetCharacterInfo().canSetExplosions[explosLisnter].GetSprite();
+            exploSetupButton[explosLisnter].onClick.RemoveAllListeners();
+            exploSetupButton[explosLisnter].onClick.AddListener(() => AddExplosion.DoExplosionSetUp(temp_char.GetCharacterInfo().canSetExplosions[explosLisnter], uitoShowBomb));
         }
-        else
-            showExplosionCondition.SetActive(false);
+    }
+    
+    public bool CloseActiveUI()
+    {
+        return true;
     }
 }

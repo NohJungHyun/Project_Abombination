@@ -2,36 +2,225 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Temp_Character : MonoBehaviour
+public class Temp_Character : MonoBehaviour, IDamageable
 {
-    public CharacterInfo characterInfo;
+    [SerializeField]
+    CharacterInfo characterInfo;
 
-    public CharacterInfo info { get; set; }
+    CharacterInfo info { get; set; }
 
     public bool canMove;
     public bool canActwithBomb;
     public bool canUseSkill;
 
-    // 캐릭터가 설치가능한 폭발물 리스트
-    public List<Explosion> canSetExplosions = new List<Explosion>(30);
-    // 캐릭터가 설치가능한 폭탄 리스트
-    public List<Bomb> canSetBombs = new List<Bomb>(10);
-    public List<Bomb> haveBombs = new List<Bomb>(10);
+    Vector3 basicPos;
 
-    Vector3 beforePos; // 턴 시작 시, 캐릭터의 위치를 담아서 다시 돌아올 수 있도록 제작. 
+    public int actionPoint;
+    public int curHP;
+
     float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
 
-    // 버프 List 제작 
-    // 장비 List 제작
-    // 스킬 List 제작
-
-    void Awake()
+    void Start()
     {
-        info = ScriptableObject.Instantiate(characterInfo);
-        foreach (Bomb b in haveBombs)
-        {
+        info = Instantiate(characterInfo);
+        info.SetBasic();
 
+        curHP = info.maxHP;
+
+        this.actionPoint = info.maxActionPoint;
+
+        for (int b = 0; b < characterInfo.canSetBombs.Count; b++)
+        {
+            info.canSetBombs[b] = ScriptableObject.Instantiate(characterInfo.canSetBombs[b]);
+
+            info.canSetBombs[b].SetOwner(this);
+        }
+
+        for (int h = 0; h < characterInfo.haveBombs.Count; h++)
+        {
+            info.haveBombs[h] = ScriptableObject.Instantiate(characterInfo.haveBombs[h]);
+            info.haveBombs[h].SetCountDown();
+
+            // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
+            info.haveBombs[h].SetAttachedTarget(this);
+
+            if (!characterInfo.haveBombs[h].GetOwner())
+            {
+                info.haveBombs[h].SetOwner(this);
+            }
+
+            if (characterInfo.haveBombs[h].GetExplosionsList().Count > 0)
+            {
+                for (int e = 0; e < characterInfo.haveBombs[h].GetExplosionsList().Count; e++)
+                {
+                    // info.haveBombs[h].GetExplosionsList()[e].GetRidOfExplosionAllEvent(characterInfo.haveBombs[h]);
+                    info.haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(info.haveBombs[h]);
+                }
+            }
+        }
+
+        for (int e = 0; e < characterInfo.canSetExplosions.Count; e++)
+        {
+            info.canSetExplosions[e] = ScriptableObject.Instantiate(characterInfo.canSetExplosions[e]);
+            info.canSetExplosions[e].SetOwner(this);
+        }
+
+        basicPos = transform.position;
+    }
+
+    public List<Bomb> GetCanSetBombs()
+    {
+        return info.canSetBombs;
+    }
+    public List<Bomb> GetHaveBombs()
+    {
+        return info.haveBombs;
+    }
+
+    public List<Explosion> GetCanSetExplosions()
+    {
+        return info.canSetExplosions;
+    }
+    public void AddBombtoHaveBombs(Bomb _b, int _p)
+    {
+        info.haveBombs.Insert(_p, _b);
+    }
+
+    public void AddBombtoCanSetBombs(Bomb _b, int _p)
+    {
+        info.canSetBombs.Insert(_p, _b);
+    }
+
+    public void RemoveBombtoHaveBombs(Bomb _b)
+    {
+        if (info.haveBombs.Equals(_b))
+        {
+            info.haveBombs.Remove(_b);
         }
     }
 
+    public void RemoveBombtoCanSetBombs(Bomb _b)
+    {
+        if (info.canSetBombs.Equals(_b))
+        {
+            info.canSetBombs.Remove(_b);
+        }
+    }
+
+    public void TakeDamage(int _dmg)
+    {
+        Debug.Log(this.name + "가 피해를 입었다: " + _dmg);
+
+        info.currentHP -= _dmg;
+        curHP -= _dmg;
+        if (info.currentHP <= 0)
+            Dead();
+    }
+
+    public void TakeHeal(int _heal)
+    {
+        Debug.Log(this.name + "가 체력을 회복하였다: " + _heal);
+
+        if (curHP >= curHP + _heal)
+            curHP = curHP + _heal;
+        else
+        {
+            info.currentHP += _heal;
+            curHP += _heal;
+        }
+
+    }
+
+    public void Dead()
+    {
+        Debug.Log("끄앙 주금");
+        this.gameObject.SetActive(false);
+    }
+
+    public Vector3 GetCharacterPos()
+    {
+        return this.transform.position;
+    }
+
+    public Vector3 GetBasicPos(){
+        return basicPos;
+    }
+
+    public void SetCharacterPos(Vector3 _pos)
+    {
+        this.transform.position = _pos;
+    }
+
+    public void LookMousePos(bool _canRotate)
+    {
+        if (!_canRotate) return;
+
+        Vector3 lookPos = new Vector3(SearchWithRayCast.GetHitPoint().x, transform.position.y, SearchWithRayCast.GetHitPoint().z);
+        transform.LookAt(lookPos);
+    }
+
+    public void SubtractActionPoint(int _point)
+    {
+        actionPoint -= _point;
+    }
+
+    public void AddActionPoint(int _point)
+    {
+        actionPoint += _point;
+    }
+
+    public void SetActionPoint(int _point)
+    {
+        actionPoint = _point;
+    }
+
+    public int GetActionPoint()
+    {
+        return actionPoint;
+    }
+
+    public void ResetActionPoint()
+    {
+        actionPoint = info.maxActionPoint;
+    }
+
+    public List<ItemData> GetHaveItems()
+    {
+        return characterInfo.haveItems;
+    }
+
+    public List<SkillData> GetHaveSkills()
+    {
+        return characterInfo.haveSkills;
+    }
+
+    // public void AddEventBox(int _idx, EventBox _eb)
+    // {
+    //     characterInfo.characterEventBox.Add(_idx, _eb);
+    // }
+
+    // public void RemoveEventBox(int _idx)
+    // {
+    //     if (characterInfo.characterEventBox.ContainsKey(_idx) && characterInfo.characterEventBox[_idx] == null)
+    //         characterInfo.characterEventBox.Remove(_idx);
+    // }
+
+    public CharacterInfo GetCharacterInfo()
+    {
+        return this.info;
+    }
+
+    public void SetCurInfoToDraft()
+    {
+        characterInfo = info;
+    }
+
+    public List<ActiveItem> GetPreparedItems()
+    {
+        return info.preparedItems;
+    }
+    public List<ActiveSkill> GetPreparedSkills()
+    {
+        return info.preparedSkills;
+    }
 }

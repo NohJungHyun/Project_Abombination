@@ -12,25 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad85ba2ee9a5a7a4f85bc8a8df9c3944, type: 3}
   m_Name: She_Bomb
   m_EditorClassIdentifier: 
-  exploName: She_Bomb
-  exploDescription: "\uAC08\uB300\uC640\uB3C4 \uAC19\uC740 \uC2EC\uC9C0\uB97C \uAC70\uCCD0
-    \uADF8 \uB05D\uC5D0 \uBCF4\uC774\uB294 \uAC83\uC740 \uAD11\uD65C\uD55C \uD3C9\uC57C
-    \uBFD0\uC774\uC5C8\uC2B5\uB2C8\uB2E4. \uBC14\uB85C \uC774 \uD3ED\uBC1C\uBB3C\uC774
-    \uC5EC\uB7EC\uBD84\uC758 \uACC1\uC5D0\uC11C \uB3C4\uC640\uC904 \uAC81\uB2C8\uB2E4."
-  exploImage: {fileID: 21300000, guid: 791e84bea6960144599b173dc8b91e83, type: 3}
-  exploDamage: 0
-  exploRadius: 0
-  exploCanStack: 0
-  exploMaxStack: 0
-  exploDispelNum: 
-  exploAugmentNum: 
-  exploSetupNum: 
+  thingsName: "\uC26C\uBC24"
+  idx: 20002
+  desc: "\uC26C_\uBC24"
+  portrait: {fileID: 21300000, guid: 3352c04aeb9bc8b49bfe69b9814011f2, type: 3}
+  exploRadius: 2
+  exploCanStack: 1
+  exploMaxStack: 10
   exploCountDown: 0
-  exploMinCountDown: 0
-  exploMaxCountDown: 0
-  ExplosionRadius: 0
+  exploMinCountDown: 1
+  exploMaxCountDown: 3
+  needRemoveCost: 0
+  needAddCost: 1
   effectNum: 0
-  attackDamage: 0
+  attackDamage: 20
   layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512

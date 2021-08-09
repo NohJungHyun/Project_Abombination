@@ -4,95 +4,157 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UItoShowBombInfo : MonoBehaviour
 {
-    public CharacterBattleAction characterBattleAction;
+    // public CharacterBattleAction characterBattleAction;
 
     [Header("현재 전장에 있는 폭탄에 대한 정보를 보여줄 때 띄울 UI")]
-    public GameObject showBombContidition;
+    // public GameObject showBombContidition;
     public Text bombName;
     public Text bombCount;
     public Image bombImage;
     public Button bombDiffuseButton;
+    public Button bombBoomButton;
+    public Button afterBomb, beforeBomb;
     public Button[] explosionsinBomb = new Button[10];
 
-    public bool isUIOn = false;
+    // public bool isUIOn = false;
     public int indexBomb = 0;
-    
-    // raycast로 부터 정보를 받기
-    public void GetInfofromRaycast(RaycastHit _h)
-    {
-        if (_h.collider.GetComponent<Temp_Character>())
-        {
-            if (!isUIOn)
-            {
-                Temp_Character t = _h.collider.GetComponent<Temp_Character>();
 
-                showBombContidition.SetActive(true);
-                ClearEvents();
-                ExhibitBombCondition(t.haveBombs);
-                ExhibitExplosionsCondition(t);
-            }
-            else
-                showBombContidition.SetActive(false);
-        }
-    }
+    public delegate void dele(Temp_Character _temp);
+    public dele CheckBomb;
+    public Temp_Character targetedCharacter;
+    public BattleUIManager battleUIManager;
+
+    // void Awake()
+    // {
+    //     // ShowBomb = new dele(GetInfofromRaycast);
+    //     CheckBomb = new dele(CheckBombList);
+    //     CheckBomb += new dele(GetInfofromRaycast);
+    //     CheckBomb += new dele(ExhibitBombCondition);
+    //     CheckBomb += new dele(ExhibitExplosionsCondition);
+    // }
+
+    // public void CheckBombList(Temp_Character _temp)
+    // {
+    //     ClearAllEvents();
+
+    //     if (targetedCharacter && !targetedCharacter.Equals(_temp))
+    //     {
+    //         indexBomb = 0;
+    //     }
+
+    //     targetedCharacter = _temp;
+
+    //     if (_temp.haveBombs.Count <= 0)
+    //     {
+    //         print("CheckBombList");
+
+    //         bombName.text = " ";
+    //         bombCount.text = " ";
+    //         bombImage.sprite = null; // = basicSprite;
+
+    //         for (int b = 0; b < explosionsinBomb.Length; b++)
+    //         {
+    //             ClearButton(explosionsinBomb[b]);
+    //         }
+    //     }
+    // }
+
+    // // raycast로 부터 정보를 받기
+    // public void GetInfofromRaycast(Temp_Character _t)
+    // {
+    //     print("GetInfofromRaycast");
+
+    //     if (indexBomb < _t.haveBombs.Count - 1)
+    //     {
+    //         afterBomb.onClick.AddListener(() => indexBomb++);
+    //         afterBomb.onClick.AddListener(() => CheckBomb(_t));
+    //         afterBomb.interactable = true;
+    //     }
+    //     else
+    //         afterBomb.interactable = false;
+
+    //     if (indexBomb > 0)
+    //     {
+    //         beforeBomb.onClick.AddListener(() => indexBomb--);
+    //         beforeBomb.onClick.AddListener(() => CheckBomb(_t));
+    //         beforeBomb.interactable = true;
+    //     }
+    //     else
+    //         beforeBomb.interactable = false;
+
+    // }
 
     // 현재 선택한 폭탄의 상태를 확인하기 위해 만든 함수.
-    public void ExhibitBombCondition(List<Bomb> _bombs)
-    {
-        // DiffuseBomb(_b);
-        if (_bombs.Count> 0 && _bombs[0])
-        {
-            bombName.text = _bombs[0].bombName;
-            bombCount.text = _bombs[0].bombCountDown.ToString();
-            bombImage.sprite = _bombs[0].bombImage;
+    // public void ExhibitBombCondition(Temp_Character _t)
+    // {
+    //     print("ExhibitBombCondition");
+    //     if (_t.haveBombs.Count <= 0) return;
 
-            bombDiffuseButton.onClick.AddListener(() => characterBattleAction.DiffuseBomb(_bombs, _bombs[0]));
-        }
+    //     bombName.text = _t.haveBombs[indexBomb].thingsName;
+    //     bombCount.text = _t.haveBombs[indexBomb].bombCurCountDown.ToString();
+    //     bombImage.sprite = _t.haveBombs[indexBomb].GetSprite();
+
+    //     if (BattleController.instance.nowPlayCharacter)
+    //     {
+    //         SetDiffuseEvent(targetedCharacter);
+    //         SetBoomEvent(targetedCharacter);
+    //     }
+    // }
+
+    // public void ExhibitExplosionsCondition(Temp_Character _t)
+    // {
+    //     print("ExhibitExplosionsCondition");
+    //     if (_t.haveBombs.Count <= 0) return;
+
+    //     for (int e = 0; e < _t.haveBombs[indexBomb].explosionList.Count; e++) // 이거는 폭탄 내 폭발물 개수 파악
+    //     {
+    //         int explosionCheck = e;
+
+    //         explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[indexBomb].explosionList[explosionCheck].GetSprite();
+    //         explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[indexBomb].explosionList[explosionCheck].exploCountDown.ToString();
+
+    //         // if (BattleController.instance.nowPlayCharacter)
+    //         //     explosionsinBomb[explosionCheck].onClick.AddListener(() => RemoveExplosion.DoExplosionDiffuse(_t.haveBombs[indexBomb].explosionList[explosionCheck]));
+    //     }
+    // }
+
+    public void SetDiffuseEvent(Temp_Character _Character)
+    {
+        DiffuseBomb diffuseEvent = new DiffuseBomb(BattleController.instance);
+        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ControllUI(battleUIManager));
+        bombDiffuseButton.onClick.AddListener(() => diffuseEvent.ExitState());
     }
 
-    public void ExhibitDiffuse(Temp_Character _t)
+    public void SetBoomEvent(Temp_Character _Character)
     {
-
+        BoomBomb boomEvent = new BoomBomb(BattleController.instance);
+        bombBoomButton.onClick.AddListener(() => boomEvent.ControllUI(battleUIManager));
+        bombBoomButton.onClick.AddListener(() => boomEvent.ExitState());
     }
 
-    public void ExhibitExplosionsCondition(Temp_Character _t)
-    {
-        for (int b = 0; b < _t.haveBombs.Count; b++) // 이거는 폭탄의 개수 파악
-        {
-            for (int e = 0; e < _t.haveBombs[b].explosionList.Count; e++) // 이거는 폭탄 내 폭발물 개수 파악
-            {
-                int bombCheckIndex = b;
-                int explosionCheck = e;
-
-                explosionsinBomb[explosionCheck].image.sprite = _t.haveBombs[bombCheckIndex].explosionList[explosionCheck].exploImage;
-                explosionsinBomb[explosionCheck].GetComponentInChildren<Text>().text = _t.haveBombs[bombCheckIndex].explosionList[explosionCheck].exploCountDown.ToString();
-
-                Debug.Log(bombCheckIndex);
-
-                if (characterBattleAction)
-                    explosionsinBomb[explosionCheck].onClick.AddListener(() => characterBattleAction.DoExplosionDiffuse(_t.haveBombs[bombCheckIndex].explosionList[explosionCheck]));
-            }
-        }
-
-    }
-
-    public void ClearEvents()
+    public void ClearAllEvents()
     {
         bombDiffuseButton.onClick.RemoveAllListeners();
+        afterBomb.onClick.RemoveAllListeners();
+        beforeBomb.onClick.RemoveAllListeners();
 
         if (explosionsinBomb.Length <= 0) return;
 
         for (int e = 0; e < explosionsinBomb.Length; e++)
         {
-            explosionsinBomb[e].onClick.RemoveAllListeners();
+            ClearButton(explosionsinBomb[e]);
         }
-
-
     }
 
-    // 획일화된 코드 관리를 위해 characterBattleAction에서 diffuseBomb을 관리.
-    // public void DiffuseBomb(GameObject _obj)
-    // {
-    //     _obj.SetActive(false);
-    // }
+    public void ClearButton(Button _b)
+    {
+        _b.onClick.RemoveAllListeners();
+        _b.image.sprite = null;
+        _b.GetComponentInChildren<Text>().text = " ";
+    }
+
+    public void OnOffShowBombUI(bool _onOff)
+    {
+        this.gameObject.SetActive(_onOff);
+    }
 }
