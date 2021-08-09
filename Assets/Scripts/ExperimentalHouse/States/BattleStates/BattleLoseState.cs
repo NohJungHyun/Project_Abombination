@@ -18,21 +18,18 @@ public class BattleLoseState : BattleState
 
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
-        yield return null;
+        
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            yield return null;
-        }
+
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
+        
     }
 }

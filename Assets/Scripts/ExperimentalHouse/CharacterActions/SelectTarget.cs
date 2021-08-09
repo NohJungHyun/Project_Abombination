@@ -16,21 +16,18 @@ public class SelectTarget : CharacterAction
 
         battleUIManager = battleController.battleUIManager;
     }
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
-        yield return null;
+       
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
     {
-        // battleUIManager.
-        // _BattleUI.ActivateActionUI(true);
+
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
             // throw new System.NotImplementedException();
             float hitPointX = SearchWithRayCast.GetHitPoint().x;
             float hitPointZ = SearchWithRayCast.GetHitPoint().z;
@@ -48,19 +45,15 @@ public class SelectTarget : CharacterAction
             {
                 Debug.Log("지정 범위 내 대상 발견");
             }
-
-            yield return null;
-        }
     }
 
-    public override IEnumerator PhysicUpdateState()
+    public override void PhysicUpdateState()
     {
-        yield return null;
+  
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
-        // throw new System.NotImplementedException();
+
     }
 }

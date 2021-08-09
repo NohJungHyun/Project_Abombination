@@ -5,25 +5,19 @@ using UnityEngine;
 public class CharacterActionStateMachine : StateMachine
 {
     protected CharacterAction state;
-    Coroutine characterActionCoroutine;
+    // Coroutine characterActionCoroutine;
 
     public override void SetState(IState _state)
     {
+        
         if(state != null)
-        {
             state.ExitState();
-            
-            if(characterActionCoroutine != null)
-                StopCoroutine(characterActionCoroutine);
-        }
 
         state = (CharacterAction)_state;
 
         if(state != null)
-        {
             state.EnterState();
-            characterActionCoroutine = StartCoroutine(state.UpdateState());
-        }
+        
     }
 
     public override void ResetState()

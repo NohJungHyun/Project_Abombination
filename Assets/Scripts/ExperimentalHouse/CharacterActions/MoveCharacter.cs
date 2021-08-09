@@ -34,12 +34,10 @@ public class MoveCharacter : CharacterAction
         EnterState();
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
         coneRangeMesh.gameObject.SetActive(true);
         Debug.Log(this.GetType());
-        //throw new System.NotImplementedException();
-        yield return null;
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -47,32 +45,26 @@ public class MoveCharacter : CharacterAction
         // _BattleUI.bombUI.SetActive(false);
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
-            {
-                characterActionController.SetState(new WaitingOrder(battleController));
-            }
-            else
-            {
-                MovingWithNavMesh();
-            }
-            
+        cameraController.MoveToCharacter(nowTurnCharacter.transform);
+    }
 
-            yield return null;
+    public override void PhysicUpdateState()
+    {
+        if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
+        {
+            characterActionController.SetState(new WaitingOrder(battleController));
+        }
+        else
+        {
+            MovingWithNavMesh();
         }
     }
 
-    public override IEnumerator PhysicUpdateState()
+    public override void ExitState()
     {
-        yield return null;  
-    }
-
-    public override IEnumerator ExitState()
-    {
-         yield return null;
+        
     }
 
     public void Moving()

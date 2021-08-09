@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleEventContainer : MonoBehaviour
+public class BattleEventContainer : EventBoxContainer
 {
-    public List<BoxWithTag> eventBoxes = new List<BoxWithTag>();
+    
 }
+

@@ -18,6 +18,11 @@ public class NowTurnCharacterManager : MonoBehaviour
         instance = this;
     }
 
+    void Start()
+    {
+        SearchWithRayCast.characterClick += SetNowCharacter;
+    }
+
     public Transform GetNowCharacterTransform()
     {
         return nowPlayCharacter.transform;

@@ -9,26 +9,24 @@ public class ModifyCountDown : CharacterAction
         // Setting ㄱㄱ
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
-        yield return null;
+        
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        // 폭탄 카운트다운 조작 추가
-        yield return null;
+        
     }
 
-    public override IEnumerator PhysicUpdateState()
+    public override void PhysicUpdateState()
     {
-        yield return null;
+        
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
-        // throw new System.NotImplementedException();
+        
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)

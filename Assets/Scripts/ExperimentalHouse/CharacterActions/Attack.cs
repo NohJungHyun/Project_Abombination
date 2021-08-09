@@ -14,25 +14,24 @@ public class Attack : CharacterAction
 
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
-        yield return null;
+        
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        yield return null;
+        
     }
 
-    public override IEnumerator PhysicUpdateState()
+    public override void PhysicUpdateState()
     {
-        yield return null;
+        
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
-        // throw new System.NotImplementedException();
+        
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)

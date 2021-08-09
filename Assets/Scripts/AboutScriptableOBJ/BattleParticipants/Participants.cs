@@ -15,7 +15,13 @@ public class Participants : MonoBehaviour
 
 
     public SelectCharacterUI selectCharacterUI;
-    
+
+    public virtual void Init()
+    {
+        Debug.Log("나의 턴! " + this.name);
+        ResetCommandPoint();
+    }
+
     void Start()
     {
         battleParticipantsManager = FindObjectOfType<BattleParticipantsManager>();

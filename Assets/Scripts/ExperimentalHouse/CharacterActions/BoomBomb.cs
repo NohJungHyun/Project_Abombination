@@ -9,16 +9,16 @@ public class BoomBomb : ModifyAbombination
     {
         Debug.Log("BoomBomb에서 Init을 담당하고 있답니다");
         nowTurnCharacterManager = battleController.GetComponent<NowTurnCharacterManager>();
+        characterActionController = _battleController.GetComponent<CharacterActionController>();
 
         // Setting ㄱㄱ
         battleController = _battleController;
         nowTurnCharacter = nowTurnCharacterManager.GetNowCharacter();
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
         Debug.Log("BoomBomb에서 Enter를 담당하고 있답니다");
-        yield return null;
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -26,34 +26,26 @@ public class BoomBomb : ModifyAbombination
         Debug.Log("BoomBomb에서 UI를 담당하고 있답니다");
     }
 
-
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            // 애니메이션같은 거 처리
-            Debug.Log("BoomBomb에서 Update를 담당하고 있답니다");
+        // 애니메이션같은 거 처리
+        Debug.Log("BoomBomb에서 Update를 담당하고 있답니다");
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                battleController.SetState(new ModifyAbombination(battleController));
-            }
-            yield return null;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // characterActionController.SetState(new ModifyAbombination(battleController));
+            characterActionController.SetState(new WaitingOrder(battleController));
         }
     }
 
-    public override IEnumerator PhysicUpdateState()
+    public override void PhysicUpdateState()
     {
-        while (true)
-        {
-            yield return null;
-        }
+
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
         Debug.Log("BoomBomb에서 Exit를 담당하고 있답니다");
         bomb.Boom();
-        yield return null;
     }
 }

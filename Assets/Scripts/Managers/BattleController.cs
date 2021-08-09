@@ -23,7 +23,17 @@ public class BattleController : BattleStateMachine
     {
         SetState(new BattleStartState(this));
     }
-    
+
+    void Update()
+    {
+        state.UpdateState();
+    }
+
+    void LateUpdate()
+    {
+        state.LateUpdateState();
+    }
+
     public override IState GetState()
     {
         return state;

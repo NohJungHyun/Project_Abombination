@@ -9,24 +9,20 @@ public class BattleStartState : BattleState
 
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
         Debug.Log("Battle Start Enter!");
-        yield return null;
         battleController.SetState(new RoundStartState(battleController));
         
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            yield return null;
-        }
+
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
+        
     }
 }

@@ -6,13 +6,14 @@ public class CameraController : MonoBehaviour
 {
     public CameraController instance;
     public Camera mainCamera;
-    public Rigidbody rb;
 
     // ***** 전투 내 Camera 이동, 회전 처리 *****
     Vector3 initialCameraPos = new Vector3(); // 카메라의 원래 위치를 위해 작성
     public Vector3 cameraOffset = new Vector3();
     public Vector3 cameraBasePos = new Vector3(0, 20, 0);
     public Vector3 cameraBaseRot;
+    Vector3 cameraMovePos;
+
     public float cameraZoomInMoveSpeed;
     public float cameraMoveSpeed;
     public float cameraZoomIn;
@@ -24,12 +25,13 @@ public class CameraController : MonoBehaviour
 
     public Transform zoomingCharacter;
     bool canChaseMousePos = false;
+    bool canControlCamera = false;
 
     void Awake()
     {
-        if(instance != null)
+        if (instance != null)
             Destroy(instance);
-        
+
         instance = this;
     }
 
@@ -39,17 +41,30 @@ public class CameraController : MonoBehaviour
         mainCamera.transform.position = cameraBasePos;
         initialCameraPos = mainCamera.transform.position;
 
+        canControlCamera = false;
+
         mainCamera.transform.rotation = Quaternion.Euler(cameraBaseRot);
-        rb = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if (canControlCamera)
+        {
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+
+            cameraMovePos = new Vector3(h, 0, v) * cameraMoveSpeed;
+        }
     }
 
     public void MoveToCharacter(Transform _CharacterPos)
     {
+        canControlCamera = false;
+
         if (_CharacterPos.gameObject)
         {
             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, _CharacterPos.position + cameraOffset, 3f * Time.deltaTime);
         }
-        // mainCamera.transform.LookAt(Vector3.Lerp(_Character.transform.position, _Character.transform.position + cameraOffset, cameraZoomInMoveSpeed));
     }
 
     public void ControlMouseWithCharacter()
@@ -74,14 +89,8 @@ public class CameraController : MonoBehaviour
 
     public void DirectMoveCamera()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
-
-        Debug.Log(transform.position);
-
-        Vector3 cameraMovePos = new Vector3(h, 0, v) * cameraMoveSpeed * Time.deltaTime;
-        //mainCamera.transform.position += cameraBasePos + cameraMovePos;
-        rb.MovePosition(transform.position + cameraMovePos);
+        canControlCamera = true;
+        transform.Translate(cameraMovePos * Time.deltaTime, Space.World);
     }
 
     public void ZoomWithWheel()
@@ -121,5 +130,10 @@ public class CameraController : MonoBehaviour
     public void ChangeCanChaseMousePos(bool _on)
     {
         canChaseMousePos = _on;
+    }
+
+    public bool GetCanControlCamera()
+    {
+        return canControlCamera;
     }
 }

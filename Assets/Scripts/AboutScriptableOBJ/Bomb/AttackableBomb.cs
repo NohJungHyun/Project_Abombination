@@ -11,6 +11,13 @@ public class AttackableBomb : Bomb
     void OnEnable()
     {
         EventBoom += CauseDamageToTarget;
+        owner.GetComponent<CharacterEventContainer>().eventBoxDictionary[5].AddEventToDele(0, ShowString);
+    }
+
+    private void OnDisable() 
+    {
+        EventBoom -= CauseDamageToTarget;
+        owner.GetComponent<CharacterEventContainer>().eventBoxDictionary[5].RemoveEventToDele(0, ShowString);
     }
 
     public void ShowString()
@@ -27,12 +34,6 @@ public class AttackableBomb : Bomb
             col.GetComponent<Temp_Character>().TakeDamage(damage + GetOwner().GetCharacterInfo().characterAttack);
         }
     }
-
-    // public void OnDisable()
-    // {
-    //     EventBoom -= CauseDamageToTarget;
-    //     boomEffect22.SetActive(false);
-    // }
 
     public override void Boom()
     {

@@ -11,21 +11,18 @@ public class EnemyPhase : BattleState
         base.battleController = _battleController;        
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
-        yield return null;
+        Debug.Log("적의 차례");
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            yield return null;
-        }
+
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
+        
     }
 }

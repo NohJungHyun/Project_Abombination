@@ -12,7 +12,9 @@ public abstract class BattleState : IState
         battleController = _battleController;
     }
 
-    public abstract IEnumerator EnterState();
-    public abstract IEnumerator UpdateState();
-    public abstract IEnumerator ExitState();
+    public abstract void EnterState();
+    public abstract void UpdateState();
+    public abstract void ExitState();
+    
+    public virtual void LateUpdateState(){ }
 }

@@ -31,11 +31,11 @@ public class ModifyAbombination : CharacterAction, IBombCatch
         cameraController = battleController.cameraController;
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
         ControllUI(battleUIManager);
 
-        cameraController.ChangeCanChaseMousePos(false);        
+        cameraController.ChangeCanChaseMousePos(false);
 
         if (coneRangeMesh.visibleTargets.Count > 0)
         {
@@ -48,7 +48,6 @@ public class ModifyAbombination : CharacterAction, IBombCatch
 
         bombModifier.SetNowTurnPlayCharacter(nowTurnCharacter);
 
-        yield return null;
         Debug.Log("Enter 종료");
     }
 
@@ -57,34 +56,25 @@ public class ModifyAbombination : CharacterAction, IBombCatch
         battleUIManager.TurnOnBombModifier(true);
 
         bombModifier.SetAbombinationModifier(this);
-        
+
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
+        if (bombModifier.modifiedCharacter)
         {
-
-            if (bombModifier.modifiedCharacter)
-            {
-                cameraController.MoveToCharacter(bombModifier.modifiedCharacter.transform);
-            }
-            
-            yield return null;
+            cameraController.MoveToCharacter(bombModifier.modifiedCharacter.transform);
         }
     }
 
-    public override IEnumerator PhysicUpdateState()
+    public override void PhysicUpdateState()
     {
-        //throw new System.NotImplementedException();
-        yield return null;
+
     }
 
-
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
         battleUIManager.TurnOnBombModifier(false);
-        yield return null;
     }
 
     public void ChangeModifyAction(ModifyAbombination _ma)

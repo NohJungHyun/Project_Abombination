@@ -12,10 +12,10 @@ public abstract class CharacterAction : IState
 
     public CharacterActionController characterActionController;
 
-    public abstract IEnumerator EnterState();
-    public abstract IEnumerator UpdateState();
-    public abstract IEnumerator PhysicUpdateState();
-    public abstract IEnumerator ExitState();
+    public abstract void EnterState();
+    public abstract void UpdateState();
+    public abstract void PhysicUpdateState();
+    public abstract void ExitState();
 
     public abstract void ControllUI(BattleUIManager _BattleUI);
 

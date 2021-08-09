@@ -8,8 +8,6 @@ public class WaitingOrder : CharacterAction
     CameraController cameraController;
     LayerMask characterLayer;
 
-    CharacterActionController characterActionController;
-
     public WaitingOrder(BattleController _battleController) : base(_battleController)
     {
         // Setting ㄱㄱ
@@ -18,14 +16,15 @@ public class WaitingOrder : CharacterAction
         characterActionController = _battleController.GetComponent<CharacterActionController>();
 
         characterLayer = LayerMask.GetMask("Characters");
+        nowTurnCharacter = _battleController.GetComponent<NowTurnCharacterManager>().GetNowCharacter();
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
+        Debug.Log("waiting order Enter!");
+
         if (cameraController.zoomingCharacter != nowTurnCharacter)
             cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
-
-        yield return null; 
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -33,33 +32,29 @@ public class WaitingOrder : CharacterAction
 
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            Debug.Log("캐릭터 액션 업데이트...");
+        Debug.Log("waiting order Update!");
 
+        if (characterActionController.GetState().Equals(this))
+        {
             if (Input.GetAxis("Horizontal") != 0f || Input.GetAxis("Vertical") != 0f)
             {
-                if (characterActionController.GetState().Equals(this))
-                {
-                    Debug.Log("대기 상태에서 상태 변경 성공");
-                    characterActionController.SetState(new MoveCharacter(battleController));
-                }
+                Debug.Log("대기 상태에서 상태 변경 성공");
+                characterActionController.SetState(new MoveCharacter(battleController));
             }
-            yield return null;
         }
 
+        cameraController.MoveToCharacter(nowTurnCharacter.transform);
     }
-    public override IEnumerator PhysicUpdateState()
+    public override void PhysicUpdateState()
     {
-        yield return null;
+
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
-        yield return null;
-        // throw new System.NotImplementedException();
+
     }
 
     public void EndCurTurn()

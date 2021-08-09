@@ -44,11 +44,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
   haveBombs:
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
+  - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
   haveItems: []
   haveSkills: []
   preparedItems: []
   preparedSkills:
   - {fileID: 11400000, guid: 8e3ad8ebcc6df9845ac6844ddb6b287e, type: 2}
-  characterEventBox:
-    m_keys: 
-    m_values: []

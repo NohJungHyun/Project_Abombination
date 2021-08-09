@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerTurnEndState : BattleState
 {
     NowTurnCharacterManager nowTurnCharacterManager;
+    BattleParticipantsManager battleParticipantsManager;
 
     public PlayerTurnEndState(BattleController _battleController) : base(_battleController)
     {
@@ -13,27 +14,23 @@ public class PlayerTurnEndState : BattleState
         //stateEventBox = BombEventManager.battleStateEventBoxDictionary[this.ToString()];
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
         nowTurnCharacterManager.baseCharacterPos = Vector3.zero;
 
         Debug.Log("Player End Enter!");
 
         ExitState();
-        yield return null;
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
-        while (true)
-        {
-            yield return null;
-        }
+
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
         Debug.Log("Player End Exit!");
-        yield return null;
+
     }
 }

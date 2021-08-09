@@ -18,7 +18,7 @@ public class PlayerTurnStartState : BattleState
         characterActionController = battleController.GetComponent<CharacterActionController>();
     }
 
-    public override IEnumerator EnterState()
+    public override void EnterState()
     {
         Debug.Log("Player Start Enter!");
         // MoveReady();
@@ -29,19 +29,16 @@ public class PlayerTurnStartState : BattleState
 
         battleController.SetState(new PlayerTurnDoState(battleController));
 
-        yield return null;
     }
 
-    public override IEnumerator UpdateState()
+    public override void UpdateState()
     {
         Debug.Log("Player Start Update!");
-        yield return null;
     }
 
-    public override IEnumerator ExitState()
+    public override void ExitState()
     {
         Debug.Log("Player Start Exit!");
-        yield return null;
     }
 
 }
