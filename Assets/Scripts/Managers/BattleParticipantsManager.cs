@@ -52,5 +52,6 @@ public class BattleParticipantsManager : MonoBehaviour
             idx = 0;
         
         nowTurnParticipant = battleParticipants[idx];
+        print(nowTurnParticipant.name);
     }
 }

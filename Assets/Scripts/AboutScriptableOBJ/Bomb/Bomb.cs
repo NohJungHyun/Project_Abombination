@@ -50,6 +50,12 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
 
     }
 
+    public IEnumerator InvokeEventPlant()
+    {
+        EventPlant?.Invoke(attachedTarget);
+        yield return null;
+    }
+
     public virtual void Boom() //Temp_Character _target
     {
         Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");

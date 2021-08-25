@@ -5,7 +5,7 @@ using UnityEngine;
 public class NowTurnCharacterManager : MonoBehaviour
 {
     public static NowTurnCharacterManager instance;
-    public Temp_Character nowPlayCharacter; // 현재 턴에 행동가능한 캐릭터를 의미.
+    public static Temp_Character nowPlayCharacter; // 현재 턴에 행동가능한 캐릭터를 의미.
     public Vector3 baseCharacterPos;
 
     public ConeRangeMesh coneRangeMesh;

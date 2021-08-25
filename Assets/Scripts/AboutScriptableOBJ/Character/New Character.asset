@@ -28,8 +28,8 @@ MonoBehaviour:
   characterCharisma: 3
   characterLuck: 3
   characterInitiative: 3
-  characterDetectRange: 5
-  characterThrowRange: 0
+  characterDetectRange: 7
+  characterThrowRange: 5
   currentHP: 30
   maxHP: 30
   curActionPoint: 3
