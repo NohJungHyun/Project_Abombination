@@ -39,7 +39,7 @@ public class UItoShowExplosionInfo : MonoBehaviour
     {
         showExplosionCondition.gameObject.SetActive(true);
 
-        Temp_Character temp_char = NowTurnCharacterManager.instance.nowPlayCharacter;
+        Temp_Character temp_char = NowTurnCharacterManager.nowPlayCharacter;
 
         for (int e = 0; e < temp_char.GetCharacterInfo().canSetExplosions.Count; e++)
         {

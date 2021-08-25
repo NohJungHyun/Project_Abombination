@@ -11,6 +11,8 @@ public class Participants : MonoBehaviour
     public int maxCommandPoint;
     public int curCommandPoint;
 
+    public bool canControll; 
+
     public List<Temp_Character> haveCharacters = new List<Temp_Character>();
 
 
