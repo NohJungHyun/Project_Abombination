@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking", order = 2)]
-public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
+public class Bomb : NeedOwnerThings, ICostable, IUsable
 {
     //이 게임의 공격수단 장치이자, 주된 시스템을 차지하는 오브젝트.
 
@@ -50,12 +50,6 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
 
     }
 
-    public IEnumerator InvokeEventPlant()
-    {
-        EventPlant?.Invoke(attachedTarget);
-        yield return null;
-    }
-
     public virtual void Boom() //Temp_Character _target
     {
         Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
@@ -88,9 +82,8 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
     public void RemoveExplosionToList(Explosion _e)
     {
         if (explosionList.Contains(_e))
-        {
             explosionList.Remove(_e);
-        }
+        
     }
 
     public virtual void SetCountDown(int _min, int _max)
@@ -139,16 +132,6 @@ public class Bomb : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
             explosionList.Clear();
             owner.GetHaveBombs().Remove(this);
         }
-    }
-
-    // public void TestMethod(Temp_Character _t)
-    // {
-    //     Debug.Log("안녕하세요?");
-    // }
-
-    public ICanSetButtons GetCanSet()
-    {
-        return this;
     }
 
     public IEnumerator PlayUseAnimation()

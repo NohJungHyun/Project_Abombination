@@ -10,22 +10,27 @@ public class AI_PlantBomb : CharacterAction
 
     public AI_PlantBomb(BattleController b, Temp_Character target, Bomb setUpbomb) : base(b)
     {
+        characterActionController = CharacterActionController.instance;
+        nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
         battleController = b;
+
         this.target = target;
         this.bomb = setUpbomb;
+        
+        coroutine = SetBombToTarget();
     }
 
     public override void EnterState()
     {
         Debug.Log("AI_PlantBomb Enter!");
 
-        coroutine = SetBombToTarget(target, bomb);
         battleController.StartCoroutine(coroutine);
+             
     }
 
     public override void UpdateState()
     {
-
+        Debug.Log("AI_PlantBomb Update!");
     }
 
     public override void PhysicUpdateState()
@@ -35,6 +40,7 @@ public class AI_PlantBomb : CharacterAction
 
     public override void ExitState()
     {
+        Debug.Log("AI_PlantBomb Exit!");
         battleController.StopCoroutine(coroutine);
     }
 
@@ -43,25 +49,20 @@ public class AI_PlantBomb : CharacterAction
 
     }
 
-    public IEnumerator SetBombToTarget(Temp_Character character, Bomb bomb)
+    public IEnumerator SetBombToTarget()
     {
         yield return null;
 
-        character.GetHaveBombs().Add(bomb);
-        bomb.attachedTarget = character;
+        target.GetHaveBombs().Add(bomb);
+        bomb.attachedTarget = target;
 
-        IEnumerator tempCoroutine = null;
-        tempCoroutine = bomb.InvokeEventPlant();
+        nowTurnCharacter.actionPoint -= bomb.setUpCost;
 
+        IEnumerator tempCoroutine = bomb.Use();
         battleController.StartCoroutine(tempCoroutine);
 
-        yield return null;
+        yield return null;   
 
-        battleController.StopCoroutine(tempCoroutine);
-
-        Debug.LogFormat("{0}에게 {1}을 붙였다!", character.name, bomb);
-
-        for(int i = 0; i < character.GetHaveBombs().Count; i++)
-            Debug.Log(character.GetHaveBombs()[i]);
+        characterActionController.SetState(new AI_WaitingOrder(battleController));
     }
 }

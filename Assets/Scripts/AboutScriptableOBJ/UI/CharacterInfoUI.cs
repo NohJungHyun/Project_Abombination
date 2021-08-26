@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class CharacterInfoUI : MonoBehaviour
+public class CharacterInfoUI : BaseUIStorage
 {
     public static CharacterInfoUI instance;
 
@@ -29,6 +29,11 @@ public class CharacterInfoUI : MonoBehaviour
     void Start()
     {
         actionPointUI = GetComponentInChildren<ActionPointUI>();
+    }
+
+    public override void InitUI()
+    {
+
     }
 
     public void ChangeCharacterBasicInfo(Temp_Character _Character)

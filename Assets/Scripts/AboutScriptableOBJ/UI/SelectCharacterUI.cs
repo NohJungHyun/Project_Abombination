@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectCharacterUI : MonoBehaviour
+public class SelectCharacterUI : BaseUIStorage
 {
     public Player player;
     public List<Image> commandPointOutlines;
@@ -22,6 +22,11 @@ public class SelectCharacterUI : MonoBehaviour
             commandPointOutlines[p].gameObject.SetActive(true);
             commandPointOutlines[p] = commandPointOutlines[p].GetComponentInChildren<Image>();
         }
+    }
+
+    public override void InitUI()
+    {
+
     }
 
     public bool SpendCommandPoints(int _cpCost)
@@ -59,6 +64,8 @@ public class SelectCharacterUI : MonoBehaviour
         canProceed = true;
         TurnOffThis();
     }
+
+
 
     // public void DisappearImage()
     // {

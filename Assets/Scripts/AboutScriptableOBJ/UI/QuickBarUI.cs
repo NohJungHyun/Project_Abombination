@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuickBarUI : MonoBehaviour
+public class QuickBarUI : BaseUIStorage
 {
     public List<Button> quickButtons = new List<Button>(6);
-    // public List<ThingsInGame> usables = new List<ThingsInGame>(6);
-    // public BombModifier bombModifier;
     bool isCanSetBombs;
     [SerializeField] bool isCanChange;
 
@@ -27,7 +25,6 @@ public class QuickBarUI : MonoBehaviour
 
             if (CharacterActionController.instance.GetState().GetType().Equals(typeof(ModifyAbombination)))
             {
-                Debug.Log("우효 wwww");
                 isCanSetBombs = !isCanSetBombs;
 
                 if (isCanSetBombs)
@@ -50,6 +47,11 @@ public class QuickBarUI : MonoBehaviour
     }
 
     public void SetToButton(List<IUsable> _usable)
+    {
+
+    }
+
+    public override void InitUI()
     {
 
     }

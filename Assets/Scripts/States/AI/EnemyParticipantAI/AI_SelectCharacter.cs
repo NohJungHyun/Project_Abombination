@@ -13,11 +13,13 @@ public class AI_SelectCharacter : BattleState
     {
         Debug.Log("AI_SelectCharacter Enter!");
         Temp_Character t = SelectRandomCharacter();
+        int diff = BattleParticipantsManager.nowTurnParticipant.curCommandPoint - t.GetCharacterInfo().needCommandPoint;
 
-        if (BattleParticipantsManager.nowTurnParticipant.curCommandPoint >= t.GetCharacterInfo().needCommandPoint)
+        if (diff >= 0)
         {
+            BattleParticipantsManager.nowTurnParticipant.curCommandPoint = diff;
             NowTurnCharacterManager.nowPlayCharacter = t;
-            Debug.Log(t.name);
+
             battleController.SetState(new AI_CharacterTurnStart(battleController));
         }
         else

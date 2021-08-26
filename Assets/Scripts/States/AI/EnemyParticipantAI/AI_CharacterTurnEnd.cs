@@ -13,10 +13,7 @@ public class AI_CharacterTurnEnd : BattleState
     {
         Debug.Log("AI_CharacterTurnEnd Enter!");
 
-        // battleController.SetState(new SelectActCharacter(battleController));
-        // CharacterActionController.instance.SetState(new WaitingOrder(battleController));
-        // battleController.SetState(new AI_SelectCharacter(battleController));
-
+        battleController.SetState(new AI_SelectCharacter(battleController));
     }
 
     public override void UpdateState()

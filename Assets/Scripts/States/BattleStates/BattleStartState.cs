@@ -13,6 +13,7 @@ public class BattleStartState : BattleState
     {
         Debug.Log("Battle Start Enter!");
         battleController.SetState(new RoundStartState(battleController));
+        CharacterActionController.instance.SetState(null);
         
     }
 
