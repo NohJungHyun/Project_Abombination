@@ -20,18 +20,10 @@ public class AI_WaitingOrder : CharacterAction
     {
         Debug.Log("AI_WaitingOrder Enter!");
 
-        if (nowTurnCharacter.GetCharacterInfo().canSetBombs.Count > 0)
-        {
-            for(int idx = 0; idx < nowTurnCharacter.GetCharacterInfo().canSetBombs.Count; idx++)
-            {
-                if (nowTurnCharacter.GetCharacterInfo().canSetBombs[idx].setUpCost < nowTurnCharacter.actionPoint)
-                {
-                    Debug.Log("폭탄 설치를 진행하겠다");
-                    SelectTarget(nowTurnCharacter.GetCharacterInfo().canSetBombs[idx]);
-                    break;
-                }
-            }
-        }
+        // SelectTarget(CheckCanSetBombsWithPoint());
+        if(!CheckCanSetBombsWithPoint())
+            battleController.SetState(new AI_CharacterTurnEnd(battleController));
+        // battleController.SetState(new AI_SelectCharacter(battleController));
     }
 
     public override void UpdateState()
@@ -54,14 +46,31 @@ public class AI_WaitingOrder : CharacterAction
 
     }
 
-    public void SelectTarget(Bomb b)
+    public bool CheckCanSetBombsWithPoint()
     {
+        if (nowTurnCharacter.GetCharacterInfo().canSetBombs.Count > 0)
+        {
+            for (int idx = 0; idx < nowTurnCharacter.GetCharacterInfo().canSetBombs.Count; idx++)
+            {
+                if (nowTurnCharacter.GetCharacterInfo().canSetBombs[idx].setUpCost < nowTurnCharacter.actionPoint)
+                {
+                    Debug.Log("폭탄 설치를 진행하겠다");
+                    SelectTarget(nowTurnCharacter.GetCharacterInfo().canSetBombs[idx]);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void SelectTarget(Bomb b)
+    {   
+        if(b == null) return;
+
         float nearDist = 1000;
         Transform nearest = null;
 
         Collider[] cols = Physics.OverlapSphere(b.GetOwner().gameObject.transform.position, b.GetOwner().GetCharacterInfo().characterDetectRange, b.layerMask);
-
-        Debug.Log(cols.Length);
 
         for (int c = 0; c < cols.Length; c++)
         {
@@ -77,13 +86,9 @@ public class AI_WaitingOrder : CharacterAction
             }
         }
 
-        Debug.Log(nearDist);
-
         if (nearDist > b.GetOwner().GetCharacterInfo().characterMovement && nearest)
             characterActionController.SetState(new AI_Move(battleController, nearest, b));
         else
             characterActionController.SetState(new AI_PlantBomb(battleController, nearest.GetComponent<Temp_Character>(), b));
-        // else
-        //폭탄 설치
     }
 }

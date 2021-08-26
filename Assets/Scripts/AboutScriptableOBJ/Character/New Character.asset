@@ -35,7 +35,7 @@ MonoBehaviour:
   curActionPoint: 3
   maxActionPoint: 3
   minActionPoint: 3
-  needCommandPoint: 2
+  needCommandPoint: 3
   canSetExplosions:
   - {fileID: 11400000, guid: 9181c9b79aa51ec40b5653275b28f03a, type: 2}
   - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}

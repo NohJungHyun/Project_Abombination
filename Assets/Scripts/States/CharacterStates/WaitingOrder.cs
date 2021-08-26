@@ -23,7 +23,7 @@ public class WaitingOrder : CharacterAction
     {
         Debug.Log("waiting order Enter!");
 
-        if (cameraController.zoomingCharacter != nowTurnCharacter)
+        if (cameraController.GetZoomingCharacter() != nowTurnCharacter)
             cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
     }
 

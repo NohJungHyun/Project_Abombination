@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class AI_Move : CharacterAction
 {
     Transform targetTransform;
-    public float speed;
 
     NavMeshAgent navMeshAgent;
 
@@ -59,11 +58,6 @@ public class AI_Move : CharacterAction
 
     }
 
-    public IEnumerator<bool> MoveToTarget()
-    {
-        yield return false;
-    }
-
     public IEnumerator MoveCharacter()
     {
         navMeshAgent.destination = targetTransform.position;
@@ -72,27 +66,12 @@ public class AI_Move : CharacterAction
         {
             if (nowTurnCharacter.GetCharacterInfo().characterThrowRange > Vector3.Distance(nowTurnCharacter.transform.position, targetTransform.position))
             {
-                // Debug.Log("현재 캐릭터의 위치: " + nowTurnCharacter.transform.position);
-                // Debug.Log("타겟의 좌표: " + targetTransform.position);
-
                 navMeshAgent.isStopped = true;
                 navMeshAgent.ResetPath();
 
                 characterActionController.SetState(new AI_PlantBomb(battleController, targetTransform.GetComponent<Temp_Character>(), bomb));
             }
-            else
-                Debug.Log("Distance:" + Vector3.Distance(nowTurnCharacter.transform.position, targetTransform.position));
-            
             yield return null;
         }
     }
-
-    // public void Move()
-    // {
-    //     // NowTurnCharacterManager.instance.nowPlayCharacter.SetCharacterPos(Vector3.MoveTowards(NowTurnCharacterManager.instance.nowPlayCharacter.gameObject.transform.position, targetTransform.position, speed * Time.deltaTime));
-    //     if(1f > Vector3.Distance(nowTurnCharacter.transform.position, targetTransform.position))
-    //         navMeshAgent.destination = targetTransform.position;
-    //     else
-    //         characterActionController.SetState(new AI_WaitingOrder(BattleController.instance));
-    // }
 }

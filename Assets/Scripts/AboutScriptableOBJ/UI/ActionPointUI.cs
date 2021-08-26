@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ActionPointUI : MonoBehaviour
+public class ActionPointUI : BaseUIStorage
 {
     public TextMeshProUGUI actionPointText;
 
@@ -16,6 +16,10 @@ public class ActionPointUI : MonoBehaviour
     {
         actionPointText = GetComponentInChildren<TextMeshProUGUI>();
         SearchWithRayCast.characterClick += SetCharacterInfo;
+    }
+    public override void InitUI()
+    {
+
     }
 
     void SetCharacterInfo(Temp_Character temp_Character)
@@ -31,12 +35,10 @@ public class ActionPointUI : MonoBehaviour
         // }
 
         if (temp_Character)
-        {
             actionPointText.text = temp_Character.GetCharacterInfo().curActionPoint.ToString() + " / " + temp_Character.GetCharacterInfo().maxActionPoint.ToString();
-        }
         else
-        {
             actionPointText.text = " ";
-        }
+        
     }
+    
 }

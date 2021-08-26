@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class BombModifier : MonoBehaviour
+public class BombModifier : BaseUIStorage
 {
     public NowTurnCharacterManager nowTurnCharacterManager;
     ModifyAbombination modifyAbombination;
@@ -77,6 +77,11 @@ public class BombModifier : MonoBehaviour
     void Update()
     {
         ChangeCurTarget();
+    }
+
+    public override void InitUI()
+    {
+
     }
 
     public void ArrangeModifierUI()
@@ -197,8 +202,6 @@ public class BombModifier : MonoBehaviour
         predictedCountdown++;
         ChangeCountdownText();
         print("predictedCost: " + predictedCost);
-
-        // modifyAbombination.ChangeModifyAction(new ModifyCountDown(BattleController.instance));
     }
 
     public void SubtractCountdown(int _cost)
@@ -217,8 +220,6 @@ public class BombModifier : MonoBehaviour
         predictedCountdown--;
         ChangeCountdownText();
         print("predictedCost: " + predictedCost);
-
-        // modifyAbombination.ChangeModifyAction(new ModifyCountDown(BattleController.instance));
     }
 
     public void BombIndexIncrease()
@@ -245,8 +246,6 @@ public class BombModifier : MonoBehaviour
         if (bombIndexSlider.value > 0)
         {
             bombIndexSlider.value--;
-            // targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
-
             countdownText.text = targetedBomb.bombCurCountDown.ToString();
         }
 
@@ -257,13 +256,8 @@ public class BombModifier : MonoBehaviour
     {
         if (!targetedBomb || nowTurnPlayCharacter.GetActionPoint() < _cost) return;
 
-        Debug.Log(targetedBomb.name);
-        Debug.Log(targetedBomb.GetOwner());
-        Debug.Log(targetedBomb.attachedTarget);
-
         BoomBomb boomB = new BoomBomb(BattleController.instance);
         boomB.GetBomb(targetedBomb);
-        // BattleController.instance.SetCharacterAction(boomB);
         modifyAbombination.ChangeModifyAction(boomB);
     }
 
@@ -279,10 +273,6 @@ public class BombModifier : MonoBehaviour
     public void CalculateCost(int _cost)
     {
         predictedCost += _cost;
-        // if (predictedCost > 0)
-        //     predictedCost += _cost;
-        // else
-        //     predictedCost -= _cost;
     }
 
     public void AdjustDecision()
@@ -295,11 +285,8 @@ public class BombModifier : MonoBehaviour
             if (targetedBomb.bombCurCountDown <= 0)
                 targetedBomb.Boom();
         }
-        else
-            Debug.Log("응 무리야");
 
         CancleDecision();
-        // gameObject.SetActive(false);
     }
 
     public void CancleDecision()
@@ -359,10 +346,7 @@ public class BombModifier : MonoBehaviour
 
         if (targetedBombs.Count > 0)
         {
-            // targetedBomb = targetedBombs[(int)bombIndexSlider.value];
             targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
-            // Debug.Log("???" + targetedBomb);
-            // Debug.Log("???" + targetedBomb.attachedTarget);
 
             bombIndexSlider.maxValue = modifiedCharacter.GetHaveBombs().Count - 1;
             bombIndexSlider.minValue = 0;
@@ -381,14 +365,10 @@ public class BombModifier : MonoBehaviour
 
     public void ChangeCurTarget()
     {
-        // SetNowTurnPlayCharacter(NowTurnCharacterManager.instance.GetNowCharacter());
-
         if (nowTurnCharacterManager.GetVisibleTargets().Count > 0)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("AAA");
-
                 if (characterIndex > 0)
                 {
                     characterIndex--;
@@ -400,8 +380,6 @@ public class BombModifier : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                Debug.Log("DDD");
-
                 if (characterIndex < nowTurnCharacterManager.GetVisibleTargets().Count - 1)
                 {
                     characterIndex++;
@@ -409,7 +387,6 @@ public class BombModifier : MonoBehaviour
 
                     SetModifiedCharacter(nowTurnCharacterManager.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
-
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -422,13 +399,9 @@ public class BombModifier : MonoBehaviour
         }
     }
 
-    public void SetAbombinationModifier(ModifyAbombination _m)
-    {
-        modifyAbombination = _m;
-    }
+    public void SetAbombinationModifier(ModifyAbombination _m) => modifyAbombination = _m;
+    
 
-    public void SetNowTurnPlayCharacter(Temp_Character _Character)
-    {
-        nowTurnPlayCharacter = _Character;
-    }
+    public void SetNowTurnPlayCharacter(Temp_Character _Character) => nowTurnPlayCharacter = _Character;
+    
 }

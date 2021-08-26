@@ -8,22 +8,20 @@ public class CameraController : MonoBehaviour
     public Camera mainCamera;
 
     // ***** 전투 내 Camera 이동, 회전 처리 *****
-    Vector3 initialCameraPos = new Vector3(); // 카메라의 원래 위치를 위해 작성
-    public Vector3 cameraOffset = new Vector3();
-    public Vector3 cameraBasePos = new Vector3(0, 20, 0);
+    Vector3 initialCameraPos; // 카메라의 원래 위치를 위해 작성
+    public Vector3 cameraStartPos = new Vector3(0, 20, 0);
+    public Vector3 cameraOffset;
     public Vector3 cameraBaseRot;
     Vector3 cameraMovePos;
 
-    public float cameraZoomInMoveSpeed;
     public float cameraMoveSpeed;
-    public float cameraZoomIn;
-
-    public bool doZoom;
+    public float cameraZoomInSpeed;
 
     public float maxZoomInDist;
     public float minZoomInDist;
 
-    public Transform zoomingCharacter;
+    Transform zoomingCharacter;
+
     bool canChaseMousePos = false;
     bool canControlCamera = false;
 
@@ -38,12 +36,17 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
-        mainCamera.transform.position = cameraBasePos;
+        mainCamera.transform.rotation = Quaternion.Euler(cameraBaseRot);
+        mainCamera.transform.position = cameraStartPos;
         initialCameraPos = mainCamera.transform.position;
 
         canControlCamera = false;
+    }
 
-        mainCamera.transform.rotation = Quaternion.Euler(cameraBaseRot);
+    public void TurnToCameraToNowCharacter()
+    {
+        if(NowTurnCharacterManager.nowPlayCharacter)
+            zoomingCharacter = NowTurnCharacterManager.nowPlayCharacter.transform;
     }
 
     void Update()
@@ -62,9 +65,7 @@ public class CameraController : MonoBehaviour
         canControlCamera = false;
 
         if (_CharacterPos.gameObject)
-        {
             mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, _CharacterPos.position + cameraOffset, 3f * Time.deltaTime);
-        }
     }
 
     public void ControlMouseWithCharacter()
@@ -95,45 +96,23 @@ public class CameraController : MonoBehaviour
 
     public void ZoomWithWheel()
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel") * cameraZoomIn;
+        float scroll = Input.GetAxis("Mouse ScrollWheel") * cameraZoomInSpeed;
 
         if (scroll < 0 && mainCamera.fieldOfView <= maxZoomInDist)
-        {
             mainCamera.fieldOfView = maxZoomInDist;
-        }
         else if (scroll > 0 && mainCamera.fieldOfView >= minZoomInDist)
-        {
             mainCamera.fieldOfView = minZoomInDist;
-        }
         else
-        {
             mainCamera.fieldOfView += scroll;
-        }
-    }
-
-    public void SetZoomCondition(bool _onOff)
-    {
-        doZoom = _onOff;
-        Debug.Log("!!!");
-    }
-
-    public void SetZoomingCharacter(Transform _character)
-    {
-        zoomingCharacter = _character;
     }
 
     public Transform GetZoomingCharacter()
     {
-        return zoomingCharacter;
+         return zoomingCharacter;
     }
 
-    public void ChangeCanChaseMousePos(bool _on)
-    {
-        canChaseMousePos = _on;
-    }
-
-    public bool GetCanControlCamera()
-    {
-        return canControlCamera;
-    }
+    public void SetZoomingCharacter(Transform _character) => zoomingCharacter = _character;
+    
+    public void ChangeCanChaseMousePos(bool _on) => canChaseMousePos = _on;
+    
 }

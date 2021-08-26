@@ -31,12 +31,9 @@ public class SelectActCharacter : BattleState
     public override void EnterState()
     {
         Debug.Log("SelectActCharacter Enter!");
-        Debug.Log(character);
         character = null;
         playThisCharacterButton.gameObject.SetActive(true);
         participants.selectCharacterUI.gameObject.SetActive(true);
-
-        // GlobalBattlePhase.instance.SelectActCharacterEventBox.InvokeStartBox();
     }
 
     public override void UpdateState()
@@ -45,8 +42,6 @@ public class SelectActCharacter : BattleState
 
         if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter())
         {
-            Debug.Log("캐릭터 선택 됨: " + SearchWithRayCast.GetHitCharacter().name);
-
             nowTurnCharacter.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
             character = SearchWithRayCast.GetHitCharacter();
 

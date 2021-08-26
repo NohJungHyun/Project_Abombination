@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BattleParticipantsManager : MonoBehaviour
 {
-    int idx;
+    int idx = 0;
 
     public static BattleParticipantsManager instance;
 
@@ -15,9 +15,7 @@ public class BattleParticipantsManager : MonoBehaviour
     public List<Temp_Character> characterList = new List<Temp_Character>(); // 전투에 참여하는 캐릭터들을 담는 리스트.
 
     void Awake()
-    {
-        idx = 0;
-        
+    {        
         if (instance != null)
             Destroy(instance);
 
@@ -29,9 +27,8 @@ public class BattleParticipantsManager : MonoBehaviour
         nowTurnParticipant = battleParticipants[0];
 
         for (int i = 0; i < battleParticipants.Count; i++)
-        {
             characterList.AddRange(battleParticipants[i].haveCharacters);
-        }
+        
     }
 
     public void SetNowTurnParticipants(Participants _p)
@@ -46,7 +43,7 @@ public class BattleParticipantsManager : MonoBehaviour
 
     public void CallNextParticipant()
     {
-        if (idx < battleParticipants.Count)
+        if (idx < battleParticipants.Count - 1)
             idx++;
         else
             idx = 0;

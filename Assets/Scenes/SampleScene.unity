@@ -4968,12 +4968,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98bbca51585036d48880b8ca472c531d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInfoBG: {fileID: 0}
+  characterInfoBG: {fileID: 1156648957}
   hpBar: {fileID: 0}
-  characterName: {fileID: 0}
+  characterName: {fileID: 728468986}
   basicSprtie: {fileID: 0}
-  quickBarUI: {fileID: 0}
-  actionPointUI: {fileID: 0}
+  quickBarUI: {fileID: 215714075}
+  actionPointUI: {fileID: 2045952489}
 --- !u!114 &215714075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15903,7 +15903,7 @@ MonoBehaviour:
   - {fileID: 2045791533}
   - {fileID: 968597269}
   - {fileID: 20980155}
-  selectCharacterUI: {fileID: 0}
+  selectCharacterUI: {fileID: 370657901}
   mainCharacters: []
 --- !u!1 &695061988
 GameObject:
@@ -22446,16 +22446,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instance: {fileID: 0}
   mainCamera: {fileID: 963194227}
-  cameraOffset: {x: 0, y: 15, z: -5}
-  cameraBasePos: {x: 0, y: 15, z: -25}
-  cameraBaseRot: {x: 70, y: 0, z: 0}
-  cameraZoomInMoveSpeed: 0
+  cameraStartPos: {x: 0, y: 10, z: -30}
+  cameraOffset: {x: 0, y: 10, z: -15}
+  cameraBaseRot: {x: 30, y: 0, z: 0}
   cameraMoveSpeed: 20
-  cameraZoomIn: 20
-  doZoom: 0
+  cameraZoomInSpeed: 0
   maxZoomInDist: 20
   minZoomInDist: 60
-  zoomingCharacter: {fileID: 0}
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49452,6 +49449,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 9178277334612182970, guid: 7d1503bce4b2e164699bbf5920bd71f9, type: 3}
+      propertyPath: controlledCharacter
+      value: 
+      objectReference: {fileID: 4863477159494334878}
     - target: {fileID: 9178277334612182970, guid: 7d1503bce4b2e164699bbf5920bd71f9, type: 3}
       propertyPath: characterTurnActions.Array.size
       value: 5

@@ -14,6 +14,7 @@ public class RoundStartState : BattleState
         Debug.Log("Round Start Enter!");
 
         battleController.SetState(new SelectActCharacter(battleController));
+        CharacterActionController.instance.SetState(null);
     }
 
     public override void UpdateState()

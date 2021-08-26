@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UItoShowExplosionInfo : MonoBehaviour
+public class UItoShowExplosionInfo : BaseUIStorage
 {
     // CharacterBattleAction characterBattleAction;
     public GameObject showExplosionCondition;
@@ -22,7 +22,6 @@ public class UItoShowExplosionInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // characterBattleAction = GameObject.FindObjectOfType<CharacterBattleAction>();
         uitoShowBomb = GameObject.FindObjectOfType<UItoShowBombInfo>();
         exploSetupButton.AddRange(GetComponentsInChildren<Button>());
         showExplosionCondition.gameObject.SetActive(false);
@@ -33,6 +32,11 @@ public class UItoShowExplosionInfo : MonoBehaviour
             b.GetComponentInChildren<Text>().text = " ";
             exploSetupButton.Add(b);
         }
+    }
+
+    public override void InitUI()
+    {
+
     }
 
     public void ExhibitExploButtons()
@@ -49,10 +53,5 @@ public class UItoShowExplosionInfo : MonoBehaviour
             exploSetupButton[explosLisnter].onClick.RemoveAllListeners();
             exploSetupButton[explosLisnter].onClick.AddListener(() => AddExplosion.DoExplosionSetUp(temp_char.GetCharacterInfo().canSetExplosions[explosLisnter], uitoShowBomb));
         }
-    }
-    
-    public bool CloseActiveUI()
-    {
-        return true;
     }
 }
