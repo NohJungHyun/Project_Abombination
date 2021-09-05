@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public enum ClassJob { Warrrior, Mage, Thief }
-public enum ClassifyWhatisIt { Character, Object }
+public enum ClassifyType { Character, Object }
 public enum CharacterType { Human, Construct }
 
 [CreateAssetMenu(fileName = "New Character", menuName = "ScriptableObjects/CharacterMaking", order = 1)]
 public class CharacterInfo : NeedPlayerThings
 {
     #region 1. 캐릭터 기본 명시 사항 
-    public ClassifyWhatisIt definition;
+    public ClassifyType definitionType;
     public CharacterType characterType;
 
     public GameObject characterModel;
@@ -20,7 +20,7 @@ public class CharacterInfo : NeedPlayerThings
     #region 2. 캐릭터 성장 관련 변수
     public int chracterLevel;
     public ClassJob characterClass;
-    public float characterexp;
+    public int characterExp;
     #endregion
 
     #region 3. 캐릭터 능력치 관련 변수
@@ -66,7 +66,7 @@ public class CharacterInfo : NeedPlayerThings
 
     Stat statThrowRange; // 폭탄 던지기 거리
 
-    public Stat statInitiative { get; set; }
+    Stat statInitiative;
     #endregion
 
     public void SetBasic()
@@ -122,8 +122,7 @@ public class CharacterInfo : NeedPlayerThings
     {
         curActionPoint -= _spendAP;
         if (curActionPoint - _spendAP < 0)
-        {
             Debug.Log("AP가 부족하여 사용불가");
-        }
+        
     }
 }

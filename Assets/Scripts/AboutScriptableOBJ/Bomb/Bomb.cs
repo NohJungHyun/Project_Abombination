@@ -37,7 +37,7 @@ public class Bomb : NeedOwnerThings, ICostable, IUsable
     public int addCountdownCost;
     public int subtractCountdownCost;
 
-    public GameObject boomEffect22;
+    public GameObject boomEffect;
 
     public IEnumerator Use()
     {
@@ -96,7 +96,7 @@ public class Bomb : NeedOwnerThings, ICostable, IUsable
         this.bombCurCountDown = Random.Range(this.bombMinCountDown, bombMaxCountDown + 1);
     }
 
-    public void SetbombOwner(Temp_Character _tempCharacter)
+    public void SetBombOwner(Temp_Character _tempCharacter)
     {
         owner = _tempCharacter;
     }
@@ -136,10 +136,9 @@ public class Bomb : NeedOwnerThings, ICostable, IUsable
 
     public IEnumerator PlayUseAnimation()
     {
-        if (boomEffect22.GetComponent<ParticleSystem>())
-        {
-            boomEffect22.GetComponent<ParticleSystem>().Play();
-        }
+        if (boomEffect.GetComponent<ParticleSystem>())
+            boomEffect.GetComponent<ParticleSystem>().Play();
+        
         yield return null;
     }
 }

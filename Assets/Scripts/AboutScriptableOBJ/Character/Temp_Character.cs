@@ -10,7 +10,7 @@ public class Temp_Character : MonoBehaviour, IDamageable
     CharacterInfo info { get; set; }
 
     public bool canMove;
-    public bool canActwithBomb;
+    public bool canActWithBomb;
     public bool canUseSkill;
 
     Vector3 basicPos;
@@ -32,7 +32,6 @@ public class Temp_Character : MonoBehaviour, IDamageable
         for (int b = 0; b < characterInfo.canSetBombs.Count; b++)
         {
             info.canSetBombs[b] = ScriptableObject.Instantiate(characterInfo.canSetBombs[b]);
-
             info.canSetBombs[b].SetOwner(this);
         }
 
@@ -45,18 +44,13 @@ public class Temp_Character : MonoBehaviour, IDamageable
             info.haveBombs[h].SetAttachedTarget(this);
 
             if (!characterInfo.haveBombs[h].GetOwner())
-            {
                 info.haveBombs[h].SetOwner(this);
-            }
+            
 
             if (characterInfo.haveBombs[h].GetExplosionsList().Count > 0)
-            {
                 for (int e = 0; e < characterInfo.haveBombs[h].GetExplosionsList().Count; e++)
-                {
                     // info.haveBombs[h].GetExplosionsList()[e].GetRidOfExplosionAllEvent(characterInfo.haveBombs[h]);
                     info.haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(info.haveBombs[h]);
-                }
-            }
         }
 
         for (int e = 0; e < characterInfo.canSetExplosions.Count; e++)
@@ -81,30 +75,26 @@ public class Temp_Character : MonoBehaviour, IDamageable
     {
         return info.canSetExplosions;
     }
-    public void AddBombtoHaveBombs(Bomb _b, int _p)
+    public void AddBombToHaveBombs(Bomb _b, int _p)
     {
         info.haveBombs.Insert(_p, _b);
     }
 
-    public void AddBombtoCanSetBombs(Bomb _b, int _p)
+    public void AddBombToCanSetBombs(Bomb _b, int _p)
     {
         info.canSetBombs.Insert(_p, _b);
     }
 
-    public void RemoveBombtoHaveBombs(Bomb _b)
+    public void RemoveBombToHaveBombs(Bomb _b)
     {
         if (info.haveBombs.Equals(_b))
-        {
             info.haveBombs.Remove(_b);
-        }
     }
 
     public void RemoveBombtoCanSetBombs(Bomb _b)
     {
         if (info.canSetBombs.Equals(_b))
-        {
             info.canSetBombs.Remove(_b);
-        }
     }
 
     public void TakeDamage(int _dmg)

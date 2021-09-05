@@ -15,7 +15,7 @@ public class PhaseStart : BattleState
 
         NowTurnCharacterManager.nowPlayCharacter = null;
 
-        if(BattleParticipantsManager.nowTurnParticipant.canControll)
+        if(BattleParticipantsManager.nowTurnParticipant.canControl)
             battleController.SetState(new SelectActCharacter(battleController));
         else
             battleController.SetState(new AI_SelectCharacter(battleController));

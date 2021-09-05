@@ -682,7 +682,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: 0d27f9eebc624de43a2246707bb55bee, type: 2}
   canMove: 1
-  canActwithBomb: 1
+  canActWithBomb: 0
   canUseSkill: 1
   actionPoint: 0
   curHP: 0
@@ -15897,7 +15897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCommandPoint: 4
   curCommandPoint: 4
-  canControll: 0
+  canControl: 0
   haveCharacters:
   - {fileID: 4863477159494334878}
   - {fileID: 2045791533}
@@ -16801,7 +16801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxCommandPoint: 4
   curCommandPoint: 4
-  canControll: 1
+  canControl: 0
   haveCharacters:
   - {fileID: 548641442}
   - {fileID: 212936477}
@@ -34855,7 +34855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: 090ebed291b8b9d48af9f2c119c1690a, type: 2}
   canMove: 1
-  canActwithBomb: 1
+  canActWithBomb: 0
   canUseSkill: 1
   actionPoint: 0
   curHP: 0
@@ -35141,7 +35141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: 0d27f9eebc624de43a2246707bb55bee, type: 2}
   canMove: 1
-  canActwithBomb: 1
+  canActWithBomb: 0
   canUseSkill: 1
   actionPoint: 0
   curHP: 0
