@@ -32,6 +32,6 @@ public class BombEventBoom : MonoBehaviour, IBombEventExcutor
     public IEnumerator OnCallingBoom(Temp_Character _Character)
     {
         bomb.PlayUseAnimation();
-        yield return new WaitForSeconds(bomb.boomEffect22.GetComponent<ParticleSystem>().main.duration * 0.5f);
+        yield return new WaitForSeconds(bomb.boomEffect.GetComponent<ParticleSystem>().main.duration * 0.5f);
     }
 }

@@ -49,17 +49,14 @@ public class AI_WaitingOrder : CharacterAction
     public bool CheckCanSetBombsWithPoint()
     {
         if (nowTurnCharacter.GetCharacterInfo().canSetBombs.Count > 0)
-        {
             for (int idx = 0; idx < nowTurnCharacter.GetCharacterInfo().canSetBombs.Count; idx++)
-            {
                 if (nowTurnCharacter.GetCharacterInfo().canSetBombs[idx].setUpCost < nowTurnCharacter.actionPoint)
                 {
                     Debug.Log("폭탄 설치를 진행하겠다");
                     SelectTarget(nowTurnCharacter.GetCharacterInfo().canSetBombs[idx]);
                     return true;
                 }
-            }
-        }
+        
         return false;
     }
 
@@ -80,10 +77,11 @@ public class AI_WaitingOrder : CharacterAction
                 continue;
 
             if (nearDist > Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position))
-            {
-                nearDist = Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position);
-                nearest = cols[c].transform;
-            }
+                if (nearest.gameObject.activeInHierarchy)
+                {
+                    nearDist = Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position);
+                    nearest = cols[c].transform;
+                }
         }
 
         if (nearDist > b.GetOwner().GetCharacterInfo().characterMovement && nearest)
