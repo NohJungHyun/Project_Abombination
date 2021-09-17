@@ -39,15 +39,13 @@ public class Bomb : NeedOwnerThings, ICostable, IUsable
 
     public GameObject boomEffect;
 
+    public List<OccurrenceTemplate> occurrences = new List<OccurrenceTemplate>();
+
     public IEnumerator Use()
     {
         EventPlant?.Invoke(attachedTarget);
+        SendBox();
         yield return null;
-    }
-
-    public void SetToButton(Button _button)
-    {
-
     }
 
     public virtual void Boom() //Temp_Character _target
@@ -62,6 +60,12 @@ public class Bomb : NeedOwnerThings, ICostable, IUsable
         Debug.Log("폭탄이 해체되었다!");
         EventDiffuse?.Invoke(attachedTarget);
         RemoveBomb();
+    }
+
+    public void SendBox()
+    {
+        for(int i = 0; i < occurrences.Count; i++)
+            occurrences[i].SpreadtoBattleContainer(owner);
     }
 
     public List<Explosion> GetExplosionsList()

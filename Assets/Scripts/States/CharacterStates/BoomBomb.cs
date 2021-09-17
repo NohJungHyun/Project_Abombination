@@ -8,8 +8,8 @@ public class BoomBomb : ModifyAbombination
     public BoomBomb(BattleController _battleController) : base(_battleController)
     {
         Debug.Log("BoomBomb에서 Init을 담당하고 있답니다");
-        nowTurnCharacterManager = battleController.GetComponent<NowTurnCharacterManager>();
-        characterActionController = _battleController.GetComponent<CharacterActionController>();
+        nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        characterActionController = CharacterActionController.instance;
 
         // Setting ㄱㄱ
         battleController = _battleController;

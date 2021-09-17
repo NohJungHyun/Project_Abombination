@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BattleState : IState
+public abstract class BattleState : IState //OccurrenceContainer
 {
     protected BattleController battleController;
 
@@ -15,6 +15,6 @@ public abstract class BattleState : IState
     public abstract void EnterState();
     public abstract void UpdateState();
     public abstract void ExitState();
-    
-    public virtual void LateUpdateState(){ }
+
+    public virtual void LateUpdateState() { }
 }

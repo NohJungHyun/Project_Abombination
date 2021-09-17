@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class CharacterAction : IState
+public abstract class CharacterAction : IState //OccurrenceContainer
 {
     protected Temp_Character nowTurnCharacter;
     protected BattleController battleController;

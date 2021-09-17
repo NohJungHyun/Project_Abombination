@@ -19,8 +19,8 @@ public class MoveCharacter : CharacterAction
     public MoveCharacter(BattleController _battleController) : base(_battleController)
     {
         battleController = _battleController;
-        nowTurnCharacter = _battleController.GetComponent<NowTurnCharacterManager>().GetNowCharacter();
-        characterActionController = _battleController.GetComponent<CharacterActionController>();
+        nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
+        characterActionController = CharacterActionController.instance;
         cameraController = _battleController.cameraController;
 
         coneRangeMesh = nowTurnCharacter.GetComponentInChildren<ConeRangeMesh>();

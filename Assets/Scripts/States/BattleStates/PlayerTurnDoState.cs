@@ -18,13 +18,12 @@ public class PlayerTurnDoState : BattleState
     ConeRangeMesh rangeMesh;
 
     bool canLookAround = true;
-    bool canEndTurn;
 
     public PlayerTurnDoState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
-        nowTurnCharacterManager = battleController.gameObject.GetComponent<NowTurnCharacterManager>();
-        characterActionController = battleController.gameObject.GetComponent<CharacterActionController>();
+        nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        characterActionController = CharacterActionController.instance;
 
         nowCharacter = NowTurnCharacterManager.nowPlayCharacter;
         cameraController = battleController.cameraController;

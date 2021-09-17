@@ -12,7 +12,7 @@ public class SelectActCharacter : BattleState
     Button playThisCharacterButton;
     Participants participants;
 
-    NowTurnCharacterManager nowTurnCharacter;
+    NowTurnCharacterManager nowTurnCharacterManager;
 
     Vector3 pos;
     bool checkCharacter = false;
@@ -20,11 +20,11 @@ public class SelectActCharacter : BattleState
     public SelectActCharacter(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
-
-        cameraController = _battleController.cameraController;
-        nowTurnCharacter = battleController.GetComponent<NowTurnCharacterManager>();
         battleUIManager = battleController.battleUIManager;
         playThisCharacterButton = battleUIManager.turnEndButton;
+
+        nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        cameraController = _battleController.cameraController;
         participants = Player.instance;
     }
 
@@ -42,7 +42,7 @@ public class SelectActCharacter : BattleState
 
         if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter())
         {
-            nowTurnCharacter.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
+            nowTurnCharacterManager.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
             character = SearchWithRayCast.GetHitCharacter();
 
             OnSelectButton(true);
@@ -83,7 +83,7 @@ public class SelectActCharacter : BattleState
 
     void DecidePlayCharacter()
     {
-        if (nowTurnCharacter.GetNowCharacter())
+        if (nowTurnCharacterManager.GetNowCharacter())
         {
             playThisCharacterButton.gameObject.SetActive(false);
             battleUIManager.quickBarUI.SetNowCharacter(character);

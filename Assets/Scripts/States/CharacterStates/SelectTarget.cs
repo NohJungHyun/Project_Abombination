@@ -12,7 +12,7 @@ public class SelectTarget : CharacterAction
     {
         // Setting ㄱㄱ
         battleController = BattleController.instance;
-        nowTurnCharacter = _battleController.GetComponent<NowTurnCharacterManager>().GetNowCharacter();
+        nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
 
         battleUIManager = battleController.battleUIManager;
     }
