@@ -44,12 +44,14 @@ public class Temp_Character : MonoBehaviour, IDamageable
             info.haveBombs[h].SetAttachedTarget(this);
 
             if (!characterInfo.haveBombs[h].GetOwner())
+            {
                 info.haveBombs[h].SetOwner(this);
-            
+                for(int bo = 0; bo < info.haveBombs[h].occurrences.Count;bo++)
+                    info.haveBombs[h].occurrences[bo].SpreadtoBattleContainer(this);
+            }            
 
             if (characterInfo.haveBombs[h].GetExplosionsList().Count > 0)
                 for (int e = 0; e < characterInfo.haveBombs[h].GetExplosionsList().Count; e++)
-                    // info.haveBombs[h].GetExplosionsList()[e].GetRidOfExplosionAllEvent(characterInfo.haveBombs[h]);
                     info.haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(info.haveBombs[h]);
         }
 

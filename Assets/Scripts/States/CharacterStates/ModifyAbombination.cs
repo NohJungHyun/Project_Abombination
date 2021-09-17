@@ -20,9 +20,10 @@ public class ModifyAbombination : CharacterAction, IBombCatch
     {
         // Setting ㄱㄱ
         battleController = _battleController;
-        nowTurnCharacter = battleController.GetComponent<NowTurnCharacterManager>().GetNowCharacter();
-        nowTurnCharacterManager = battleController.GetComponent<NowTurnCharacterManager>();
-        characterActionController = battleController.GetComponent<CharacterActionController>();
+        nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
+        
+        characterActionController = CharacterActionController.instance;
 
         coneRangeMesh = nowTurnCharacterManager.coneRangeMesh;
 

@@ -5773,7 +5773,6 @@ GameObject:
   m_Component:
   - component: {fileID: 246501638}
   - component: {fileID: 246501639}
-  - component: {fileID: 246501642}
   - component: {fileID: 246501640}
   - component: {fileID: 246501641}
   m_Layer: 0
@@ -5837,23 +5836,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 246501637}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd82c667b7ff55b45a26e95279e1098f, type: 3}
+  m_Script: {fileID: 11500000, guid: d53651939a888a147999de2a3d92e14c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseCharacterPos: {x: 0, y: 0, z: 0}
-  coneRangeMesh: {fileID: 264092484}
---- !u!114 &246501642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246501637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6475b3fe536ea1d4fb97de5ea1ee67a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  battleStartContainer: []
+  battleEndContainer: []
+  battleWinContainer: []
+  battleLoseContainer: []
+  roundStartContainer: []
+  roundEndContainer: []
+  phaseStartContainer: []
+  phaseEndContainer: []
+  selectChracterContainer: []
+  playerTurnStartContainer: []
+  playerTurnDoContainer: []
+  playerTurnEndContainer: []
 --- !u!1 &249361631
 GameObject:
   m_ObjectHideFlags: 0
@@ -17910,6 +17907,7 @@ Transform:
   - {fileID: 246501638}
   - {fileID: 1208872832}
   - {fileID: 11472817}
+  - {fileID: 1953131415}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -44950,6 +44948,64 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1949827137}
   m_Mesh: {fileID: 4300038, guid: 4b29ecf28e5fd4b4f86a961aca54fd1e, type: 3}
+--- !u!1 &1953131414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1953131415}
+  - component: {fileID: 1953131417}
+  - component: {fileID: 1953131416}
+  m_Layer: 0
+  m_Name: CharacterController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1953131415
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953131414}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 753683973}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1953131416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953131414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd82c667b7ff55b45a26e95279e1098f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseCharacterPos: {x: 0, y: 0, z: 0}
+  coneRangeMesh: {fileID: 264092484}
+--- !u!114 &1953131417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953131414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6475b3fe536ea1d4fb97de5ea1ee67a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1966977849
 GameObject:
   m_ObjectHideFlags: 0

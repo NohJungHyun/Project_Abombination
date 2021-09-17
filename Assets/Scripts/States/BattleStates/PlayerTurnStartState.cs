@@ -9,19 +9,20 @@ public class PlayerTurnStartState : BattleState
     NowTurnCharacterManager nowTurnCharacterManager;
     CharacterActionController characterActionController;
 
-
     public PlayerTurnStartState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
         cameraController = _battleController.cameraController;
-        nowTurnCharacterManager = battleController.GetComponent<NowTurnCharacterManager>();
-        characterActionController = battleController.GetComponent<CharacterActionController>();
+        nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        characterActionController = CharacterActionController.instance;
     }
 
     public override void EnterState()
     {
         Debug.Log("Player Start Enter!");
         // MoveReady();
+
+        BattleOccurrenceContainer.instance.InvokeContainer(9);
 
         nowTurnCharacterManager.ResetCharacterPos();
         cameraController.SetZoomingCharacter(nowTurnCharacterManager.GetNowCharacterTransform());

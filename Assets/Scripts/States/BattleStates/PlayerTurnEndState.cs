@@ -10,7 +10,7 @@ public class PlayerTurnEndState : BattleState
     public PlayerTurnEndState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
-        nowTurnCharacterManager = battleController.gameObject.GetComponent<NowTurnCharacterManager>();
+        nowTurnCharacterManager = NowTurnCharacterManager.instance;
         //stateEventBox = BombEventManager.battleStateEventBoxDictionary[this.ToString()];
     }
 

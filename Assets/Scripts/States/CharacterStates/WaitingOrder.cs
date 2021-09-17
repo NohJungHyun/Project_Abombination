@@ -13,10 +13,10 @@ public class WaitingOrder : CharacterAction
         // Setting ㄱㄱ
         battleController = _battleController;
         cameraController = _battleController.cameraController;
-        characterActionController = _battleController.GetComponent<CharacterActionController>();
+        nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
+        characterActionController = CharacterActionController.instance;
 
         characterLayer = LayerMask.GetMask("Characters");
-        nowTurnCharacter = _battleController.GetComponent<NowTurnCharacterManager>().GetNowCharacter();
     }
 
     public override void EnterState()
