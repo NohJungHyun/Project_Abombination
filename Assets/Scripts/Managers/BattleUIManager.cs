@@ -6,28 +6,49 @@ using UnityEngine.EventSystems;
 
 public class BattleUIManager : MonoBehaviour
 {
-    public Button turnEndButton;
+    public delegate void ButtonDele();
 
+    public Button turnEndButton;
     public QuickBarUI quickBarUI;
 
     // public List<Button> bombButtons = new List<Button>(20);
 
     [Header("TargetedCharacter UI")]
-    public BombModifier bombModifier;
+    // public BombModifier bombModifier;
 
     [Header("커맨드 포인트 표현 UI")]
-    public SelectCharacterUI selectCharacterUI;
+    // public SelectCharacterUI selectCharacterUI;
+    public GameObject selectCharacterUIObj;
+    public AlarmBattleStateSwitch alarmBattleStateSwitch;
     // public Temp_Character temp_Character;
 
-    void Start()
+    void Awake()
     {
-        bombModifier.gameObject.SetActive(false);
-        selectCharacterUI.gameObject.SetActive(true);        
+        alarmBattleStateSwitch = FindObjectOfType<AlarmBattleStateSwitch>();  
+
+        // bombModifier.ShowUI(false);
+        selectCharacterUIObj.SetActive(false);
+        alarmBattleStateSwitch.ShowUI(false);  
+
     }
 
-    public void TurnOnBombModifier(bool _turnOn)
+    // public void TurnOnBombModifier(bool _turnOn)
+    // {
+    //     bombModifier.ShowUI(true);
+    // }
+
+    public void ChangeButtonToPhaseEndButton(ButtonDele dele)
     {
-        bombModifier.gameObject.SetActive(_turnOn);
+        turnEndButton.onClick.RemoveAllListeners();
+
+        turnEndButton.onClick.AddListener(() => dele());
+        ChangeButtonColor(turnEndButton, Color.red);
+        turnEndButton.GetComponentInChildren<Text>().text = "Jump to \n PhaseEnd";
+    }
+
+    public static void ChangeButtonColor(Button button, Color color)
+    {
+        button.image.color = color;
     }
 
     // public void ActivateActionUI(bool isOn)

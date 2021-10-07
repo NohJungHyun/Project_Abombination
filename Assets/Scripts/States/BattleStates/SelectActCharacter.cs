@@ -9,99 +9,87 @@ public class SelectActCharacter : BattleState
 
     CameraController cameraController;
     BattleUIManager battleUIManager;
-    Button playThisCharacterButton;
-    Participants participants;
+    SelectCharacterUI selectCharacterUI;
 
     NowTurnCharacterManager nowTurnCharacterManager;
 
-    Vector3 pos;
-    bool checkCharacter = false;
+    bool isDirectControl;
 
     public SelectActCharacter(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
         battleUIManager = battleController.battleUIManager;
-        playThisCharacterButton = battleUIManager.turnEndButton;
+        battleUIManager.selectCharacterUIObj.SetActive(true);
+        battleUIManager.turnEndButton.gameObject.SetActive(true);
+
+        selectCharacterUI = battleUIManager.selectCharacterUIObj.GetComponent<SelectCharacterUI>();
+        selectCharacterUI.Resetting(BattleParticipantsManager.nowTurnParticipant);
+
+        // selectCharacterUI.ShowUI(false);
+        // Debug.Log("껐다");
+        // selectCharacterUI.ShowUI(true);
+        // Debug.Log("켰다");
 
         nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        nowTurnCharacterManager.SetNowCharacter(null);
+
         cameraController = _battleController.cameraController;
-        participants = Player.instance;
+        selectCharacterUI.canProceed = false;
+        // selectCharacterUI.ShowUI(true);
     }
 
     public override void EnterState()
     {
         Debug.Log("SelectActCharacter Enter!");
         character = null;
-        playThisCharacterButton.gameObject.SetActive(true);
-        participants.selectCharacterUI.gameObject.SetActive(true);
     }
 
     public override void UpdateState()
     {
         Debug.Log("SelectActCharacter Update!");
 
-        if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter())
+        if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter()) //&& SearchWithRayCast.selectedCharacter.GetParticipants() is Player)
         {
             nowTurnCharacterManager.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
             character = SearchWithRayCast.GetHitCharacter();
+            cameraController.SetZoomingCharacter(character.transform);
 
-            OnSelectButton(true);
-            checkCharacter = true;
+            selectCharacterUI.OnTurnEndButton(true, character);
+            isDirectControl = false;
         }
 
-        cameraController.ZoomWithWheel();
+        if (Input.GetKeyDown(KeyCode.Space) && character)
+            selectCharacterUI.DecidePlay(character);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            DecidePlayCharacter();
-        
-        else if (!battleUIManager.selectCharacterUI.isActiveAndEnabled)
+        if (Input.GetKeyDown(KeyCode.Escape))
+            JumptoPhaseEnd();
+
+        if (!character && battleUIManager.turnEndButton.isActiveAndEnabled == true)
+            battleUIManager.ChangeButtonToPhaseEndButton(JumptoPhaseEnd);
+
+        if(selectCharacterUI.canProceed)
             battleController.SetState(new PlayerTurnStartState(battleController));
         
-        if (Input.GetKeyDown(KeyCode.Escape))
-            battleController.SetState(new PhaseEnd(battleController));
-        
+        if(Mathf.Abs(Input.GetAxis("Horizontal")) > 0f || Mathf.Abs(Input.GetAxis("Vertical")) > 0f)
+            isDirectControl = true;
 
-        if ((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
-        {
-            checkCharacter = false;
-            cameraController.DirectMoveCamera();
-        }
-
-        if(checkCharacter)
-            cameraController.MoveToCharacter(character.transform);
     }
 
     public override void LateUpdateState()
     {
-
+        cameraController.ZoomWithWheel();
+        cameraController.SwitchCameraControlToDirect(isDirectControl);
     }
 
     public override void ExitState()
     {
-
+        if(battleUIManager.turnEndButton.gameObject.activeInHierarchy)
+            battleUIManager.turnEndButton.gameObject.SetActive(false);
+        selectCharacterUI.ShowUI(false);
     }
 
-    void DecidePlayCharacter()
+    public void JumptoPhaseEnd()
     {
-        if (nowTurnCharacterManager.GetNowCharacter())
-        {
-            playThisCharacterButton.gameObject.SetActive(false);
-            battleUIManager.quickBarUI.SetNowCharacter(character);
-
-            if (participants.AdjustPoint(false, character.GetCharacterInfo().needCommandPoint))
-                battleUIManager.selectCharacterUI.SpendCommandPoints(character.GetCharacterInfo().needCommandPoint);
-        }
-    }
-
-    void OnSelectButton(bool _on)
-    {
-        playThisCharacterButton.gameObject.SetActive(_on);
-        playThisCharacterButton.onClick.RemoveAllListeners();
-
-        if (_on)
-        {
-            playThisCharacterButton.GetComponentInChildren<Text>().text = "Play Character";
-            playThisCharacterButton.onClick.AddListener(() => DecidePlayCharacter());
-        }
+        battleController.SetState(new PhaseEnd(battleController));
     }
 }

@@ -13,12 +13,10 @@ public class PhaseStart : BattleState
     {
         Debug.Log("PhaseStart Enter!");
 
-        NowTurnCharacterManager.nowPlayCharacter = null;
-
         if(BattleParticipantsManager.nowTurnParticipant.canControl)
             battleController.SetState(new SelectActCharacter(battleController));
         else
-            battleController.SetState(new AI_SelectCharacter(battleController));
+            battleController.SetState(new AI_SelectCharacter(battleController));        
     }
 
     public override void UpdateState()

@@ -66,7 +66,7 @@ public class Explosion : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
         owner = _owner;
     }
 
-    public virtual void SetExplosionAllEvent(Bomb _b)
+    public virtual void SetExplosionAllEvent(BombData _b)
     {
         // _b.EventPlant += InvokeExplosionWithPlant;
         // _b.EventUpdate += InvokeExplosionWithUpdate;
@@ -79,7 +79,7 @@ public class Explosion : NeedOwnerThings, ICanSetButtons, ICostable, IUsable
         _b.EventDiffuse += InvokeExplosionWithDiffuse;
     }
 
-    public virtual void GetRidOfExplosionAllEvent(Bomb _b)
+    public virtual void GetRidOfExplosionAllEvent(BombData _b)
     {
         _b.EventPlant -= InvokeExplosionWithPlant;
         _b.EventUpdate -= InvokeExplosionWithUpdate;

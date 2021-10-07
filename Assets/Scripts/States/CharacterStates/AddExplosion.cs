@@ -38,10 +38,10 @@ public class AddExplosion : CharacterAction
     // 폭발물 설치
     public static void DoExplosionSetUp(Explosion _e, UItoShowBombInfo _ui)
     {
-        if (_ui.targetedCharacter && _ui.targetedCharacter.GetHaveBombs()[_ui.indexBomb])
+        if (_ui.targetedCharacter && _ui.targetedCharacter.CarriedBombContainer.GetHaveBombs()[_ui.indexBomb])
         {
             Explosion cloneExplosion = _e;
-            _ui.targetedCharacter.GetHaveBombs()[_ui.indexBomb].AddExplosionToList(_e, 0);
+            _ui.targetedCharacter.CarriedBombContainer.GetHaveBombs()[_ui.indexBomb].AddExplosionToList(_e, 0);
             //_ui.ExhibitExplosionsCondition(_ui.targetedCharacter);
             _ui.CheckBomb(_ui.targetedCharacter);
             Debug.Log("폭발물 설치");

@@ -17,6 +17,8 @@ public class CharacterActionStateMachine : StateMachine
 
         if(state != null)
             state.EnterState();
+
+        base.CallGarbageCollector();
         
     }
 

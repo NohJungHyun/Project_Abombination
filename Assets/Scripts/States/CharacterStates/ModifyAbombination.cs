@@ -14,7 +14,7 @@ public class ModifyAbombination : CharacterAction, IBombCatch
 
     ConeRangeMesh coneRangeMesh;
 
-    protected Bomb bomb;
+    protected BombData bomb;
 
     public ModifyAbombination(BattleController _battleController) : base(_battleController)
     {
@@ -22,13 +22,14 @@ public class ModifyAbombination : CharacterAction, IBombCatch
         battleController = _battleController;
         nowTurnCharacterManager = NowTurnCharacterManager.instance;
         nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
+        bombModifier = BombModifier.instance;
+        bombModifier.modifyAbombination = this;
         
         characterActionController = CharacterActionController.instance;
 
-        coneRangeMesh = nowTurnCharacterManager.coneRangeMesh;
+        coneRangeMesh = nowTurnCharacterManager.GetNowCharacter().GetComponentInChildren<ConeRangeMesh>();
 
         battleUIManager = battleController.battleUIManager;
-        bombModifier = battleUIManager.bombModifier;
         cameraController = battleController.cameraController;
     }
 
@@ -38,6 +39,9 @@ public class ModifyAbombination : CharacterAction, IBombCatch
 
         cameraController.ChangeCanChaseMousePos(false);
 
+        if (bombModifier.modifiedCharacter)
+            cameraController.SetZoomingCharacter(bombModifier.modifiedCharacter.transform);
+
         if (coneRangeMesh.visibleTargets.Count > 0)
         {
             bombModifier.SetModifiedCharacter(coneRangeMesh.visibleTargets[0].GetComponent<Temp_Character>());
@@ -46,26 +50,23 @@ public class ModifyAbombination : CharacterAction, IBombCatch
         {
             bombModifier.SetModifiedCharacter(nowTurnCharacter);
         }
-
-        bombModifier.SetNowTurnPlayCharacter(nowTurnCharacter);
-
         Debug.Log("Enter 종료");
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
     {
-        battleUIManager.TurnOnBombModifier(true);
+        bombModifier.ShowUI(true);
 
-        bombModifier.SetAbombinationModifier(this);
+        //bombModifier.SetAbombinationModifier(this);
 
     }
 
     public override void UpdateState()
     {
-        if (bombModifier.modifiedCharacter)
-        {
-            cameraController.MoveToCharacter(bombModifier.modifiedCharacter.transform);
-        }
+        // if (bombModifier.modifiedCharacter)
+        // {
+        //     cameraController.MoveToCharacter();
+        // }
     }
 
     public override void PhysicUpdateState()
@@ -75,7 +76,7 @@ public class ModifyAbombination : CharacterAction, IBombCatch
 
     public override void ExitState()
     {
-        battleUIManager.TurnOnBombModifier(false);
+        bombModifier.ShowUI(false);
     }
 
     public void ChangeModifyAction(ModifyAbombination _ma)
@@ -83,7 +84,7 @@ public class ModifyAbombination : CharacterAction, IBombCatch
         characterActionController.SetState(_ma);
     }
 
-    public void GetBomb(Bomb _bomb)
+    public void GetBomb(BombData _bomb)
     {
         bomb = _bomb;
     }

@@ -7,14 +7,13 @@ using UnityEngine.AI;
 // [CreateAssetMenu(menuName = "ScriptableObjects/CharacterActions/MoveCharacter")]
 public class MoveCharacter : CharacterAction
 {
-    public MoveCharacter instance;
-
-    bool moving;
     ConeRangeMesh coneRangeMesh;
-    Rigidbody rb;
     NavMeshAgent navMeshAgent;
 
     CameraController cameraController;
+    CharacterMovements characterMovements;
+
+    Vector3 move;
 
     public MoveCharacter(BattleController _battleController) : base(_battleController)
     {
@@ -23,9 +22,9 @@ public class MoveCharacter : CharacterAction
         characterActionController = CharacterActionController.instance;
         cameraController = _battleController.cameraController;
 
-        coneRangeMesh = nowTurnCharacter.GetComponentInChildren<ConeRangeMesh>();
-        rb = nowTurnCharacter.GetComponent<Rigidbody>();
+        coneRangeMesh = nowTurnCharacter.GetComponent<ConeRangeMesh>();
         navMeshAgent = nowTurnCharacter.GetComponent<NavMeshAgent>();
+        characterMovements = nowTurnCharacter.GetComponent<CharacterMovements>();
 
         cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
         // Setting ㄱㄱ        
@@ -36,8 +35,8 @@ public class MoveCharacter : CharacterAction
 
     public override void EnterState()
     {
-        coneRangeMesh.gameObject.SetActive(true);
-        Debug.Log(this.GetType());
+        Debug.Log("MoveState EnterState!");
+        NowTurnCharacterManager.nowPlayCharacter.TurnOnMesh(true);
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
@@ -47,36 +46,26 @@ public class MoveCharacter : CharacterAction
 
     public override void UpdateState()
     {
-        cameraController.MoveToCharacter(nowTurnCharacter.transform);
+        Debug.Log("MoveState UpdateState!");
+        if (nowTurnCharacter.curMoveAreaRadius > nowTurnCharacter.GetCharacterInfo().minMoveAreaRadius)
+        {
+            nowTurnCharacter.curMoveAreaRadius -= Time.deltaTime * nowTurnCharacter.GetCharacterInfo().moveAreaShrinkRate;
+            coneRangeMesh.SetRadius(nowTurnCharacter.curMoveAreaRadius);
+        }
+
+        if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
+            characterActionController.SetState(new WaitingOrder(battleController));    
+
+        // cameraController.SwitchCameraControlMethod(false);         
     }
 
     public override void PhysicUpdateState()
     {
-        if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
-        {
-            characterActionController.SetState(new WaitingOrder(battleController));
-        }
-        else
-        {
-            MovingWithNavMesh();
-        }
+        characterMovements.Moving();  
     }
 
     public override void ExitState()
     {
-        
-    }
 
-    public void Moving()
-    {
-        Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.GetCharacterInfo().characterMovement * Time.deltaTime;
-        rb.MovePosition(nowTurnCharacter.GetCharacterPos() + movePos);
-    }
-
-    public void MovingWithNavMesh()
-    {
-        Debug.Log("Moving");
-        Vector3 movePos = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * nowTurnCharacter.GetCharacterInfo().characterMovement ; //* Time.deltaTime
-        navMeshAgent.destination = nowTurnCharacter.transform.position + movePos;
     }
 }

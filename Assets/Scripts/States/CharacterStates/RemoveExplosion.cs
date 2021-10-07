@@ -36,7 +36,7 @@ public class RemoveExplosion : ModifyAbombination
     }
 
     // 폭발물 해제
-    public static void DoExplosionDiffuse(Bomb _bomb, Explosion _explosion)
+    public static void DoExplosionDiffuse(BombData _bomb, Explosion _explosion)
     {
         if (_bomb.GetExplosionsList().Contains(_explosion))
         {

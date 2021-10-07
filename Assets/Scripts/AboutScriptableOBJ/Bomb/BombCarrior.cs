@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BombCarrior : MonoBehaviour
 {
-    public Bomb bomb;
+    public BombData bomb;
 
     public List<IBombEventExcutor> excutors = new List<IBombEventExcutor>(4);
     public BombEventBoom bombEventBoom;

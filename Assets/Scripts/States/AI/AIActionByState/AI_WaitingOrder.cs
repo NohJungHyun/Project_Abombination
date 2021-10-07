@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AI_WaitingOrder : CharacterAction
 {
+    IEnumerator coroutine;
+    CameraController cameraController;
+
     public void Init(Temp_Character a)
     {
         nowTurnCharacter = a;
@@ -14,21 +17,43 @@ public class AI_WaitingOrder : CharacterAction
     {
         nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
         characterActionController = CharacterActionController.instance;
+        cameraController = battleController.cameraController;
+
+        cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
+    }
+
+    public IEnumerator SearchingTarget()
+    {
+        Debug.Log("기다려라");
+        yield return null;
+
+        while (true)
+        {
+            Debug.Log("AI_WaitingOrder Update!");
+            yield return null;
+
+            if (!CheckCanSetBombsWithPoint())
+            {
+                yield return new WaitForSeconds(2.0f);
+                battleController.SetState(new AI_CharacterTurnEnd(battleController));
+            }
+        }
     }
 
     public override void EnterState()
     {
         Debug.Log("AI_WaitingOrder Enter!");
 
-        // SelectTarget(CheckCanSetBombsWithPoint());
-        if(!CheckCanSetBombsWithPoint())
-            battleController.SetState(new AI_CharacterTurnEnd(battleController));
-        // battleController.SetState(new AI_SelectCharacter(battleController));
+        coroutine = SearchingTarget();
+        battleController.StartCoroutine(coroutine);
+        // if(!CheckCanSetBombsWithPoint())
+        //     battleController.SetState(new AI_CharacterTurnEnd(battleController));
     }
 
     public override void UpdateState()
     {
-        Debug.Log("AI_WaitingOrder Update!");
+        // cameraController.MoveToCharacter();
+        // Debug.Log("AI_WaitingOrder Update!");
     }
 
     public override void PhysicUpdateState()
@@ -38,29 +63,30 @@ public class AI_WaitingOrder : CharacterAction
 
     public override void ExitState()
     {
+        battleController.StopCoroutine(coroutine);
         Debug.Log("AI_WaitingOrder Exit!");
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
     {
-
+        
     }
 
     public bool CheckCanSetBombsWithPoint()
     {
-        if (nowTurnCharacter.GetCharacterInfo().canSetBombs.Count > 0)
-            for (int idx = 0; idx < nowTurnCharacter.GetCharacterInfo().canSetBombs.Count; idx++)
-                if (nowTurnCharacter.GetCharacterInfo().canSetBombs[idx].setUpCost < nowTurnCharacter.actionPoint)
+        if (nowTurnCharacter.CanSetBombsContainer.canSetBombs.Count > 0)
+            for (int idx = 0; idx < nowTurnCharacter.CanSetBombsContainer.canSetBombs.Count; idx++)
+                if (nowTurnCharacter.CanSetBombsContainer.canSetBombs[idx].setUpCost <= nowTurnCharacter.ActionPointController.GetActionPoint(0))
                 {
                     Debug.Log("폭탄 설치를 진행하겠다");
-                    SelectTarget(nowTurnCharacter.GetCharacterInfo().canSetBombs[idx]);
+                    SelectTarget(nowTurnCharacter.CanSetBombsContainer.canSetBombs[idx]);
                     return true;
                 }
         
         return false;
     }
 
-    public void SelectTarget(Bomb b)
+    public void SelectTarget(BombData b)
     {   
         if(b == null) return;
 
@@ -71,22 +97,24 @@ public class AI_WaitingOrder : CharacterAction
 
         for (int c = 0; c < cols.Length; c++)
         {
-            Debug.Log(cols[c].name);
+            if (!cols[c].gameObject.activeSelf) continue;
 
-            if(cols[c].GetComponent<Temp_Character>() == NowTurnCharacterManager.nowPlayCharacter)
+            if (cols[c].GetComponent<Temp_Character>() == NowTurnCharacterManager.nowPlayCharacter)
                 continue;
 
             if (nearDist > Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position))
-                if (nearest.gameObject.activeInHierarchy)
-                {
-                    nearDist = Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position);
-                    nearest = cols[c].transform;
-                }
+            {
+                nearDist = Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position);
+                nearest = cols[c].transform;
+            }
         }
 
-        if (nearDist > b.GetOwner().GetCharacterInfo().characterMovement && nearest)
-            characterActionController.SetState(new AI_Move(battleController, nearest, b));
-        else
-            characterActionController.SetState(new AI_PlantBomb(battleController, nearest.GetComponent<Temp_Character>(), b));
+        if (nearest)
+        {
+            if (nearDist > b.GetOwner().GetCharacterInfo().characterMovement)
+                characterActionController.SetState(new AI_Move(battleController, nearest, b));
+            else
+                characterActionController.SetState(new AI_PlantBomb(battleController, nearest.GetComponent<Temp_Character>(), b));
+        }
     }
 }

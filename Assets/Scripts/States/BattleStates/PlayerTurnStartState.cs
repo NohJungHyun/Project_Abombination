@@ -26,7 +26,7 @@ public class PlayerTurnStartState : BattleState
 
         nowTurnCharacterManager.ResetCharacterPos();
         cameraController.SetZoomingCharacter(nowTurnCharacterManager.GetNowCharacterTransform());
-        characterActionController.SetState(new WaitingOrder(battleController));
+        // characterActionController.SetState(new WaitingOrder(battleController));
 
         battleController.SetState(new PlayerTurnDoState(battleController));
 

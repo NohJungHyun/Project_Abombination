@@ -9,4 +9,9 @@ public abstract class StateMachine : MonoBehaviour
     public abstract void ResetState();
 
     public abstract IState GetState();
+
+    public virtual void CallGarbageCollector()
+    {
+        Resources.UnloadUnusedAssets();
+    }
 }

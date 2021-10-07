@@ -18,8 +18,9 @@ public class CharacterInfo : NeedPlayerThings
     #endregion
 
     #region 2. 캐릭터 성장 관련 변수
-    public int chracterLevel;
     public ClassJob characterClass;
+    public int chracterLevel;
+    
     public int characterExp;
     #endregion
 
@@ -34,7 +35,6 @@ public class CharacterInfo : NeedPlayerThings
     public int characterDetectRange;
     public int characterThrowRange;
 
-    public int currentHP;
     public int maxHP;
 
     public int curActionPoint;
@@ -43,11 +43,16 @@ public class CharacterInfo : NeedPlayerThings
 
     public int needCommandPoint;
 
+    public float curMoveAreaRadius;
+    public float maxMoveAreaRadius;
+    public float minMoveAreaRadius;
+    public float moveAreaShrinkRate;
+
     // 캐릭터가 설치가능한 폭발물 리스트
     public List<Explosion> canSetExplosions = new List<Explosion>(6);
     // 캐릭터가 설치가능한 폭탄 리스트
-    public List<Bomb> canSetBombs = new List<Bomb>(6);
-    public List<Bomb> haveBombs = new List<Bomb>(6);
+    public List<BombData> canSetBombs = new List<BombData>(6);
+    public List<BombData> haveBombs = new List<BombData>(6);
 
     public List<ItemData> haveItems = new List<ItemData>();
     public List<SkillData> haveSkills = new List<SkillData>();
@@ -57,45 +62,32 @@ public class CharacterInfo : NeedPlayerThings
 
     #endregion
 
-    #region 4. 캐릭터 능력치 변수로부터 Stat 적용.
-    Stat statAttack;
-    Stat statDefense;
-    Stat statMove;
-    Stat statCharisma;
-    Stat statLuck;
+    // #region 4. 캐릭터 능력치 변수로부터 Stat 적용.
+    // Stat statAttack;
+    // Stat statDefense;
+    // Stat statMove;
+    // Stat statCharisma;
+    // Stat statLuck;
 
-    Stat statThrowRange; // 폭탄 던지기 거리
+    // Stat statThrowRange; // 폭탄 던지기 거리
+    // Stat statDetectRange;
 
-    Stat statInitiative;
-    #endregion
+    // Stat statInitiative;
+    // #endregion
 
-    public void SetBasic()
-    {
-        statAttack = new Stat(characterAttack);
-        statDefense = new Stat(characterDefense);
-        statMove = new Stat(characterMovement);
-        statCharisma = new Stat(characterCharisma);
-        statLuck = new Stat(characterLuck);
-        statInitiative = new Stat(characterInitiative);
-        statThrowRange = new Stat(characterThrowRange);
+    // public void SetBasic()
+    // {
+    //     statAttack = new Stat(characterAttack);
+    //     statDefense = new Stat(characterDefense);
+    //     statMove = new Stat(characterMovement);
+    //     statCharisma = new Stat(characterCharisma);
+    //     statLuck = new Stat(characterLuck);
+    //     statInitiative = new Stat(characterInitiative);
+    //     statThrowRange = new Stat(characterThrowRange);
 
-        currentHP = maxHP;
-        curActionPoint = maxActionPoint;
-
-        
-        // for (int i = 0; i < characterEventBox.Count; i++)
-        // {
-        //     Debug.Log(characterEventBox[i].name);
-        // }
-    }
-
-    public void TakeDamage(int _dmg)
-    {
-        Debug.Log("피해를 입었다: " + _dmg);
-        currentHP -= _dmg;
-        if (currentHP <= 0)
-            Dead();
-    }
+    //     currentHP = maxHP;
+    //     curActionPoint = maxActionPoint;
+    // }
 
     public void Dead()
     {

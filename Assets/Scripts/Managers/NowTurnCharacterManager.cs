@@ -8,19 +8,18 @@ public class NowTurnCharacterManager : MonoBehaviour
     public static Temp_Character nowPlayCharacter; // 현재 턴에 행동가능한 캐릭터를 의미.
     public Vector3 baseCharacterPos;
 
-    public ConeRangeMesh coneRangeMesh;
-
     void Awake()
     {
         if (instance != null)
             Destroy(instance);
 
         instance = this;
+        // coneRangeMesh.enabled = false;
     }
 
-    void Start()
+    public void Update()
     {
-        SearchWithRayCast.characterClick += SetNowCharacter;
+
     }
 
     public Transform GetNowCharacterTransform()
@@ -40,11 +39,9 @@ public class NowTurnCharacterManager : MonoBehaviour
 
     public void ResetCharacterPos()
     {
-        baseCharacterPos = nowPlayCharacter.transform.position;
-    }
-
-    public List<Transform> GetVisibleTargets()
-    {
-        return coneRangeMesh.GetVisibleTargets();
+        if(nowPlayCharacter)
+            baseCharacterPos = nowPlayCharacter.transform.position;
+        else
+            baseCharacterPos = Vector3.zero;
     }
 }

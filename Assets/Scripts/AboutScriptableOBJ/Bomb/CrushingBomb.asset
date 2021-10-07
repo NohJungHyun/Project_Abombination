@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9bba1d348393d642943a7c951781f25, type: 3}
+  m_Name: CrushingBomb
+  m_EditorClassIdentifier: 
+  thingsName: "\uC554\uBC18\uD3ED\uD0C4"
+  idx: 150005
+  desc: "\uC774\uAC74 \uC815\uB9D0...\uB180\uB77C\uC6B8 \uC815\uB3C4\uB85C \uC704\uD5D8\uD55C
+    \uD3ED\uD0C4\uC785\uB2C8\uB2E4."
+  portrait: {fileID: 21300000, guid: c5ba30b36c6645d46b90974e32f479c2, type: 3}
+  attachedTarget: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1536
+  explosionList:
+  - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
+  bombCurCountDown: 0
+  bombMinCountDown: 0
+  bombMaxCountDown: 2
+  bombRadius: 10
+  bombCanStack: 1
+  bombMaxStack: 3
+  setUpCost: 5
+  diffuseCost: -2
+  boomCost: 1
+  addCountdownCost: 2
+  subtractCountdownCost: 2
+  boomEffect: {fileID: 0}
+  occurrences: []
+  damage: 10
+  targetBum: 2

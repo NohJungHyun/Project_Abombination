@@ -11,8 +11,10 @@ public static class SearchWithRayCast
     private static LayerMask layer;
     private static LayerMask characterSelectLayer;
 
-    public delegate void clickEvent(Temp_Character temp_character);
-    public static event clickEvent characterClick;
+    public static Temp_Character selectedCharacter;
+
+    // public delegate void clickEvent(Temp_Character temp_character);
+    // public static event clickEvent characterClick;
     
     public static GameObject GetHitSomething()
     {
@@ -41,8 +43,9 @@ public static class SearchWithRayCast
 
         if (Physics.Raycast(ray, out hit, 100, characterSelectLayer))
         {
-            characterClick?.Invoke(hit.collider.GetComponent<Temp_Character>());
-            return hit.collider.GetComponent<Temp_Character>();
+            // characterClick?.Invoke(hit.collider.GetComponent<Temp_Character>());
+            selectedCharacter = hit.collider.GetComponent<Temp_Character>();
+            return selectedCharacter;
         }
         else
             return null;

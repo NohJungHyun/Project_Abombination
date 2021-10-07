@@ -22,13 +22,20 @@ public class ConeRangeMesh : MonoBehaviour
 	public Material viewMaterial;
 	Mesh viewMesh;
 
-	void Start() {
-		viewMesh = new Mesh();
-		viewMesh.name = "View Mesh";
-		viewMeshFilter.mesh = viewMesh;
-		
-		StartCoroutine("FindTargetsWithDelay", 1f);
-	}
+    public void CreateMesh()
+    {
+        // viewMeshFilter = GetComponentInChildren<MeshFilter>();
+        // viewMeshRenderer = GetComponentInChildren<MeshRenderer>();
+
+        viewMeshFilter = GetComponent<MeshFilter>();
+        viewMeshRenderer = GetComponent<MeshRenderer>();
+
+        viewMesh = new Mesh();
+        viewMesh.name = "View Mesh";
+        viewMeshFilter.mesh = viewMesh;
+
+        StartCoroutine("FindTargetsWithDelay", 1f);
+    }
 
 
     IEnumerator FindTargetsWithDelay(float delay)
@@ -42,7 +49,11 @@ public class ConeRangeMesh : MonoBehaviour
 
 	void Update()
 	{
-		DrawFieldOfView();
+		if(viewMesh != null)
+		{
+			DrawFieldOfView();
+		}
+			
 	}
 
     void FindVisibleTargets()
@@ -191,9 +202,14 @@ public class ConeRangeMesh : MonoBehaviour
 		return visibleTargets;
 	}
 
-	public void SetProperties(int _viewRadius, int _Detectangle)
+	public void SetProperties(float _viewRadius, int _Detectangle)
 	{
 		viewRadius = _viewRadius;
 		viewAngle = _Detectangle;
+	}
+
+	public void SetRadius(float r)
+	{
+		viewRadius = r;
 	}
 }

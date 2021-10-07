@@ -20,15 +20,14 @@ public class BattleParticipantsManager : MonoBehaviour
             Destroy(instance);
 
         instance = this;
+
+        nowTurnParticipant = battleParticipants[0];
     }
 
     private void Start()
     {
-        nowTurnParticipant = battleParticipants[0];
-
         for (int i = 0; i < battleParticipants.Count; i++)
             characterList.AddRange(battleParticipants[i].haveCharacters);
-        
     }
 
     public void SetNowTurnParticipants(Participants _p)

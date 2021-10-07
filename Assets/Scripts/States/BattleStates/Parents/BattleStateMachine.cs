@@ -32,6 +32,8 @@ public abstract class BattleStateMachine : StateMachine
         //     StartCoroutine(state.EnterState());
         //     runningCoroutine = StartCoroutine(state.UpdateState());
         // }
+
+        base.CallGarbageCollector();
     }
 
     public override void ResetState()

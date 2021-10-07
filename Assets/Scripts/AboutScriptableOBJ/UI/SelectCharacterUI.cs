@@ -5,48 +5,36 @@ using UnityEngine.UI;
 
 public class SelectCharacterUI : BaseUIStorage
 {
-    public Player player;
     public List<Image> commandPointOutlines;
-
-    [SerializeField] int pointIdx = 0;
 
     public bool canProceed;
 
-    void Start()
+    public override void InitUI()
     {
-        ResetCommandPoints();
+        base.InitUI();
+    }
 
-        for (int p = 0; p < player.maxCommandPoint; p++)
+    public void Resetting(Participants participants)
+    {
+        base.InitUI();
+
+        int commandPoint = participants.curCommandPoint;
+
+        for (int p = 0; p < commandPoint; p++)
         {
-            /// Debug.Log("???");
             commandPointOutlines[p].gameObject.SetActive(true);
             commandPointOutlines[p] = commandPointOutlines[p].GetComponentInChildren<Image>();
         }
+
+        // ResetCommandPoints(commandPoint);
     }
 
-    public override void InitUI()
+    void SpendCommandPoints(int _cpCost)
     {
-
-    }
-
-    public bool SpendCommandPoints(int _cpCost)
-    {
+        //print(canProceed);
         StartCoroutine(FadeOutPoint(_cpCost));
-        return canProceed;
-    }
-
-    public void ResetCommandPoints()
-    {
-        for (int i = 0; i < commandPointOutlines.Count; i++)
-        {
-            commandPointOutlines[i].gameObject.SetActive(false);
-        }
-    }
-
-    public void TurnOffThis()
-    {
-        gameObject.SetActive(false);
-        // CancelInvoke("TurnOffThis");
+        //print(canProceed);
+        StopCoroutine(FadeOutPoint(_cpCost));
     }
 
     public IEnumerator FadeOutPoint(int _cpCost)
@@ -56,16 +44,67 @@ public class SelectCharacterUI : BaseUIStorage
         {
             yield return new WaitForSeconds(0.2f);
 
-            Debug.Log("wwww");
             commandPointOutlines[i].gameObject.SetActive(false);
             i++;
         }
         yield return new WaitForSeconds(0.2f);
         canProceed = true;
-        TurnOffThis();
     }
 
+    // public void CheckPlayCondition(bool _on, Temp_Character selectedCharacter)
+    // {
+    //     OnTurnEndButton(_on, selectedCharacter);
+    //     DecidePlay(selectedCharacter);
+    // }
 
+    public void DecidePlay(Temp_Character selectedCharacter)
+    {
+        if (NowTurnCharacterManager.nowPlayCharacter)
+            if (BattleParticipantsManager.nowTurnParticipant.AdjustPoint(false, selectedCharacter.GetCharacterInfo().needCommandPoint))
+            {
+                battleUIManager.turnEndButton.gameObject.SetActive(false);
+                SpendCommandPoints(selectedCharacter.GetCharacterInfo().needCommandPoint);
+                canProceed = false;
+            }
+    }
+
+    public void OnTurnEndButton(bool _on, Temp_Character selectedCharacter)
+    {
+        battleUIManager.turnEndButton.gameObject.SetActive(_on);
+        battleUIManager.turnEndButton.onClick.RemoveAllListeners();
+
+        if (_on)
+        {
+            if (BattleParticipantsManager.nowTurnParticipant == selectedCharacter.GetParticipants())
+            {
+                battleUIManager.turnEndButton.GetComponentInChildren<Text>().text = "Play Character";
+                battleUIManager.turnEndButton.onClick.AddListener(() => DecidePlay(selectedCharacter));
+            }
+            else
+            {
+                battleUIManager.turnEndButton.GetComponentInChildren<Text>().text = "Phase End";
+                battleUIManager.turnEndButton.onClick.AddListener(() => BattleController.instance.SetState(new PhaseEnd(BattleController.instance)));
+            }
+
+        }
+    }
+
+    // private void OnDisable()
+    // {
+    //     print("disable");
+    //     Transform[] childrend = GetComponentsInChildren<Transform>();
+    //     foreach (Transform obj in childrend)
+    //         if(obj != this.transform)
+    //             obj.gameObject.SetActive(false);
+    // }
+
+    // private void OnEnable()
+    // {
+    //     Transform[] childrend = GetComponentsInChildren<Transform>();
+    //     foreach (Transform obj in childrend)
+    //         if(obj != this.transform)
+    //             obj.gameObject.SetActive(true);
+    // }
 
     // public void DisappearImage()
     // {

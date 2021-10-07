@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class NeedPlayerThings : ThingsInGame
 {
-    protected Player player;
+    protected Participants participants;
 
-    public Player GetPlayer()
+    public Participants GetParticipants()
     {
-        return player;
+        return participants;
     }
 
-    public void SetPlayer(Player _owner)
+    public void SetParticipants(Participants _owner)
     {
-        player = _owner;
+        participants = _owner;
     }
 }
