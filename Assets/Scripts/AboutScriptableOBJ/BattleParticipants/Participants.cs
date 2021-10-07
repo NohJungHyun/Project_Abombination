@@ -7,7 +7,6 @@ public class Participants : MonoBehaviour
     protected BattleParticipantsManager battleParticipantsManager;
     protected NowTurnCharacterManager nowTurnCharacterManager;
 
-
     public int maxCommandPoint;
     public int curCommandPoint;
 
@@ -15,12 +14,8 @@ public class Participants : MonoBehaviour
 
     public List<Temp_Character> haveCharacters = new List<Temp_Character>();
 
-
-    public SelectCharacterUI selectCharacterUI;
-
     public virtual void Init()
     {
-        Debug.Log("나의 턴! " + this.name);
         ResetCommandPoint();
     }
 
@@ -28,11 +23,12 @@ public class Participants : MonoBehaviour
     {
         battleParticipantsManager = FindObjectOfType<BattleParticipantsManager>();
         nowTurnCharacterManager = battleParticipantsManager.GetComponent<NowTurnCharacterManager>();
-        
+
         ResetCommandPoint();
+        SeperateParticipant();
     }
 
-    void ResetCommandPoint()
+    public void ResetCommandPoint()
     {
         curCommandPoint = maxCommandPoint;
     }
@@ -51,5 +47,26 @@ public class Participants : MonoBehaviour
             curCommandPoint = 0;
 
         return true;
+    }
+
+    public bool allCharacterDie()
+    {
+        for(int i = 0; i < haveCharacters.Count; i++)
+        {
+            if(haveCharacters[i].isActiveAndEnabled)
+                return false;
+        }
+
+        return true;
+    }
+
+    void SeperateParticipant()
+    {
+        Debug.Log(this.name + ": " + haveCharacters.Count);
+
+        for (int i = 0; i < haveCharacters.Count; i++)
+        {
+            haveCharacters[i].SetParticipants(this);
+        }
     }
 }

@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 7555296097713617338}
   - component: {fileID: 3050500303679119748}
   - component: {fileID: 9178277334612182970}
+  - component: {fileID: -7629508741286873960}
   m_Layer: 0
   m_Name: Polygonal Metalon Green
   m_TagString: Untagged
@@ -498,11 +499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 11400000, guid: 0d27f9eebc624de43a2246707bb55bee, type: 2}
+  controller: {fileID: 0}
   canMove: 1
-  canActwithBomb: 1
+  canActWithBomb: 0
   canUseSkill: 1
-  actionPoint: 0
   curHP: 0
+  curMoveAreaRadius: 0
 --- !u!54 &7555296097713617338
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -547,6 +549,25 @@ MonoBehaviour:
   enemyActionBox: {fileID: 0}
   controlledCharacter: {fileID: 0}
   characterTurnActions: []
+--- !u!114 &-7629508741286873960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861878314694810133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fbadd43678653a459580ed8447e05c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterInfo: {fileID: 0}
+  controller: {fileID: 0}
+  canMove: 0
+  canActWithBomb: 0
+  canUseSkill: 0
+  curHP: 0
+  curMoveAreaRadius: 0
 --- !u!1 &4861886151110428749
 GameObject:
   m_ObjectHideFlags: 0

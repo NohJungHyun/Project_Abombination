@@ -2803,8 +2803,7 @@ GameObject:
   - component: {fileID: 5910891622180111477}
   - component: {fileID: 6364170868667145708}
   - component: {fileID: 4866068743831623892}
-  - component: {fileID: 8660609026429725905}
-  - component: {fileID: 8135331508540884887}
+  - component: {fileID: 3064062620463667072}
   m_Layer: 0
   m_Name: unitychan
   m_TagString: Untagged
@@ -2900,7 +2899,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8660609026429725905
+--- !u!114 &3064062620463667072
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2909,27 +2908,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 50913280094757536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fbadd43678653a459580ed8447e05c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3dad2471fca8669499557f0a4371a7f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterInfo: {fileID: 0}
-  canMove: 0
-  canActwithBomb: 0
-  canUseSkill: 0
-  actionPoint: 0
-  curHP: 0
---- !u!114 &8135331508540884887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 50913280094757536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 866605fb43c14a744ad64b3bb5884f93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  viewRadius: 5
+  viewAngle: 90
+  meshResolution: 10
+  edgeResolveIterations: 0
+  edgeDstThreshold: 0
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 512
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  visibleTargets: []
+  viewMeshFilter: {fileID: 0}
+  viewMeshRenderer: {fileID: 0}
+  viewMaterial: {fileID: 0}
 --- !u!1 &50913280094757538
 GameObject:
   m_ObjectHideFlags: 0

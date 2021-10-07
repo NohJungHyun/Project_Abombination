@@ -27,9 +27,15 @@ public class BattleController : BattleStateMachine
     void Update()
     {
         state.UpdateState();
+        // Spread();
     }
 
-    void LateUpdate()
+    // void FixedUpdate()
+    // {
+    //     state.LateUpdateState();
+    // }
+
+    private void LateUpdate()
     {
         state.LateUpdateState();
     }
@@ -37,5 +43,18 @@ public class BattleController : BattleStateMachine
     public override IState GetState()
     {
         return state;
+    }
+
+    public void Spread()
+    {
+        if (BattleController.instance.GetState() is PhaseStart)
+        {
+            Debug.Log("PhaseStart: 이게 되네?");
+        }
+
+        if(BattleController.instance.GetState().GetType() == typeof(SelectActCharacter))
+        {
+            Debug.Log("SelectActCharacter: 이게 되네?");
+        }
     }
 }

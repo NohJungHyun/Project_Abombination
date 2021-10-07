@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking/CrowdControllBomb", order = 1)]
-public class CrowdControllBomb : Bomb
+public class CrowdControllBomb : BombData
 {
     public int adjustNum;
 

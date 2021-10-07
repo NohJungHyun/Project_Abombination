@@ -42,11 +42,6 @@ public class OccurrenceBox
         maxStack = _maxStack;
     }
 
-    // public void Spread()
-    // {
-    //     occurrenceTemplate.SpreadtoBattleContainer();
-    // }
-
     public void InvokeOccur(MonoBehaviour mono)
     {
         if(occurrenceTemplate.isInvokeOnlyMyTurn)

@@ -13,9 +13,9 @@ public class BombInfoUI : BaseUIStorage
     public Button bombDiffuseButton;
     public Button[] explosionBomb = new Button[10];
 
-    private Bomb bomb;
+    private BombData bomb;
 
-    public void SetInfofromBomb(Bomb _bomb) => bomb = _bomb;
+    public void SetInfofromBomb(BombData _bomb) => bomb = _bomb;
     
 
     public override void InitUI()

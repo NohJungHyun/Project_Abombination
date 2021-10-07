@@ -1473,6 +1473,7 @@ GameObject:
   - component: {fileID: 3295502010964208065}
   - component: {fileID: 3295502010964208064}
   - component: {fileID: -4969658918111256036}
+  - component: {fileID: 1944857573718982543}
   m_Layer: 0
   m_Name: Polygonal Metalon Red
   m_TagString: Untagged
@@ -1595,11 +1596,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterInfo: {fileID: 0}
+  controller: {fileID: 0}
   canMove: 0
-  canActwithBomb: 0
+  canActWithBomb: 0
   canUseSkill: 0
-  actionPoint: 0
   curHP: 0
+  curMoveAreaRadius: 0
 --- !u!114 &-4969658918111256036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1615,6 +1617,25 @@ MonoBehaviour:
   enemyActionBox: {fileID: 0}
   controlledCharacter: {fileID: 0}
   characterTurnActions: []
+--- !u!114 &1944857573718982543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296629463796938933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fbadd43678653a459580ed8447e05c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterInfo: {fileID: 0}
+  controller: {fileID: 0}
+  canMove: 0
+  canActWithBomb: 0
+  canUseSkill: 0
+  curHP: 0
+  curMoveAreaRadius: 0
 --- !u!1 &3296632629193992275
 GameObject:
   m_ObjectHideFlags: 0

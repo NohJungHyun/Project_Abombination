@@ -10,7 +10,7 @@ public class CharacterInfoUI : BaseUIStorage
 
     [Header("캐릭터 기본 정보 파트")]
     public Image characterInfoBG;
-    public Image hpBar;
+    public Slider hpBar;
     public Text characterName;
     public Sprite basicSprtie;
 
@@ -31,6 +31,18 @@ public class CharacterInfoUI : BaseUIStorage
         actionPointUI = GetComponentInChildren<ActionPointUI>();
     }
 
+    private void Update()
+    {
+        if(BattleController.instance.GetState() is SelectActCharacter)
+        {
+            if(SearchWithRayCast.selectedCharacter)
+                ChangeCharacterBasicInfo(SearchWithRayCast.selectedCharacter);
+        }
+        else
+            if(NowTurnCharacterManager.nowPlayCharacter)
+                ChangeCharacterBasicInfo(NowTurnCharacterManager.nowPlayCharacter);
+    }
+
     public override void InitUI()
     {
 
@@ -39,6 +51,10 @@ public class CharacterInfoUI : BaseUIStorage
     public void ChangeCharacterBasicInfo(Temp_Character _Character)
     {
         characterInfoBG.sprite = _Character.GetCharacterInfo().portrait;
-        // hpBar.
+        characterName.text = _Character.GetCharacterInfo().GetName();
+        hpBar.maxValue = _Character.GetCharacterInfo().maxHP;
+        hpBar.value = _Character.curHP;
+
+        actionPointUI.SetActionPointText(_Character);
     }
 }

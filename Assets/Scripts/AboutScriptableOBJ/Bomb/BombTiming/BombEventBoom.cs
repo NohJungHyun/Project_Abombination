@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BombEventBoom : MonoBehaviour, IBombEventExcutor
 {
-    public Bomb bomb;
+    public BombData bomb;
     public event BombEventBox eventBox;
     public GameObject boomParticle;
 
-    public BombEventBoom(Bomb _Bomb)
+    public BombEventBoom(BombData _Bomb)
     {
         bomb = _Bomb;
         eventBox += Boom;

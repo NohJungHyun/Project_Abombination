@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IBombCatch
 {
-   void GetBomb(Bomb bomb);
+   void GetBomb(BombData bomb);
 }

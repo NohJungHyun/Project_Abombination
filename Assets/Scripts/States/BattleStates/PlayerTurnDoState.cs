@@ -13,73 +13,68 @@ public class PlayerTurnDoState : BattleState
 
     NowTurnCharacterManager nowTurnCharacterManager;
     CharacterActionController characterActionController;
+    CharacterMovements characterMovements;
+    CharacterRotation characterRotation;
 
     LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
     ConeRangeMesh rangeMesh;
-
-    bool canLookAround = true;
 
     public PlayerTurnDoState(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
         nowTurnCharacterManager = NowTurnCharacterManager.instance;
+        cameraController = battleController.cameraController;
         characterActionController = CharacterActionController.instance;
 
         nowCharacter = NowTurnCharacterManager.nowPlayCharacter;
-        cameraController = battleController.cameraController;
-        rangeMesh = nowTurnCharacterManager.coneRangeMesh;
-
-        BattleUIManager battleUIManager = battleController.battleUIManager;
+        characterMovements = nowCharacter.GetComponent<CharacterMovements>();
+        characterRotation =  nowCharacter.GetComponentInChildren<CharacterRotation>();
+        rangeMesh = nowTurnCharacterManager.GetNowCharacter().GetComponentInChildren<ConeRangeMesh>();
     }
 
     public override void EnterState()
     {
         Debug.Log("Player Do Enter!");
 
-        canLookAround = true;
         cameraController.ChangeCanChaseMousePos(true);
-
-        rangeMesh.gameObject.SetActive(true);
-        rangeMesh.transform.SetParent(nowCharacter.transform);
-        rangeMesh.SetProperties(nowCharacter.GetCharacterInfo().characterDetectRange, 360);
+        rangeMesh.enabled = true;
+        // rangeMesh.transform.SetParent(nowCharacter.transform);
+        //rangeMesh.transform.localPosition = Vector3.zero + new Vector3(0, nowTurnCharacterManager.GetNowCharacter().transform.position.y, 0);
+        // rangeMesh.SetProperties(nowCharacter.GetCharacterInfo().characterDetectRange, 90);
 
         characterActionController.SetState(new WaitingOrder(battleController));
+        characterRotation.CanRotate = true;
 
     }
     public override void UpdateState()
     {
         Debug.Log("Player Do Update!");
 
-        cameraController.ControlMouseWithCharacter();
-
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!EventSystem.current.IsPointerOverGameObject() && rangeMesh.GetVisibleTargets().Count > 0)
+            if (!EventSystem.current.IsPointerOverGameObject() && nowTurnCharacterManager.GetNowCharacter().GetVisibleTargets().Count > 0)
             {
-                canLookAround = false;
-                Debug.Log("뭐지 버근가");
+                characterRotation.CanRotate = false;
                 characterActionController.SetState(new ModifyAbombination(battleController));
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) || nowCharacter.GetCharacterInfo().currentHP <= 0)
+        else if (Input.GetKeyDown(KeyCode.Escape) || !nowCharacter.isActiveAndEnabled)
         {
             characterActionController.SetState(null);
             battleController.SetState(new SelectActCharacter(battleController));
             nowTurnCharacterManager.SetNowCharacter(null);
         }
+    }
 
-        rangeMesh.transform.position = nowCharacter.transform.position;
-
-        // if(nowCharacter.GetCharacterInfo().currentHP <= 0)
-        // {
-        //     battleController.SetState(new PlayerTurnEndState(battleController));
-        //     characterActionController.SetState(null);
-        //     nowTurnCharacterManager.SetNowCharacter(null);
-        // }
+    public override void LateUpdateState()
+    {
+        characterRotation.RotateToDir(SearchWithRayCast.GetHitPoint());
+        cameraController.SwitchCameraControlToDirect(false);
     }
 
     public override void ExitState()
     {
+        rangeMesh.enabled = false;
         Debug.Log("Player Do Exit!");
 
     }

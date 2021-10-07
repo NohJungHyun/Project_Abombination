@@ -6,9 +6,9 @@ public class AI_PlantBomb : CharacterAction
 {
     IEnumerator coroutine;
     Temp_Character target;
-    Bomb bomb;
+    BombData bomb;
 
-    public AI_PlantBomb(BattleController b, Temp_Character target, Bomb setUpbomb) : base(b)
+    public AI_PlantBomb(BattleController b, Temp_Character target, BombData setUpbomb) : base(b)
     {
         characterActionController = CharacterActionController.instance;
         nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
@@ -53,15 +53,17 @@ public class AI_PlantBomb : CharacterAction
     {
         yield return null;
 
-        target.GetHaveBombs().Add(bomb);
+        target.CarriedBombContainer.GetHaveBombs().Add(bomb);
         bomb.attachedTarget = target;
 
-        nowTurnCharacter.actionPoint -= bomb.setUpCost;
+        nowTurnCharacter.ActionPointController.SubtractActionPoint(0, bomb.setUpCost, 0);
+
+        Debug.Log(nowTurnCharacter.name + ": " + nowTurnCharacter.ActionPointController.GetActionPoint(0));
 
         IEnumerator tempCoroutine = bomb.Use();
         battleController.StartCoroutine(tempCoroutine);
 
-        yield return null;   
+        yield return null;
 
         characterActionController.SetState(new AI_WaitingOrder(battleController));
     }

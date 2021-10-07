@@ -25,9 +25,8 @@ public class AttackExplosion : Explosion
         for (int o = 0; o < cols.Length; o++)
         {
             cols[o].GetComponent<Temp_Character>().TakeDamage(attackDamage);
-            Debug.Log("!!!: " + cols[o].GetComponent<Temp_Character>().GetCharacterInfo().currentHP);
+            Debug.Log("!!!: " + cols[o].GetComponent<Temp_Character>().CurrentHP);
         }
-        // base.ExplosionActivate();
     }
 
     // Start is called before the first frame update

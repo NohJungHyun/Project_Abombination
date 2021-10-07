@@ -4,16 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class BombModifier : BaseUIStorage
 {
+    public static BombModifier instance;
     public NowTurnCharacterManager nowTurnCharacterManager;
-    ModifyAbombination modifyAbombination;
-
-    [Header("Initiating")]
-    public Temp_Character nowTurnPlayCharacter;
+    public ModifyAbombination modifyAbombination;
 
     public Temp_Character modifiedCharacter;
 
-    public List<Bomb> targetedBombs;
-    public Bomb targetedBomb;
+    public List<BombData> targetedBombs;
+    public BombData targetedBomb;
 
     int characterIndex = 0;
 
@@ -45,6 +43,11 @@ public class BombModifier : BaseUIStorage
     [SerializeField] int predictedCountdown;
     [SerializeField] Button[] explosionButtonList;
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,21 +58,14 @@ public class BombModifier : BaseUIStorage
         previousIndex = 0;
 
         countdownText.text = " ";
-
-        // ResetExplosionScrollRect();
-        // ResetButtons();
-
-        // if(targetedBomb)
-        //     SetEventButtons();
+        ShowUI(false);
 
         explosionButtonList = explosionScrollRect.content.GetComponentsInChildren<Button>();
-        explosionScrollRect.gameObject.SetActive(false);
+        // explosionScrollRect.gameObject.SetActive(false);
 
         for (int i = 0; i < explosionButtonList.Length; i++)
-        {
-            explosionButtonList[i].gameObject.SetActive(false);
             explosionButtonList[i].onClick.RemoveAllListeners();
-        }
+            // explosionButtonList[i].gameObject.SetActive(false);
 
         nowTurnCharacterManager = GameObject.FindObjectOfType<NowTurnCharacterManager>();
     }
@@ -84,11 +80,40 @@ public class BombModifier : BaseUIStorage
 
     }
 
+    public void SetModifiedCharacter(Temp_Character _target)
+    {
+        print(_target.name + "!!!");
+        bombIndexSlider.value = 0;
+
+        modifiedCharacter = _target;
+        targetedBombs = modifiedCharacter.CarriedBombContainer.haveBombs;
+
+        ResetButtons();
+
+        if (targetedBombs.Count > 0)
+        {
+            targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
+
+            bombIndexSlider.maxValue = modifiedCharacter.CarriedBombContainer.haveBombs.Count - 1;
+            bombIndexSlider.minValue = 0;
+
+            ArrangeModifierUI();
+            // ShowExplosionRect();
+        }
+        else
+        {
+            targetedBomb = null;
+            curBombButton.image.sprite = null;
+            countdownText.text = " ";
+        }
+    }
+
+
     public void ArrangeModifierUI()
     {
         targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
 
-        if (bombIndexSlider.value < modifiedCharacter.GetHaveBombs().Count - 1)
+        if (bombIndexSlider.value < modifiedCharacter.CarriedBombContainer.haveBombs.Count - 1)
             increaseIndexButton.interactable = true;
         else
             increaseIndexButton.interactable = false;
@@ -101,9 +126,12 @@ public class BombModifier : BaseUIStorage
         ChangeCountdownText();
         ChangeCurBombImage();
 
-        SetEventButtons();
+        ResetButtons();
+        SetBasicButtonEvent();
+        SetBombButtons();
         // ResetExplosionScrollRect();
     }
+
 
     void ResetButtons()
     {
@@ -128,18 +156,21 @@ public class BombModifier : BaseUIStorage
         Debug.Log("이벤트 캔슬 완료");
     }
 
-    void SetEventButtons()
+    void SetBombButtons()
     {
-        ResetButtons();
-
-        adjustButton.onClick.AddListener(() => AdjustDecision());
-        cancleButton.onClick.AddListener(() => CancleDecision());
-
         plusCountdown.onClick.AddListener(() => AddCountdown(targetedBomb.addCountdownCost));
         minusCountdown.onClick.AddListener(() => SubtractCountdown(targetedBomb.subtractCountdownCost));
 
         boomButton.onClick.AddListener(() => DecideBoom(targetedBomb.boomCost));
         diffuseButton.onClick.AddListener(() => DecideDiffuse(targetedBomb.diffuseCost));
+    }
+
+    void SetBasicButtonEvent()
+    {
+        // ResetButtons();
+
+        adjustButton.onClick.AddListener(() => AdjustDecision());
+        cancleButton.onClick.AddListener(() => CancleDecision());
 
         increaseIndexButton.onClick.AddListener(() => BombIndexIncrease());
         decreaseIndexButton.onClick.AddListener(() => BombIndexDecrease());
@@ -188,16 +219,12 @@ public class BombModifier : BaseUIStorage
 
     public void AddCountdown(int _cost)
     {
-        if (nowTurnPlayCharacter.GetActionPoint() < targetedBomb.addCountdownCost) return;
+        if (NowTurnCharacterManager.nowPlayCharacter.ActionPointController.GetActionPoint(0) < targetedBomb.addCountdownCost) return;
 
-        if(predictedCountdown < 0)
-        {
+        if (predictedCountdown < 0)
             CalculateCost(-_cost);
-        }
         else
-        {
             CalculateCost(_cost);
-        }
 
         predictedCountdown++;
         ChangeCountdownText();
@@ -206,16 +233,12 @@ public class BombModifier : BaseUIStorage
 
     public void SubtractCountdown(int _cost)
     {
-        if (nowTurnPlayCharacter.GetActionPoint() < targetedBomb.subtractCountdownCost) return;
+        if (NowTurnCharacterManager.nowPlayCharacter.ActionPointController.GetActionPoint(0) < targetedBomb.subtractCountdownCost) return;
 
-        if(predictedCountdown > 0)
-        {
+        if (predictedCountdown > 0)
             CalculateCost(-_cost);
-        }
         else
-        {
             CalculateCost(_cost);
-        }
 
         predictedCountdown--;
         ChangeCountdownText();
@@ -225,9 +248,9 @@ public class BombModifier : BaseUIStorage
     public void BombIndexIncrease()
     {
         Debug.Log("푸티스");
-        if (modifiedCharacter.GetHaveBombs().Count <= 0) return;
+        if (modifiedCharacter.CarriedBombContainer.haveBombs.Count <= 0) return;
 
-        if (bombIndexSlider.value < modifiedCharacter.GetHaveBombs().Count)
+        if (bombIndexSlider.value < modifiedCharacter.CarriedBombContainer.haveBombs.Count)
         {
             bombIndexSlider.value++;
             // targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
@@ -241,7 +264,7 @@ public class BombModifier : BaseUIStorage
     public void BombIndexDecrease()
     {
         Debug.Log("펜서히어");
-        if (modifiedCharacter.GetHaveBombs().Count <= 0) return;
+        if (modifiedCharacter.CarriedBombContainer.haveBombs.Count <= 0) return;
 
         if (bombIndexSlider.value > 0)
         {
@@ -254,7 +277,7 @@ public class BombModifier : BaseUIStorage
 
     public void DecideBoom(int _cost)
     {
-        if (!targetedBomb || nowTurnPlayCharacter.GetActionPoint() < _cost) return;
+        if (!targetedBomb || NowTurnCharacterManager.nowPlayCharacter.ActionPointController.GetActionPoint(0) < _cost) return;
 
         BoomBomb boomB = new BoomBomb(BattleController.instance);
         boomB.GetBomb(targetedBomb);
@@ -263,7 +286,7 @@ public class BombModifier : BaseUIStorage
 
     public void DecideDiffuse(int _cost)
     {
-        if (!targetedBomb || nowTurnPlayCharacter.GetActionPoint() < _cost) return;
+        if (!targetedBomb || NowTurnCharacterManager.nowPlayCharacter.ActionPointController.GetActionPoint(0) < _cost) return;
 
         DiffuseBomb diffuseB = new DiffuseBomb(BattleController.instance);
         diffuseB.GetBomb(targetedBomb);
@@ -277,9 +300,9 @@ public class BombModifier : BaseUIStorage
 
     public void AdjustDecision()
     {
-        if (nowTurnPlayCharacter.GetActionPoint() > predictedCost)
+        if (NowTurnCharacterManager.nowPlayCharacter.ActionPointController.GetActionPoint(0) >= predictedCost)
         {
-            nowTurnPlayCharacter.SubtractActionPoint(predictedCost);
+            NowTurnCharacterManager.nowPlayCharacter.ActionPointController.SubtractActionPoint(0, predictedCost);
             targetedBomb.bombCurCountDown += predictedCountdown;
 
             if (targetedBomb.bombCurCountDown <= 0)
@@ -336,36 +359,10 @@ public class BombModifier : BaseUIStorage
         CharacterActionController.instance.SetState(new RemoveExplosion(BattleController.instance));
     }
 
-    public void SetModifiedCharacter(Temp_Character _target)
-    {
-        print(_target.name + "!!!");
-        bombIndexSlider.value = 0;
-
-        modifiedCharacter = _target;
-        targetedBombs = modifiedCharacter.GetHaveBombs();
-
-        if (targetedBombs.Count > 0)
-        {
-            targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
-
-            bombIndexSlider.maxValue = modifiedCharacter.GetHaveBombs().Count - 1;
-            bombIndexSlider.minValue = 0;
-
-            ArrangeModifierUI();
-        }
-        else
-        {
-            targetedBomb = null;
-            curBombButton.image.sprite = null;
-            countdownText.text = " ";
-
-            ResetButtons();
-        }
-    }
 
     public void ChangeCurTarget()
     {
-        if (nowTurnCharacterManager.GetVisibleTargets().Count > 0)
+        if (NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets().Count > 0)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -374,24 +371,24 @@ public class BombModifier : BaseUIStorage
                     characterIndex--;
                     Debug.Log("characterIndex--: " + characterIndex);
 
-                    SetModifiedCharacter(nowTurnCharacterManager.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
+                    SetModifiedCharacter(NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                if (characterIndex < nowTurnCharacterManager.GetVisibleTargets().Count - 1)
+                if (characterIndex < NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets().Count - 1)
                 {
                     characterIndex++;
                     Debug.Log("characterIndex++: " + characterIndex);
 
-                    SetModifiedCharacter(nowTurnCharacterManager.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
+                    SetModifiedCharacter(NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (nowTurnCharacterManager.GetVisibleTargets().Equals(SearchWithRayCast.GetHitCharacter()))
+                if (NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets().Equals(SearchWithRayCast.GetHitCharacter()))
                 {
                     Debug.Log("하히후헤호");
                 }
@@ -399,9 +396,5 @@ public class BombModifier : BaseUIStorage
         }
     }
 
-    public void SetAbombinationModifier(ModifyAbombination _m) => modifyAbombination = _m;
-    
-
-    public void SetNowTurnPlayCharacter(Temp_Character _Character) => nowTurnPlayCharacter = _Character;
-    
+    // public void SetAbombinationModifier(ModifyAbombination _m) => modifyAbombination = _m;    
 }

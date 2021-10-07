@@ -10,11 +10,11 @@ public struct StatCheck
 
     //어떻게 스탯을 조정할 것인지 사전에 정의, 정렬한 뒤에 적용하기 위해 만든 클래스.
 
-    public StatCheck(int _way, float _num, int _order)
+    public StatCheck(float _num, int _order, int _way = 999)
     {
-        this.way = _way;
         this.num = _num;
         this.order = _order;
+        this.way = _way;
     }
 }
 
@@ -36,31 +36,56 @@ public class Stat
         resultStat = baseStat;
     }
 
-    public int ShowResultStat()
-    {   // 혹시 모를 값 표현 함수
-        // 라고 누군가는 그렇게 생각을 했겠지...
-        return resultStat;
-    }
-
-    public void CheckCal(int _way, float _num, int _order) //받아온 값들을 기반으로 adjustedModifiers에 넣을 순서, 값 등을 파악하고 Statcheck로 만들어 집어넣는다.
-    {
-        StatCheck _sc = new StatCheck(_way, _num, _order);
-        adjustedModifiers.Insert(_sc.order, _sc);
-        CalculateResult(_sc);
-    }
+    // public void CreateStatContents(float _num, int _order = 999)
+    // {
+    //     StatCheck _sc = new StatCheck(_num, _order);
+    //     adjustedModifiers.Insert(_sc.order, _sc);
+    //     CalculateResult(_sc);
+    // }
 
     public void CalculateResult(StatCheck sc) //본격적인 계산을 진행하는 공간.
     {
+        // 0: Plus / 1: minus / 2: multiple / else: set
+
         if (adjustedModifiers.Count > 0)
         {
-            if (sc.way == 0) //Plus
+            for (int i = 0; i < adjustedModifiers.Count; i++)
             {
-                resultStat += (int)sc.num;
-            }
-            else
-            {
-                resultStat = (int)(sc.num * resultStat);
+                if (sc.way == 0) //Plus
+                    resultStat += (int)sc.num;
+                else if (sc.way == 1)
+                    resultStat -= (int)sc.num;
+                else if (sc.way == 2)
+                    resultStat *= (int)sc.num;
+                else
+                    resultStat = (int)sc.num;
             }
         }
+    }
+
+    public void SetAddStatContents(float _num, int _order = 999)
+    {
+        StatCheck _sc = new StatCheck(_num, _order, 0);
+        adjustedModifiers.Insert(Mathf.Min(adjustedModifiers.Count, _sc.order), _sc);
+        CalculateResult(_sc);
+    }
+
+    public void SetSubtractStatContents(float _num, int _order = 999)
+    {
+        StatCheck _sc = new StatCheck(_num, _order, 1);
+        adjustedModifiers.Insert(Mathf.Min(adjustedModifiers.Count,_sc.order), _sc);
+        CalculateResult(_sc);
+    }
+
+    public void SetMultipleStatContents(float _num, int _order = 999)
+    {
+        StatCheck _sc = new StatCheck(_num, _order,2);
+        adjustedModifiers.Insert(Mathf.Min(adjustedModifiers.Count,_sc.order), _sc);
+        CalculateResult(_sc);
+    }
+
+    public void SetResultNum(float _num)
+    {
+        resultStat = (int)_num;
     }
 }

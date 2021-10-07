@@ -14,7 +14,7 @@ public class PhaseEnd : BattleState
         Debug.Log("PhaseEnd Enter!");
 
         if (BattleParticipantsManager.instance.battleParticipants.IndexOf(BattleParticipantsManager.nowTurnParticipant) == BattleParticipantsManager.instance.battleParticipants.Count - 1)
-            battleController.SetState(new RoundStartState(battleController));
+            battleController.SetState(new RoundEndState(battleController));
         else
             battleController.SetState(new PhaseStart(battleController));
     }

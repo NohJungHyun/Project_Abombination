@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     public Vector3 cameraStartPos = new Vector3(0, 20, 0);
     public Vector3 cameraOffset;
     public Vector3 cameraBaseRot;
-    Vector3 cameraMovePos;
+    // Vector3 cameraMovePos;
 
     public float cameraMoveSpeed;
     public float cameraZoomInSpeed;
@@ -23,7 +23,21 @@ public class CameraController : MonoBehaviour
     Transform zoomingCharacter;
 
     bool canChaseMousePos = false;
-    bool canControlCamera = false;
+    bool isCanControl = true;
+
+    public bool IsCanControl
+    {
+        get{return isCanControl;}
+        set{isCanControl = value;}
+    }
+
+    public bool isDirectControl = false;
+
+    public bool IsDirectControl
+    {
+        get{return isDirectControl;}
+        set{isDirectControl = value;}
+    }
 
     void Awake()
     {
@@ -39,9 +53,12 @@ public class CameraController : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Euler(cameraBaseRot);
         mainCamera.transform.position = cameraStartPos;
         initialCameraPos = mainCamera.transform.position;
-
-        canControlCamera = false;
     }
+
+    // private void Update()
+    // {
+    //     SwitchCameraControlMethod();
+    // }
 
     public void TurnToCameraToNowCharacter()
     {
@@ -49,49 +66,58 @@ public class CameraController : MonoBehaviour
             zoomingCharacter = NowTurnCharacterManager.nowPlayCharacter.transform;
     }
 
-    void Update()
+    // public void ControlMouseWithCharacter()
+    // {
+    //     if (!canChaseMousePos) return;
+
+    //     if (zoomingCharacter && SearchWithRayCast.GetHitPoint() != Vector3.zero)
+    //     {
+
+    //         Vector3 dirPos = new Vector3(SearchWithRayCast.GetHitPoint().x, 0, SearchWithRayCast.GetHitPoint().z) - new Vector3(zoomingCharacter.transform.position.x, 0, zoomingCharacter.transform.position.z);
+
+    //         if (Vector2.Distance(dirPos, zoomingCharacter.transform.position) > 0.5f)
+    //         {
+    //             dirPos.x = Mathf.Clamp(dirPos.x, -2.5f, 2.5f);
+    //             dirPos.z = Mathf.Clamp(dirPos.z, -2.5f, 2.5f);
+
+    //             Vector3 culculatePos = zoomingCharacter.transform.position + cameraOffset + new Vector3(dirPos.x, 0, dirPos.z);
+    //             transform.position = Vector3.Lerp(transform.position, culculatePos, 2f * Time.deltaTime);
+    //         }
+    //     }
+    // }
+
+    public void SwitchCameraControlToDirect(bool isCommanded)
     {
-        if (canControlCamera)
+        if(isCanControl == false) return;
+
+        if(isCommanded)
         {
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-
-            cameraMovePos = new Vector3(h, 0, v) * cameraMoveSpeed;
+            isDirectControl = true;
+            DirectMoveCamera();
         }
-    }
-
-    public void MoveToCharacter(Transform _CharacterPos)
-    {
-        canControlCamera = false;
-
-        if (_CharacterPos.gameObject)
-            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, _CharacterPos.position + cameraOffset, 3f * Time.deltaTime);
-    }
-
-    public void ControlMouseWithCharacter()
-    {
-        if (!canChaseMousePos) return;
-
-        if (zoomingCharacter && SearchWithRayCast.GetHitPoint() != Vector3.zero)
+            
+        else
         {
-
-            Vector3 dirPos = new Vector3(SearchWithRayCast.GetHitPoint().x, 0, SearchWithRayCast.GetHitPoint().z) - new Vector3(zoomingCharacter.transform.position.x, 0, zoomingCharacter.transform.position.z);
-
-            if (Vector2.Distance(dirPos, zoomingCharacter.transform.position) > 0.5f)
-            {
-                dirPos.x = Mathf.Clamp(dirPos.x, -2.5f, 2.5f);
-                dirPos.z = Mathf.Clamp(dirPos.z, -2.5f, 2.5f);
-
-                Vector3 culculatePos = zoomingCharacter.transform.position + cameraOffset + new Vector3(dirPos.x, 0, dirPos.z);
-                transform.position = Vector3.Lerp(transform.position, culculatePos, 2f * Time.deltaTime);
-            }
+            isDirectControl = false;
+            MoveToCharacter();
         }
+            
     }
 
-    public void DirectMoveCamera()
+    private void DirectMoveCamera()
     {
-        canControlCamera = true;
-        transform.Translate(cameraMovePos * Time.deltaTime, Space.World);
+        Vector3 vec = new Vector3((Input.GetAxis("Horizontal")), 0, Input.GetAxis("Vertical"));
+        transform.Translate(vec * cameraMoveSpeed * Time.deltaTime, Space.World);
+    }
+
+    private void MoveToCharacter()
+    {
+        // canControlCamera = true;
+        if (zoomingCharacter)
+        {
+            if(!isDirectControl)
+                mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, zoomingCharacter.transform.position + cameraOffset, 3f * Time.deltaTime);
+        }
     }
 
     public void ZoomWithWheel()
@@ -111,7 +137,13 @@ public class CameraController : MonoBehaviour
          return zoomingCharacter;
     }
 
-    public void SetZoomingCharacter(Transform _character) => zoomingCharacter = _character;
+    public void SetZoomingCharacter(Transform _character)
+    {
+        if(!isCanControl) return;
+
+        isDirectControl = false;
+        zoomingCharacter = _character;
+    } 
     
     public void ChangeCanChaseMousePos(bool _on) => canChaseMousePos = _on;
     

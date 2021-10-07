@@ -9,7 +9,7 @@ public static class BombManager
 
     //현재 전장 내 존재하는 폭탄의 개수를 담는 큐 제작.
     [SerializeField]
-    public static List<Bomb> entireBombs = new List<Bomb>();
+    public static List<BombData> entireBombs = new List<BombData>();
 
     // public static void Countdown(Temp_Character _Character)
     // {
@@ -23,12 +23,12 @@ public static class BombManager
     //     }
     // }
 
-    public static void AddBombToEntire(Bomb _bomb)
+    public static void AddBombToEntire(BombData _bomb)
     {
         entireBombs.Add(_bomb);
     }
 
-    public static void RemoveBombFromEntire(Bomb _bomb)
+    public static void RemoveBombFromEntire(BombData _bomb)
     {
         if(entireBombs.Contains(_bomb))
         {

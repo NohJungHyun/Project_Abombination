@@ -12,11 +12,6 @@ public class QuickBarUI : BaseUIStorage
     public Temp_Character nowCharacter;
     public Sprite basicSprite;
 
-    public void SetNowCharacter(Temp_Character _Character)
-    {
-        nowCharacter = _Character;
-    }
-
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -27,19 +22,19 @@ public class QuickBarUI : BaseUIStorage
             {
                 isCanSetBombs = !isCanSetBombs;
 
-                if (isCanSetBombs)
-                    SetBombsToButtons(nowCharacter.GetCanSetBombs());
-                else
-                    SetExplosionsToButtons(nowCharacter.GetCanSetExplosions());
+                // if (isCanSetBombs)
+                //     SetBombsToButtons(nowCharacter.GetCanSetBombs());
+                // else
+                //     SetExplosionsToButtons(nowCharacter.GetCanSetExplosions());
             }
             else
             {
                 isCanChange = !isCanChange;
 
-                if (isCanChange)
-                    SetItemToButtons(nowCharacter.GetPreparedItems());
-                else
-                    SetSkillToButtons(nowCharacter.GetPreparedSkills());
+                // if (isCanChange)
+                //     SetItemToButtons(nowCharacter.GetPreparedItems());
+                // else
+                //     SetSkillToButtons(nowCharacter.GetPreparedSkills());
 
             }
         }
@@ -56,7 +51,7 @@ public class QuickBarUI : BaseUIStorage
 
     }
 
-    public void SetBombsToButtons(List<Bomb> _bombs)
+    public void SetBombsToButtons(List<BombData> _bombs)
     {
         int i = 0;
         for (int b = 0; b < _bombs.Count; b++)

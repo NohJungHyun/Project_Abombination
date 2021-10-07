@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Bomb", menuName = "ScriptableObjects/BombMaking/AttackableBomb", order = 2)]
-public class AttackableBomb : Bomb
+public class AttackableBomb : BombData
 {
     public int damage;
-    public int targetBum;
+    public int targetNum;
 
-    void OnEnable()
-    {
-        EventBoom += CauseDamageToTarget;
-        owner.GetComponent<CharacterEventContainer>().eventBoxDictionary[5].AddEventToDele(0, ShowString);
-    }
+    // void OnEnable()
+    // {
+    //     EventBoom += CauseDamageToTarget;
+    //     owner.GetComponent<CharacterEventContainer>().eventBoxDictionary[5].AddEventToDele(0, ShowString);
+    // }
 
-    private void OnDisable() 
+    // private void OnDisable() 
+    // {
+    //     EventBoom -= CauseDamageToTarget;
+    //     owner.GetComponent<CharacterEventContainer>().eventBoxDictionary[5].RemoveEventToDele(0, ShowString);
+    // }
+
+    public override void Boom()
     {
-        EventBoom -= CauseDamageToTarget;
-        owner.GetComponent<CharacterEventContainer>().eventBoxDictionary[5].RemoveEventToDele(0, ShowString);
+        base.Boom();
+        CauseDamageToTarget(attachedTarget);
     }
 
     public void ShowString()
@@ -33,10 +39,5 @@ public class AttackableBomb : Bomb
         {
             col.GetComponent<Temp_Character>().TakeDamage(damage + GetOwner().GetCharacterInfo().characterAttack);
         }
-    }
-
-    public override void Boom()
-    {
-        
     }
 }

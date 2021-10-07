@@ -7,7 +7,20 @@ public class Temp_Character : MonoBehaviour, IDamageable
     [SerializeField]
     CharacterInfo characterInfo;
 
-    CharacterInfo info { get; set; }
+    CharacterInfo info
+    {
+        get { return characterInfo; }
+        set 
+        {
+            if(value != characterInfo)
+            {
+                characterInfo = value;
+                Init();
+            }
+        }
+    }
+
+    public Participants controller;
 
     public bool canMove;
     public bool canActWithBomb;
@@ -15,97 +28,77 @@ public class Temp_Character : MonoBehaviour, IDamageable
 
     Vector3 basicPos;
 
-    public int actionPoint;
     public int curHP;
+    public int CurrentHP { get { return curHP; } }
+    public float curMoveAreaRadius;
 
-    float canWalkDist; // 캐릭터가 월드 상에서 이동할 수 있는 거리를 의미. 캐릭터의 movement와 적절히 계산되어 산출되며, 이동 가능 반경을 이동할 때마다 감소한다.
+    // public GameObject rangeMeshObj;
+    public ConeRangeMesh rangeMesh;
+
+    SkillContainer skillContainer;
+    ItemContainer itemContainer;
+    StatContainer statContainer;
+    ActionPointController actionPointController;
+    CanSetBombsContainer canSetBombsContainer;
+    CarriedBombContainer carriedBombContainer;
+    CharacterMoveAreaController characterMoveAreaController;
+    ExplosionContainer explosionContainer;
+
+    public SkillContainer SkillContainer { get { return skillContainer; } }
+    public ItemContainer ItemContainer { get { return itemContainer; } }
+
+    public StatContainer StatContainer { get { return statContainer; } }
+    public ActionPointController ActionPointController { get { return actionPointController; } }
+    public CanSetBombsContainer CanSetBombsContainer { get { return canSetBombsContainer; } }
+    public CarriedBombContainer CarriedBombContainer { get { return carriedBombContainer; } }
+    public CharacterMoveAreaController CharacterMoveAreaController { get { return characterMoveAreaController; } }
+    public ExplosionContainer ExplosionContainer { get { return explosionContainer; } }
+
+    private void Awake()
+    {
+        info = Instantiate(characterInfo);
+        Init();
+    }
 
     void Start()
     {
-        info = Instantiate(characterInfo);
-        info.SetBasic();
-
+        basicPos = transform.position;
         curHP = info.maxHP;
 
-        this.actionPoint = info.maxActionPoint;
-
-        for (int b = 0; b < characterInfo.canSetBombs.Count; b++)
-        {
-            info.canSetBombs[b] = ScriptableObject.Instantiate(characterInfo.canSetBombs[b]);
-            info.canSetBombs[b].SetOwner(this);
-        }
-
-        for (int h = 0; h < characterInfo.haveBombs.Count; h++)
-        {
-            info.haveBombs[h] = ScriptableObject.Instantiate(characterInfo.haveBombs[h]);
-            info.haveBombs[h].SetCountDown();
-
-            // 전투 시작 때 가지고 있으니 자기 꺼라 하자. 
-            info.haveBombs[h].SetAttachedTarget(this);
-
-            if (!characterInfo.haveBombs[h].GetOwner())
-            {
-                info.haveBombs[h].SetOwner(this);
-                for(int bo = 0; bo < info.haveBombs[h].occurrences.Count;bo++)
-                    info.haveBombs[h].occurrences[bo].SpreadtoBattleContainer(this);
-            }            
-
-            if (characterInfo.haveBombs[h].GetExplosionsList().Count > 0)
-                for (int e = 0; e < characterInfo.haveBombs[h].GetExplosionsList().Count; e++)
-                    info.haveBombs[h].GetExplosionsList()[e].SetExplosionAllEvent(info.haveBombs[h]);
-        }
-
-        for (int e = 0; e < characterInfo.canSetExplosions.Count; e++)
-        {
-            info.canSetExplosions[e] = ScriptableObject.Instantiate(characterInfo.canSetExplosions[e]);
-            info.canSetExplosions[e].SetOwner(this);
-        }
-
-        basicPos = transform.position;
+        rangeMesh = GetComponentInChildren<ConeRangeMesh>();
+        // rangeMesh.enabled = false;
+        // if (rangeMeshObj != null && nowPlayCharacter)
+        //     rangeMeshObj.transform.position = nowPlayCharacter.transform.position;
     }
 
-    public List<Bomb> GetCanSetBombs()
+    public void Init()
     {
-        return info.canSetBombs;
-    }
-    public List<Bomb> GetHaveBombs()
-    {
-        return info.haveBombs;
-    }
-
-    public List<Explosion> GetCanSetExplosions()
-    {
-        return info.canSetExplosions;
-    }
-    public void AddBombToHaveBombs(Bomb _b, int _p)
-    {
-        info.haveBombs.Insert(_p, _b);
+        skillContainer = new SkillContainer(info, this);
+        itemContainer = new ItemContainer(info, this);
+        statContainer = new StatContainer(info, this);
+        actionPointController = new ActionPointController(info, this);
+        canSetBombsContainer = new CanSetBombsContainer(info, this);
+        carriedBombContainer = new CarriedBombContainer(info, this);
+        characterMoveAreaController = new CharacterMoveAreaController(info, this);
+        explosionContainer = new ExplosionContainer(info, this);
     }
 
-    public void AddBombToCanSetBombs(Bomb _b, int _p)
+    public Vector3 GetCharacterPos()
     {
-        info.canSetBombs.Insert(_p, _b);
+        return this.transform.position;
     }
 
-    public void RemoveBombToHaveBombs(Bomb _b)
+    public Vector3 GetBasicPos()
     {
-        if (info.haveBombs.Equals(_b))
-            info.haveBombs.Remove(_b);
-    }
-
-    public void RemoveBombtoCanSetBombs(Bomb _b)
-    {
-        if (info.canSetBombs.Equals(_b))
-            info.canSetBombs.Remove(_b);
+        return basicPos;
     }
 
     public void TakeDamage(int _dmg)
     {
         Debug.Log(this.name + "가 피해를 입었다: " + _dmg);
 
-        info.currentHP -= _dmg;
         curHP -= _dmg;
-        if (info.currentHP <= 0)
+        if (curHP <= 0)
             Dead();
     }
 
@@ -116,86 +109,15 @@ public class Temp_Character : MonoBehaviour, IDamageable
         if (curHP >= curHP + _heal)
             curHP = curHP + _heal;
         else
-        {
-            info.currentHP += _heal;
             curHP += _heal;
-        }
-
     }
 
     public void Dead()
     {
-        Debug.Log("끄앙 주금");
+        info.Dead();
+        print(gameObject.name + "이가 죽었다!");
         this.gameObject.SetActive(false);
     }
-
-    public Vector3 GetCharacterPos()
-    {
-        return this.transform.position;
-    }
-
-    public Vector3 GetBasicPos(){
-        return basicPos;
-    }
-
-    public void SetCharacterPos(Vector3 _pos)
-    {
-        this.transform.position = _pos;
-    }
-
-    public void LookMousePos(bool _canRotate)
-    {
-        if (!_canRotate) return;
-
-        Vector3 lookPos = new Vector3(SearchWithRayCast.GetHitPoint().x, transform.position.y, SearchWithRayCast.GetHitPoint().z);
-        transform.LookAt(lookPos);
-    }
-
-    public void SubtractActionPoint(int _point)
-    {
-        actionPoint -= _point;
-    }
-
-    public void AddActionPoint(int _point)
-    {
-        actionPoint += _point;
-    }
-
-    public void SetActionPoint(int _point)
-    {
-        actionPoint = _point;
-    }
-
-    public int GetActionPoint()
-    {
-        return actionPoint;
-    }
-
-    public void ResetActionPoint()
-    {
-        actionPoint = info.maxActionPoint;
-    }
-
-    public List<ItemData> GetHaveItems()
-    {
-        return characterInfo.haveItems;
-    }
-
-    public List<SkillData> GetHaveSkills()
-    {
-        return characterInfo.haveSkills;
-    }
-
-    // public void AddEventBox(int _idx, EventBox _eb)
-    // {
-    //     characterInfo.characterEventBox.Add(_idx, _eb);
-    // }
-
-    // public void RemoveEventBox(int _idx)
-    // {
-    //     if (characterInfo.characterEventBox.ContainsKey(_idx) && characterInfo.characterEventBox[_idx] == null)
-    //         characterInfo.characterEventBox.Remove(_idx);
-    // }
 
     public CharacterInfo GetCharacterInfo()
     {
@@ -207,12 +129,33 @@ public class Temp_Character : MonoBehaviour, IDamageable
         characterInfo = info;
     }
 
-    public List<ActiveItem> GetPreparedItems()
+    public void SetParticipants(Participants p)
     {
-        return info.preparedItems;
+        controller = p;
     }
-    public List<ActiveSkill> GetPreparedSkills()
+
+    public Participants GetParticipants()
     {
-        return info.preparedSkills;
+        return controller;
+    }
+
+    public void TurnOnMesh(bool isOn)
+    {
+        if (rangeMesh != null)
+            rangeMesh.enabled = isOn;
+        // if (rangeMeshObj != null)
+        //     rangeMeshObj.SetActive(isOn);
+    }
+
+    public void TurnOnRangeMesh()
+    {
+        // rangeMesh = GetComponentInChildren<ConeRangeMesh>();
+        // rangeMeshObj = rangeMesh.gameObject;
+        rangeMesh.CreateMesh();
+    }
+
+    public List<Transform> GetVisibleTargets()
+    {
+        return rangeMesh.GetVisibleTargets();
     }
 }
