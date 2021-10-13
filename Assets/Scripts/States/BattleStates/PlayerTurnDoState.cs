@@ -17,7 +17,6 @@ public class PlayerTurnDoState : BattleState
     CharacterRotation characterRotation;
 
     LayerMask detectMask; // 폭탄, 캐릭터를 분간한 뒤 게임 오브젝트를 선택적으로 찾아내기 위해 사용.
-    ConeRangeMesh rangeMesh;
 
     public PlayerTurnDoState(BattleController _battleController) : base(_battleController)
     {
@@ -29,7 +28,6 @@ public class PlayerTurnDoState : BattleState
         nowCharacter = NowTurnCharacterManager.nowPlayCharacter;
         characterMovements = nowCharacter.GetComponent<CharacterMovements>();
         characterRotation =  nowCharacter.GetComponentInChildren<CharacterRotation>();
-        rangeMesh = nowTurnCharacterManager.GetNowCharacter().GetComponentInChildren<ConeRangeMesh>();
     }
 
     public override void EnterState()
@@ -37,7 +35,6 @@ public class PlayerTurnDoState : BattleState
         Debug.Log("Player Do Enter!");
 
         cameraController.ChangeCanChaseMousePos(true);
-        rangeMesh.enabled = true;
         // rangeMesh.transform.SetParent(nowCharacter.transform);
         //rangeMesh.transform.localPosition = Vector3.zero + new Vector3(0, nowTurnCharacterManager.GetNowCharacter().transform.position.y, 0);
         // rangeMesh.SetProperties(nowCharacter.GetCharacterInfo().characterDetectRange, 90);
@@ -52,7 +49,7 @@ public class PlayerTurnDoState : BattleState
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!EventSystem.current.IsPointerOverGameObject() && nowTurnCharacterManager.GetNowCharacter().GetVisibleTargets().Count > 0)
+            if (!EventSystem.current.IsPointerOverGameObject() && nowTurnCharacterManager.GetNowCharacter().CharacterMoveAreaController.GetVisibleTargets().Count > 0)
             {
                 characterRotation.CanRotate = false;
                 characterActionController.SetState(new ModifyAbombination(battleController));
@@ -74,8 +71,6 @@ public class PlayerTurnDoState : BattleState
 
     public override void ExitState()
     {
-        rangeMesh.enabled = false;
         Debug.Log("Player Do Exit!");
-
     }
 }

@@ -18,6 +18,11 @@ public class AttackExplosion : Explosion
         explosionBoomCarrier += DamageWithBoom;
     }
 
+    public void OnDisable()
+    {
+        explosionBoomCarrier -= DamageWithBoom;
+    }
+
     public void DamageWithBoom(Temp_Character _target)
     {
         Debug.Log("왜 안터지냐;;");

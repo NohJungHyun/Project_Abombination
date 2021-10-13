@@ -22,7 +22,6 @@ public class UItoShowBombInfo : BaseUIStorage
     public delegate void dele(Temp_Character _temp);
     public dele CheckBomb;
     public Temp_Character targetedCharacter;
-    public BattleUIManager battleUIManager;
 
     public override void InitUI()
     {

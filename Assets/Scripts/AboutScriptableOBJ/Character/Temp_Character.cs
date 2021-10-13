@@ -22,18 +22,19 @@ public class Temp_Character : MonoBehaviour, IDamageable
 
     public Participants controller;
 
-    public bool canMove;
-    public bool canActWithBomb;
-    public bool canUseSkill;
+    // public bool canMove;
+    // public bool canActWithBomb;
+    // public bool canUseSkill;
 
     Vector3 basicPos;
 
     public int curHP;
     public int CurrentHP { get { return curHP; } }
     public float curMoveAreaRadius;
+    public int curActionPoint;
 
     // public GameObject rangeMeshObj;
-    public ConeRangeMesh rangeMesh;
+    // public ConeRangeMesh rangeMesh;
 
     SkillContainer skillContainer;
     ItemContainer itemContainer;
@@ -64,11 +65,8 @@ public class Temp_Character : MonoBehaviour, IDamageable
     {
         basicPos = transform.position;
         curHP = info.maxHP;
-
-        rangeMesh = GetComponentInChildren<ConeRangeMesh>();
-        // rangeMesh.enabled = false;
-        // if (rangeMeshObj != null && nowPlayCharacter)
-        //     rangeMeshObj.transform.position = nowPlayCharacter.transform.position;
+        curMoveAreaRadius = characterMoveAreaController.curValue;
+        curActionPoint = actionPointController.CurActionPoint.resultStat;
     }
 
     public void Init()
@@ -79,7 +77,7 @@ public class Temp_Character : MonoBehaviour, IDamageable
         actionPointController = new ActionPointController(info, this);
         canSetBombsContainer = new CanSetBombsContainer(info, this);
         carriedBombContainer = new CarriedBombContainer(info, this);
-        characterMoveAreaController = new CharacterMoveAreaController(info, this);
+        characterMoveAreaController = new CharacterMoveAreaController(info, this, GetComponentInChildren<ConeRangeMesh>());
         explosionContainer = new ExplosionContainer(info, this);
     }
 
@@ -137,25 +135,5 @@ public class Temp_Character : MonoBehaviour, IDamageable
     public Participants GetParticipants()
     {
         return controller;
-    }
-
-    public void TurnOnMesh(bool isOn)
-    {
-        if (rangeMesh != null)
-            rangeMesh.enabled = isOn;
-        // if (rangeMeshObj != null)
-        //     rangeMeshObj.SetActive(isOn);
-    }
-
-    public void TurnOnRangeMesh()
-    {
-        // rangeMesh = GetComponentInChildren<ConeRangeMesh>();
-        // rangeMeshObj = rangeMesh.gameObject;
-        rangeMesh.CreateMesh();
-    }
-
-    public List<Transform> GetVisibleTargets()
-    {
-        return rangeMesh.GetVisibleTargets();
     }
 }

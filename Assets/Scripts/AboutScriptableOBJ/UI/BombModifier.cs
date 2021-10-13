@@ -362,7 +362,7 @@ public class BombModifier : BaseUIStorage
 
     public void ChangeCurTarget()
     {
-        if (NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets().Count > 0)
+        if (NowTurnCharacterManager.nowPlayCharacter.CharacterMoveAreaController.GetVisibleTargets().Count > 0)
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
@@ -371,24 +371,24 @@ public class BombModifier : BaseUIStorage
                     characterIndex--;
                     Debug.Log("characterIndex--: " + characterIndex);
 
-                    SetModifiedCharacter(NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
+                    SetModifiedCharacter(NowTurnCharacterManager.nowPlayCharacter.CharacterMoveAreaController.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.D))
             {
-                if (characterIndex < NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets().Count - 1)
+                if (characterIndex < NowTurnCharacterManager.nowPlayCharacter.CharacterMoveAreaController.GetVisibleTargets().Count - 1)
                 {
                     characterIndex++;
                     Debug.Log("characterIndex++: " + characterIndex);
 
-                    SetModifiedCharacter(NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
+                    SetModifiedCharacter(NowTurnCharacterManager.nowPlayCharacter.CharacterMoveAreaController.GetVisibleTargets()[characterIndex].GetComponent<Temp_Character>());
                 }
             }
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (NowTurnCharacterManager.nowPlayCharacter.GetVisibleTargets().Equals(SearchWithRayCast.GetHitCharacter()))
+                if (NowTurnCharacterManager.nowPlayCharacter.CharacterMoveAreaController.GetVisibleTargets().Equals(SearchWithRayCast.GetHitCharacter()))
                 {
                     Debug.Log("하히후헤호");
                 }

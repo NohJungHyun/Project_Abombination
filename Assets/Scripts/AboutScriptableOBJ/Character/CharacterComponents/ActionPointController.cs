@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class ActionPointController : CharacterComponents
 {
     Stat curActionPoint;
@@ -77,5 +78,29 @@ public class ActionPointController : CharacterComponents
                 return minActionPoint.resultStat;
         }
         return -99999;
+    }
+
+     public void SetActionPoint(Temp_Character target, int _AP, int _distinguishNum)
+    {
+        switch (_distinguishNum)
+        {
+            case 0: // 합 연산, 빼기 연산
+                if (curActionPoint.resultStat + _AP <= maxActionPoint.resultStat)
+                    curActionPoint.resultStat += _AP;
+                else
+                    curActionPoint = maxActionPoint;
+                break;
+            case 1: // 숫자 적용 연산
+                curActionPoint.resultStat = _AP;
+                break;
+        }
+    }
+
+    public void SpendActionPoint(int _spendAP)
+    {
+        curActionPoint.resultStat -= _spendAP;
+        if (curActionPoint.resultStat - _spendAP < 0)
+            Debug.Log("AP가 부족하여 사용불가");
+
     }
 }

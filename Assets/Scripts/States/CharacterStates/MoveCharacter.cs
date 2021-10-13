@@ -36,7 +36,6 @@ public class MoveCharacter : CharacterAction
     public override void EnterState()
     {
         Debug.Log("MoveState EnterState!");
-        NowTurnCharacterManager.nowPlayCharacter.TurnOnMesh(true);
     }
 
     public override void ControllUI(BattleUIManager _BattleUI)
