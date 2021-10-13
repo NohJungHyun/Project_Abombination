@@ -18,12 +18,12 @@ MonoBehaviour:
     \uC758\uD574 \uC218\uC138\uAE30 \uB3D9\uC548 \uC5BC\uC5B4\uBD99\uC5B4 \uBC84\uB9B0
     \uBE44\uC6B4\uC758 \uB9C8\uBC95\uC0AC\uC785\uB2C8\uB2E4."
   portrait: {fileID: 21300000, guid: cbd2643b24f7ad94ba968885f1f2ee9a, type: 3}
-  definition: 0
+  definitionType: 0
   characterType: 0
   characterModel: {fileID: 0}
-  chracterLevel: 1
   characterClass: 1
-  characterexp: 0
+  chracterLevel: 1
+  characterExp: 0
   characterAttack: 20
   characterDefense: 4
   characterMovement: 3
@@ -32,12 +32,13 @@ MonoBehaviour:
   characterInitiative: 2
   characterDetectRange: 10
   characterThrowRange: 5
-  currentHP: 30
   maxHP: 30
-  curActionPoint: 5
   maxActionPoint: 5
   minActionPoint: 0
   needCommandPoint: 3
+  maxMoveAreaRadius: 3
+  minMoveAreaRadius: 1
+  moveAreaShrinkRate: 0
   canSetExplosions:
   - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
   canSetBombs:
@@ -48,20 +49,3 @@ MonoBehaviour:
   haveSkills: []
   preparedItems: []
   preparedSkills: []
-  characterEventBox:
-    m_keys: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
-    m_values:
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}

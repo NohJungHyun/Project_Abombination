@@ -23,7 +23,7 @@ public class WaitingOrder : CharacterAction
 
     public override void EnterState()
     {
-        NowTurnCharacterManager.nowPlayCharacter.TurnOnRangeMesh();
+        NowTurnCharacterManager.nowPlayCharacter.CharacterMoveAreaController.TurnOnMoveAreaMesh(true);
 
         Debug.Log("waiting order Enter!");
 

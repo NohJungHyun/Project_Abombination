@@ -12,6 +12,7 @@ public class SelectActCharacter : BattleState
     SelectCharacterUI selectCharacterUI;
 
     NowTurnCharacterManager nowTurnCharacterManager;
+    CharacterMoveAreaController cmc;
 
     bool isDirectControl;
 
@@ -25,17 +26,13 @@ public class SelectActCharacter : BattleState
         selectCharacterUI = battleUIManager.selectCharacterUIObj.GetComponent<SelectCharacterUI>();
         selectCharacterUI.Resetting(BattleParticipantsManager.nowTurnParticipant);
 
-        // selectCharacterUI.ShowUI(false);
-        // Debug.Log("껐다");
-        // selectCharacterUI.ShowUI(true);
-        // Debug.Log("켰다");
-
         nowTurnCharacterManager = NowTurnCharacterManager.instance;
         nowTurnCharacterManager.SetNowCharacter(null);
 
         cameraController = _battleController.cameraController;
         selectCharacterUI.canProceed = false;
-        // selectCharacterUI.ShowUI(true);
+        
+        cmc = null;
     }
 
     public override void EnterState()
@@ -50,16 +47,26 @@ public class SelectActCharacter : BattleState
 
         if (Input.GetMouseButtonDown(0) && SearchWithRayCast.GetHitCharacter()) //&& SearchWithRayCast.selectedCharacter.GetParticipants() is Player)
         {
+            if(cmc != null)
+                if(character != SearchWithRayCast.GetHitCharacter())
+                    cmc.TurnOnMoveAreaMesh(false);
+            
             nowTurnCharacterManager.SetNowCharacter(SearchWithRayCast.GetHitCharacter());
             character = SearchWithRayCast.GetHitCharacter();
             cameraController.SetZoomingCharacter(character.transform);
+
+            cmc = character.CharacterMoveAreaController;
+            cmc.TurnOnMoveAreaMesh(true);
 
             selectCharacterUI.OnTurnEndButton(true, character);
             isDirectControl = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && character)
-            selectCharacterUI.DecidePlay(character);
+        if (character)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+                selectCharacterUI.DecidePlay(character);
+        }
 
         if (Input.GetKeyDown(KeyCode.Escape))
             JumptoPhaseEnd();

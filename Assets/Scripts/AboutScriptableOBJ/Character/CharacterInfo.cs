@@ -37,13 +37,13 @@ public class CharacterInfo : NeedPlayerThings
 
     public int maxHP;
 
-    public int curActionPoint;
+    // public int curActionPoint;
     public int maxActionPoint;
     public int minActionPoint;
 
     public int needCommandPoint;
 
-    public float curMoveAreaRadius;
+    // public float curMoveAreaRadius;
     public float maxMoveAreaRadius;
     public float minMoveAreaRadius;
     public float moveAreaShrinkRate;
@@ -94,27 +94,27 @@ public class CharacterInfo : NeedPlayerThings
         Debug.Log("끄앙 주금");
     }
 
-    public void SetActionPoint(int _AP, int _distinguishNum)
-    {
-        switch (_distinguishNum)
-        {
-            case 0: // 합 연산, 빼기 연산
-                if (curActionPoint + _AP <= maxActionPoint)
-                    curActionPoint += _AP;
-                else
-                    curActionPoint = maxActionPoint;
-                break;
-            case 1: // 숫자 적용 연산
-                curActionPoint = _AP;
-                break;
-        }
-    }
+    // public void SetActionPoint(int _AP, int _distinguishNum)
+    // {
+    //     switch (_distinguishNum)
+    //     {
+    //         case 0: // 합 연산, 빼기 연산
+    //             if (curActionPoint + _AP <= maxActionPoint)
+    //                 curActionPoint += _AP;
+    //             else
+    //                 curActionPoint = maxActionPoint;
+    //             break;
+    //         case 1: // 숫자 적용 연산
+    //             curActionPoint = _AP;
+    //             break;
+    //     }
+    // }
 
-    public void SpendActionPoint(int _spendAP)
-    {
-        curActionPoint -= _spendAP;
-        if (curActionPoint - _spendAP < 0)
-            Debug.Log("AP가 부족하여 사용불가");
+    // public void SpendActionPoint(int _spendAP)
+    // {
+    //     curActionPoint -= _spendAP;
+    //     if (curActionPoint - _spendAP < 0)
+    //         Debug.Log("AP가 부족하여 사용불가");
         
-    }
+    // }
 }

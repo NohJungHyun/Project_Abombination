@@ -38,6 +38,12 @@ public class ConeRangeMesh : MonoBehaviour
     }
 
 
+	public void DestroyMesh()
+	{
+		viewMesh = null;
+		viewMeshFilter.mesh = null;
+	}
+
     IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
