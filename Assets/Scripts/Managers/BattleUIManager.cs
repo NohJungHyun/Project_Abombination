@@ -24,18 +24,13 @@ public class BattleUIManager : MonoBehaviour
 
     void Awake()
     {
-        alarmBattleStateSwitch = FindObjectOfType<AlarmBattleStateSwitch>();  
+        // alarmBattleStateSwitch = FindObjectOfType<AlarmBattleStateSwitch>();  
 
         // bombModifier.ShowUI(false);
         selectCharacterUIObj.SetActive(false);
         alarmBattleStateSwitch.ShowUI(false);  
 
     }
-
-    // public void TurnOnBombModifier(bool _turnOn)
-    // {
-    //     bombModifier.ShowUI(true);
-    // }
 
     public void ChangeButtonToPhaseEndButton(ButtonDele dele)
     {

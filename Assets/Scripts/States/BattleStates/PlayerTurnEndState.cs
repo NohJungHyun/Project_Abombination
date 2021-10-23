@@ -20,7 +20,11 @@ public class PlayerTurnEndState : BattleState
 
         Debug.Log("Player End Enter!");
 
-        ExitState();
+        nowTurnCharacterManager.GetNowCharacter().CharacterMoveAreaController.BackToCharacter();
+        nowTurnCharacterManager.GetNowCharacter().CharacterMoveAreaController.TurnOnMoveAreaMesh(false);
+        nowTurnCharacterManager.SetNowCharacter(null);
+
+        battleController.SetState(new SelectActCharacter(battleController));
     }
 
     public override void UpdateState()

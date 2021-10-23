@@ -25,7 +25,7 @@ public class ActionPointUI : BaseUIStorage
     public void SetActionPointText(Temp_Character temp_Character)
     {
         if (temp_Character)
-            actionPointText.text = temp_Character.ActionPointController.CurActionPoint.ToString() + " / " + temp_Character.GetCharacterInfo().maxActionPoint.ToString();
+            actionPointText.text = temp_Character.ActionPointController.CurActionPoint.resultStat.ToString() + " / " + temp_Character.GetCharacterInfo().maxActionPoint.ToString();
         else
             actionPointText.text = " ";
         

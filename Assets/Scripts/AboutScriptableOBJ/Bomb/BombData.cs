@@ -23,19 +23,28 @@ public class BombData : NeedOwnerThings, ICostable, IUsable
 
     // public List<Abombination> abombinationEffects = new List<Abombination>(10);
 
-    public int bombCurCountDown; // 폭탄이 폭발물과 상관없이 작동하게 되는 카운트다운을 의미.
-    public int bombMinCountDown;
-    public int bombMaxCountDown;
+    [SerializeField]
+    protected int bombCurCountDown; // 폭탄이 폭발물과 상관없이 작동하게 되는 카운트다운을 의미.
+    [SerializeField]
+    protected int bombMinCountDown;
+    [SerializeField]
+    protected int bombMaxCountDown;
 
-    public float bombRadius;
-    public bool bombCanStack;
-    public int bombMaxStack;
+    protected float bombRadius;
+    protected bool bombCanStack;
+    protected int bombMaxStack;
 
     public int setUpCost;
     public int diffuseCost;
     public int boomCost;
     public int addCountdownCost;
     public int subtractCountdownCost;
+
+    public int CurCountDown
+    {
+        get { return bombCurCountDown; }
+        set { bombCurCountDown = value; }
+    }
 
     public ParticleSystem boomEffect;
 
@@ -51,12 +60,12 @@ public class BombData : NeedOwnerThings, ICostable, IUsable
     public virtual void Boom() //Temp_Character _target
     {
         Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
-        EventBoom?.Invoke(attachedTarget);
+        // EventBoom?.Invoke(attachedTarget);
         
         IEnumerator coroutine = PlayUseAnimation();
         BattleController.instance.StartCoroutine(coroutine);
-        //RemoveBomb();
 
+        RemoveBomb();
         BattleController.instance.StopCoroutine(coroutine);
         // owner.StopCoroutine(coroutine);
     }
@@ -122,11 +131,14 @@ public class BombData : NeedOwnerThings, ICostable, IUsable
 
     public void RemoveBomb()
     {
-        // if (owner.haveBombs.Contains(this))
-        // {
-        //     _b.explosionList.Clear();
-        //     haveBombs.Remove(this);
-        // }
+        if (owner.CarriedBombContainer.GetHaveBombs().Contains(this))
+        {
+            this.explosionList.Clear();
+            owner.CarriedBombContainer.GetHaveBombs().Remove(this);
+            Destroy(this);
+        }
+
+        Debug.Log("남은 폭탄 수: " + owner.CarriedBombContainer.GetHaveBombs().Count);
     }
 
 
@@ -148,19 +160,29 @@ public class BombData : NeedOwnerThings, ICostable, IUsable
         }
     }
 
+    public void AdjustCurCountDown(int num)
+    {
+        bombCurCountDown += num;
+
+        if(CurCountDown <= 0)
+        {
+            Boom();
+        }
+    }
+
     public IEnumerator PlayUseAnimation()
     {
         if(boomEffect == null) yield break;
 
         ParticleSystem particle = Instantiate(boomEffect);
-
         particle.transform.position = attachedTarget.transform.position;
         particle.Play();      
-        yield return new WaitUntil(() => particle.isPlaying);
+    
+        // Time.timeScale = 0.1f;
+        yield return new WaitUntil(() => boomEffect.isPlaying);
+        // Time.timeScale = 1f;
 
         Destroy(particle);
-
-        yield return null;
     }
 }
 

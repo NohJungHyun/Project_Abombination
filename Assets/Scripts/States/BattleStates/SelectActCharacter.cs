@@ -27,7 +27,7 @@ public class SelectActCharacter : BattleState
         selectCharacterUI.Resetting(BattleParticipantsManager.nowTurnParticipant);
 
         nowTurnCharacterManager = NowTurnCharacterManager.instance;
-        nowTurnCharacterManager.SetNowCharacter(null);
+        // nowTurnCharacterManager.SetNowCharacter(null);
 
         cameraController = _battleController.cameraController;
         selectCharacterUI.canProceed = false;

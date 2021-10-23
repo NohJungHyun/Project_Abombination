@@ -27,16 +27,17 @@ public class AI_WaitingOrder : CharacterAction
         Debug.Log("기다려라");
         yield return null;
 
-        while (true)
-        {
-            Debug.Log("AI_WaitingOrder Update!");
-            yield return null;
+        // while (true)
+        // {
+        //     yield return null;
 
-            if (!CheckCanSetBombsWithPoint())
-            {
-                yield return new WaitForSeconds(2.0f);
-                battleController.SetState(new AI_CharacterTurnEnd(battleController));
-            }
+
+        // }
+
+        if (!CheckCanSetBombsWithPoint())
+        {
+            yield return new WaitForSeconds(0.1f);
+            battleController.SetState(new AI_CharacterTurnEnd(battleController));
         }
     }
 
@@ -52,6 +53,7 @@ public class AI_WaitingOrder : CharacterAction
 
     public override void UpdateState()
     {
+        Debug.Log("AI_WaitingOrder Update!");
         // cameraController.MoveToCharacter();
         // Debug.Log("AI_WaitingOrder Update!");
     }
@@ -90,6 +92,8 @@ public class AI_WaitingOrder : CharacterAction
     {   
         if(b == null) return;
 
+        Debug.Log("타켓 선택 입장");
+
         float nearDist = 1000;
         Transform nearest = null;
 
@@ -97,21 +101,20 @@ public class AI_WaitingOrder : CharacterAction
 
         for (int c = 0; c < cols.Length; c++)
         {
-            if (!cols[c].gameObject.activeSelf) continue;
+            Debug.LogWarning(c);
+            if (!cols[c].gameObject.activeSelf || cols[c].GetComponent<Temp_Character>() == NowTurnCharacterManager.nowPlayCharacter) continue;
 
-            if (cols[c].GetComponent<Temp_Character>() == NowTurnCharacterManager.nowPlayCharacter)
-                continue;
-
-            if (nearDist > Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position))
+            if (nearDist > Vector3.Distance(NowTurnCharacter.transform.position, cols[c].transform.position))
             {
-                nearDist = Vector3.Distance(b.GetOwner().gameObject.transform.position, cols[c].transform.position);
+                nearDist = Vector3.Distance(NowTurnCharacter.transform.position, cols[c].transform.position);
                 nearest = cols[c].transform;
+                 Debug.Log(nearest.name);
             }
         }
 
         if (nearest)
         {
-            if (nearDist > b.GetOwner().GetCharacterInfo().characterMovement)
+            if (nearDist > NowTurnCharacter.CharacterMoveAreaController.curValue)
                 characterActionController.SetState(new AI_Move(battleController, nearest, b));
             else
                 characterActionController.SetState(new AI_PlantBomb(battleController, nearest.GetComponent<Temp_Character>(), b));

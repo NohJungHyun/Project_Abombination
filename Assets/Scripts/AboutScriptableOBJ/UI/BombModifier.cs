@@ -255,7 +255,7 @@ public class BombModifier : BaseUIStorage
             bombIndexSlider.value++;
             // targetedBomb = targetedBombs[Mathf.RoundToInt(bombIndexSlider.value)];
 
-            countdownText.text = targetedBomb.bombCurCountDown.ToString();
+            countdownText.text = targetedBomb.CurCountDown.ToString();
         }
 
         ArrangeModifierUI();
@@ -269,7 +269,7 @@ public class BombModifier : BaseUIStorage
         if (bombIndexSlider.value > 0)
         {
             bombIndexSlider.value--;
-            countdownText.text = targetedBomb.bombCurCountDown.ToString();
+            countdownText.text = targetedBomb.CurCountDown.ToString();
         }
 
         ArrangeModifierUI();
@@ -303,9 +303,9 @@ public class BombModifier : BaseUIStorage
         if (NowTurnCharacterManager.nowPlayCharacter.ActionPointController.GetActionPoint(0) >= predictedCost)
         {
             NowTurnCharacterManager.nowPlayCharacter.ActionPointController.SubtractActionPoint(0, predictedCost);
-            targetedBomb.bombCurCountDown += predictedCountdown;
+            targetedBomb.CurCountDown += predictedCountdown;
 
-            if (targetedBomb.bombCurCountDown <= 0)
+            if (targetedBomb.CurCountDown <= 0)
                 targetedBomb.Boom();
         }
 
@@ -324,20 +324,18 @@ public class BombModifier : BaseUIStorage
     {
         if (!targetedBomb) return;
 
+        countdownText.text = targetedBomb.CurCountDown.ToString();
+        countdownText.color = Color.gray;
+
         if (predictedCountdown > 0)
         {
             countdownText.color = Color.green;
-            countdownText.text = targetedBomb.bombCurCountDown + " + " + predictedCountdown.ToString();
+            countdownText.text += " + " + predictedCountdown.ToString();
         }
         else if (predictedCountdown < 0)
         {
             countdownText.color = Color.red;
-            countdownText.text = targetedBomb.bombCurCountDown + " - " + (-predictedCountdown).ToString();
-        }
-        else
-        {
-            countdownText.text = targetedBomb.bombCurCountDown.ToString();
-            countdownText.color = Color.gray;
+            countdownText.text += " - " + (-predictedCountdown).ToString();
         }
     }
 

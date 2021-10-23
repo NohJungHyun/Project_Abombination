@@ -8,26 +8,30 @@ public class CarriedBombContainer : CharacterComponents
 
     public CarriedBombContainer(CharacterInfo info, Temp_Character _owner) :base(info, _owner)
     {
-        this.info = info;
-        owner = _owner;
+        // this.info = info;
+        // owner = _owner;
         // Debug.Log("여기가 왜 안되지");
     }
 
     public override void Init()
     {
         haveBombs.Clear();
-        
-        for(int b = 0; b < info.haveBombs.Count; b++)
+
+        for (int b = 0; b < info.haveBombs.Count; b++)
         {
-            haveBombs.Add(ScriptableObject.Instantiate<BombData>(info.haveBombs[b]));
-            haveBombs[b].SetOwner(owner);
-            haveBombs[b].attachedTarget = owner;
-        }        
+            BombData data = ScriptableObject.Instantiate<BombData>(info.haveBombs[b]);
+            // haveBombs.Add(ScriptableObject.Instantiate<BombData>(info.haveBombs[b]));
+            data.SetOwner(owner);
+            data.attachedTarget = owner;
+            haveBombs.Add(data);
+
+            Debug.LogWarning(haveBombs[b].attachedTarget + ": " + haveBombs[b].thingsName);
+        }
     }
-    
+
     public List<BombData> GetHaveBombs()
     {
-        return info.haveBombs;
+        return haveBombs;
     }
 
     public void AddBombToHaveBombs(BombData _b, int _p)

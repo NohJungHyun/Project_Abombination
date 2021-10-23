@@ -23,12 +23,9 @@ MonoBehaviour:
     m_Bits: 1536
   explosionList:
   - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
-  bombCurCountDown: 0
+  bombCurCountDown: 2
   bombMinCountDown: 0
   bombMaxCountDown: 2
-  bombRadius: 10
-  bombCanStack: 1
-  bombMaxStack: 3
   setUpCost: 5
   diffuseCost: -2
   boomCost: 1
@@ -37,4 +34,4 @@ MonoBehaviour:
   boomEffect: {fileID: 0}
   occurrences: []
   damage: 10
-  targetBum: 2
+  targetNum: 0

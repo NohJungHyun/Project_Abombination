@@ -22,12 +22,9 @@ MonoBehaviour:
     m_Bits: 512
   explosionList:
   - {fileID: 11400000, guid: 9181c9b79aa51ec40b5653275b28f03a, type: 2}
-  bombCurCountDown: 5
+  bombCurCountDown: 4
   bombMinCountDown: 2
   bombMaxCountDown: 5
-  bombRadius: 5
-  bombCanStack: 0
-  bombMaxStack: 0
   setUpCost: 2
   diffuseCost: 1
   boomCost: 2

@@ -38,7 +38,7 @@ MonoBehaviour:
   needCommandPoint: 3
   maxMoveAreaRadius: 3
   minMoveAreaRadius: 1
-  moveAreaShrinkRate: 0
+  moveAreaShrinkRate: 0.5
   canSetExplosions:
   - {fileID: 11400000, guid: 6e7b7454445652545826aa1cd62a9569, type: 2}
   canSetBombs:

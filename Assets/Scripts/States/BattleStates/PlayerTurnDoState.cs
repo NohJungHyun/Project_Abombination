@@ -58,8 +58,7 @@ public class PlayerTurnDoState : BattleState
         else if (Input.GetKeyDown(KeyCode.Escape) || !nowCharacter.isActiveAndEnabled)
         {
             characterActionController.SetState(null);
-            battleController.SetState(new SelectActCharacter(battleController));
-            nowTurnCharacterManager.SetNowCharacter(null);
+            battleController.SetState(new PlayerTurnEndState(battleController));
         }
     }
 
