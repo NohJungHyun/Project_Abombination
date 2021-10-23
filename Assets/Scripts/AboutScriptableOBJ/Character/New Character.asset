@@ -28,14 +28,12 @@ MonoBehaviour:
   characterCharisma: 3
   characterLuck: 3
   characterInitiative: 3
-  characterDetectRange: 7
+  characterDetectRange: 15
   characterThrowRange: 5
   maxHP: 30
-  curActionPoint: 3
   maxActionPoint: 3
   minActionPoint: 3
   needCommandPoint: 3
-  curMoveAreaRadius: 5
   maxMoveAreaRadius: 5
   minMoveAreaRadius: 1
   moveAreaShrinkRate: 1

@@ -13,19 +13,18 @@ public class MoveCharacter : CharacterAction
     CameraController cameraController;
     CharacterMovements characterMovements;
 
-    Vector3 move;
-
     public MoveCharacter(BattleController _battleController) : base(_battleController)
     {
         battleController = _battleController;
         nowTurnCharacter = NowTurnCharacterManager.nowPlayCharacter;
         characterActionController = CharacterActionController.instance;
-        cameraController = _battleController.cameraController;
+        
+        coneRangeMesh = nowTurnCharacter.CharacterMoveAreaController.GetRangeMesh();
 
-        coneRangeMesh = nowTurnCharacter.GetComponent<ConeRangeMesh>();
         navMeshAgent = nowTurnCharacter.GetComponent<NavMeshAgent>();
         characterMovements = nowTurnCharacter.GetComponent<CharacterMovements>();
 
+        cameraController = _battleController.cameraController;
         cameraController.SetZoomingCharacter(nowTurnCharacter.transform);
         // Setting ㄱㄱ        
 
@@ -46,16 +45,16 @@ public class MoveCharacter : CharacterAction
     public override void UpdateState()
     {
         Debug.Log("MoveState UpdateState!");
-        if (nowTurnCharacter.curMoveAreaRadius > nowTurnCharacter.GetCharacterInfo().minMoveAreaRadius)
+        if(nowTurnCharacter.CharacterMoveAreaController.ShrinkArea(Time.deltaTime * nowTurnCharacter.GetCharacterInfo().moveAreaShrinkRate))
         {
-            nowTurnCharacter.curMoveAreaRadius -= Time.deltaTime * nowTurnCharacter.GetCharacterInfo().moveAreaShrinkRate;
-            coneRangeMesh.SetRadius(nowTurnCharacter.curMoveAreaRadius);
+            Debug.Log("영역 최소화 완료");
+            // Vector3 fixedPos = nowTurnCharacter.transform.position;
+            // nowTurnCharacter.CharacterMoveAreaController.HoldRangeMeshPos(fixedPos);
         }
 
         if (Input.GetAxis("Horizontal") == 0f && Input.GetAxis("Vertical") == 0f)
             characterActionController.SetState(new WaitingOrder(battleController));    
-
-        // cameraController.SwitchCameraControlMethod(false);         
+     
     }
 
     public override void PhysicUpdateState()

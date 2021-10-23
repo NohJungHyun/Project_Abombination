@@ -33,9 +33,6 @@ public class Temp_Character : MonoBehaviour, IDamageable
     public float curMoveAreaRadius;
     public int curActionPoint;
 
-    // public GameObject rangeMeshObj;
-    // public ConeRangeMesh rangeMesh;
-
     SkillContainer skillContainer;
     ItemContainer itemContainer;
     StatContainer statContainer;
@@ -58,7 +55,6 @@ public class Temp_Character : MonoBehaviour, IDamageable
     private void Awake()
     {
         info = Instantiate(characterInfo);
-        Init();
     }
 
     void Start()

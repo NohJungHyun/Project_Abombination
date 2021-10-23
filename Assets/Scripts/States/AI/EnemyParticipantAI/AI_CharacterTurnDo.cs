@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class AI_CharacterTurnDo : BattleState
 {
+    CameraController cameraController;
+
     public AI_CharacterTurnDo(BattleController _battleController) : base(_battleController)
     {
         base.battleController = _battleController;
+        cameraController = _battleController.cameraController;
+        cameraController.SetZoomingCharacter(NowTurnCharacterManager.nowPlayCharacter.transform);
     }
 
     public override void EnterState()
@@ -18,7 +22,7 @@ public class AI_CharacterTurnDo : BattleState
 
     public override void UpdateState()
     {
-        
+        cameraController.SwitchCameraControlToDirect(false);
     }
 
     public override void ExitState()
