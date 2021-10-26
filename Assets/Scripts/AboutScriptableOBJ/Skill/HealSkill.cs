@@ -19,7 +19,6 @@ public class HealSkill : ActiveSkill, ISelectable
 
     public void OnEnable()
     {
-        Activation += SelectTarget;
         // Activation += Use;
 
         selectedCharacter.Clear();

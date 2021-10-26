@@ -21,8 +21,8 @@ public abstract class CharacterComponents
     public CharacterComponents(CharacterInfo info, Temp_Character _owner)
     {
         SetDataFromInfo(info);
-        owner = _owner;
-        Init();
+        owner = _owner;     
+        // Debug.Log("Character Components"); 
     }
 
 }

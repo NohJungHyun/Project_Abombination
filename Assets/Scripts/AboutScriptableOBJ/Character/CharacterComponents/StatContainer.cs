@@ -21,6 +21,7 @@ public class StatContainer : CharacterComponents
     {
         this.info = info;
         owner = _owner;
+        Init();
         // Debug.Log("여기가 왜 안되지");
     }
 
@@ -32,6 +33,7 @@ public class StatContainer : CharacterComponents
         statCharisma = new Stat(info.characterCharisma);
         statLuck = new Stat(info.characterLuck);
         statInitiative = new Stat(info.characterInitiative);
+        statDetectRange = new Stat(info.characterDetectRange);
         statThrowRange = new Stat(info.characterThrowRange);
     }
 }

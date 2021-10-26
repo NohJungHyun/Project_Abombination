@@ -8,16 +8,29 @@ public class SkillContainer : CharacterComponents
     public List<SkillData> haveSkills = new List<SkillData>();
     public List<SkillData> preparedSkills = new List<SkillData>();
 
-    public SkillContainer(CharacterInfo info, Temp_Character _owner) :base(info, _owner)
+    public SkillContainer(CharacterInfo info, Temp_Character _owner) : base(info, _owner)
     {
         this.info = info;
         owner = _owner;
-        // Debug.Log("여기가 왜 안되지");
+
+        haveSkills = info.haveSkills;
+        Debug.Log("Skill Container");
+        Init();
     }
 
     public override void Init()
     {
-        haveSkills = info.haveSkills;
+        foreach (SkillData skillData in haveSkills)
+        {
+            skillData.SetOwner(owner);
+            Debug.Log("owner 넣기");
+        }
+
+        foreach (PassiveSkill sd in haveSkills)
+        {
+            sd.Adjust();
+            Debug.Log("패시브");
+        }
     }
 
     public List<SkillData> GetHaveSkills()

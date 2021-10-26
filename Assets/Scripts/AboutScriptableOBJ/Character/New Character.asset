@@ -48,7 +48,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f3ea39bd8080b944da68dbeaa59a1128, type: 2}
   - {fileID: 11400000, guid: 1e3f91b37e554874b8385a5da4f0e550, type: 2}
   haveItems: []
-  haveSkills: []
+  haveSkills:
+  - {fileID: 11400000, guid: 3529b26168cfbee49b3761d6f8275c75, type: 2}
   preparedItems: []
   preparedSkills:
   - {fileID: 11400000, guid: 8e3ad8ebcc6df9845ac6844ddb6b287e, type: 2}

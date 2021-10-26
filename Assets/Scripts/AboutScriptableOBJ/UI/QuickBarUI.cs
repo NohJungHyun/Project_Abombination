@@ -95,9 +95,6 @@ public class QuickBarUI : BaseUIStorage
                 quickButtons[b].image.sprite = basicSprite;
             else
                 quickButtons[b].image.sprite = _skills[b].GetSprite();
-
-            Debug.Log(_skills[b].Activation.GetInvocationList().Length);
-            quickButtons[b].onClick.AddListener(() => StartCoroutine(_skills[i].Activation?.Invoke()));
         }
     }
 

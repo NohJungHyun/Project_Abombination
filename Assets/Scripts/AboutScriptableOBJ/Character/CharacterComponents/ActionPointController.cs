@@ -1,3 +1,4 @@
+using System.Xml.Schema;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class ActionPointController : CharacterComponents
     {
         this.info = info;
         owner = _owner;
+        Init();
         // Debug.Log("여기가 왜 안되지");
     }
 

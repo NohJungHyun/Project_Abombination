@@ -15,7 +15,7 @@ public class Temp_Character : MonoBehaviour, IDamageable
             if(value != characterInfo)
             {
                 characterInfo = value;
-                Init();
+                // Init();
             }
         }
     }
@@ -55,10 +55,11 @@ public class Temp_Character : MonoBehaviour, IDamageable
     private void Awake()
     {
         info = Instantiate(characterInfo);
+        Init();
     }
 
     void Start()
-    {
+    {       
         basicPos = transform.position;
         curHP = info.maxHP;
         curMoveAreaRadius = characterMoveAreaController.curValue;
@@ -67,9 +68,9 @@ public class Temp_Character : MonoBehaviour, IDamageable
 
     public void Init()
     {
+        statContainer = new StatContainer(info, this);
         skillContainer = new SkillContainer(info, this);
         itemContainer = new ItemContainer(info, this);
-        statContainer = new StatContainer(info, this);
         actionPointController = new ActionPointController(info, this);
         canSetBombsContainer = new CanSetBombsContainer(info, this);
         carriedBombContainer = new CarriedBombContainer(info, this);

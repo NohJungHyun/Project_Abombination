@@ -62,11 +62,9 @@ public class BombData : NeedOwnerThings, ICostable, IUsable
         Debug.Log("이렇게 폭탄 하나가 또 폭발하고 말았구나..");
         // EventBoom?.Invoke(attachedTarget);
         
-        IEnumerator coroutine = PlayUseAnimation();
-        BattleController.instance.StartCoroutine(coroutine);
-
+        owner.StartCoroutine(PlayUseAnimation());
         RemoveBomb();
-        BattleController.instance.StopCoroutine(coroutine);
+        
         // owner.StopCoroutine(coroutine);
     }
 
@@ -174,15 +172,37 @@ public class BombData : NeedOwnerThings, ICostable, IUsable
     {
         if(boomEffect == null) yield break;
 
-        ParticleSystem particle = Instantiate(boomEffect);
-        particle.transform.position = attachedTarget.transform.position;
-        particle.Play();      
-    
+        yield return null;
+
+        ParticleSystem particle = Instantiate(boomEffect, attachedTarget.transform.position, Quaternion.identity);
+
+        Time.timeScale = 0.1f;
+        Time.fixedDeltaTime = 0.02F * Time.timeScale;
+
+        var main = particle.main;
+        main.useUnscaledTime = true;
+
+        while (particle.isPlaying)
+        {
+            yield return null;
+            Debug.Log("엥");
+        }
+
+        main.useUnscaledTime = false;
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02F * Time.timeScale;
+
+        Destroy(particle.gameObject);
+        Debug.Log("사라졌니?: " + particle);
+
+        owner.StopCoroutine(PlayUseAnimation());
+
         // Time.timeScale = 0.1f;
-        yield return new WaitUntil(() => boomEffect.isPlaying);
+        //Debug.Log("particle " + particle.main.duration);
+
         // Time.timeScale = 1f;
 
-        Destroy(particle);
     }
 }
 

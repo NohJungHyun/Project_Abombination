@@ -4,26 +4,18 @@ using UnityEngine;
 
 public class ActiveSkill : SkillData, IUsable
 {
-    public delegate IEnumerator ActivateDelegate();
-    public ActivateDelegate Activation;
 
     // public List<ActivateDelegate> activateList = new List<ActivateDelegate>();
 
-    void OnEnable()
+    public override bool CheckCondition()
     {
-        Activation += Use;
+        return true;
     }
-
+    
     public IEnumerator Use()
     {
-        Debug.Log("액티브 스킬 사용");
         yield return null;
-    }
-
-    public void OnDisable()
-    {
-        Activation -= Use;
-    }
+    } 
 
     public IEnumerator PlayUseAnimation()
     {
