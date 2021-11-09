@@ -28,7 +28,7 @@ public class BattleUIManager : MonoBehaviour
 
         // bombModifier.ShowUI(false);
         selectCharacterUIObj.SetActive(false);
-        alarmBattleStateSwitch.ShowUI(false);  
+       // alarmBattleStateSwitch.ShowUI(false);  
 
     }
 

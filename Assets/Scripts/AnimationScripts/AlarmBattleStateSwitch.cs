@@ -5,23 +5,41 @@ using UnityEngine.UI;
 
 public class AlarmBattleStateSwitch : BaseUIStorage
 {
+    [SerializeField]
     Text changeText;
+    [SerializeField]
     Animation moveUIAnimation;
 
-    private void Start() 
+    void OnEnable()
+    {
+        
+        Init();
+    }
+
+    private void Init() 
     {
         changeText = GetComponentInChildren<Text>();    
         moveUIAnimation = GetComponentInChildren<Animation>();
     }
 
+    public IEnumerator AppearChangeUI()
+    {
+        yield return null;
+        moveUIAnimation.Play();
+
+        yield return new WaitWhile(() => moveUIAnimation.isPlaying);
+        // StopCoroutine(AppearChangeUI());
+    }
+
     public void CallAnimation(string stateString)
     {
         ChangeText(stateString);
-        moveUIAnimation.Play();
+        StartCoroutine(AppearChangeUI());
     }
 
     private void ChangeText(string stateString)
     {
+        print(changeText);
         changeText.text = stateString;
     }
 }

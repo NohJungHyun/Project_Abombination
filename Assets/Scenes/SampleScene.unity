@@ -6045,7 +6045,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1206903250
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7999,6 +7999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7622be7dc69f84fa926fff32f36218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  changeText: {fileID: 0}
+  moveUIAnimation: {fileID: 0}
 --- !u!1 &1730960698
 GameObject:
   m_ObjectHideFlags: 0
@@ -9378,7 +9380,7 @@ Animation:
   m_GameObject: {fileID: 2047596234}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 6855e8f54d8e64543ae18c30698340d6, type: 2}
+  m_Animation: {fileID: 7400000, guid: 7ed79b02966ca6f42b3a38d1f133845c, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 7ed79b02966ca6f42b3a38d1f133845c, type: 2}
   m_WrapMode: 0

@@ -38,6 +38,9 @@ public class SelectActCharacter : BattleState
     public override void EnterState()
     {
         Debug.Log("SelectActCharacter Enter!");
+
+        alarm.ShowUI(true);
+        alarm.CallAnimation(this.ToString());
         character = null;
     }
 
